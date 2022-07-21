@@ -6,15 +6,15 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/21 13:45:37 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/07/21 14:24:26 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include <stdlib.h>
 
-#define HEIGHT 400
-#define WIDTH 400
+#define HEIGHT 900
+#define WIDTH 1600
 
 struct					s_data
 {
@@ -34,18 +34,47 @@ static int	close_window(t_data *data)
 	return (0);
 }
 
+void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
+{
+	if (endian == 1) // Most significant (Alpha) byte first
+	{
+		buffer[pixel_addr + 0] = (color >> 24);
+		buffer[pixel_addr + 1] = (color >> 16) & 0xFF;
+		buffer[pixel_addr + 2] = (color >> 8) & 0xFF;
+		buffer[pixel_addr + 3] = color & 0xFF;
+	}
+	else if (endian == 0) // Least significant (Blue) byte first
+	{
+		buffer[pixel_addr + 0] = color & 0xFF;
+		buffer[pixel_addr + 1] = (color >> 8) & 0xFF;
+		buffer[pixel_addr + 2] = (color >> 16) & 0xFF;
+		buffer[pixel_addr + 3] = (color >> 24);
+	}
+}
+
+unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
+{
+	unsigned int	color;
+	
+	color = 0;
+	color += (alpha << 24);
+	color += (r << 16);
+	color += (g << 8);
+	color += b;
+	return (color);
+}
+
 void	*fill_img(void *img)
 {
-	int	color;
-	int			bits_per_pixel;
-	int			size_line;
-	int			endian;
-	char		*buffer;
-	int			x;
-	int			y;
-	int			pixel;
+	int		color;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
+	char	*buffer;
+	int		x;
+	int		y;
+	int		pixel;
 
-	color = 0xABCDEF;
 	buffer = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
 	y = 0;
 	while (y < HEIGHT)
@@ -54,24 +83,9 @@ void	*fill_img(void *img)
 		while (x < WIDTH)
 		{
 			pixel = (y * size_line) + (x * 4);
-			if (endian == 1) // Most significant (Alpha) byte first
-			{
-				buffer[pixel + 0] = (color >> 24);
-				buffer[pixel + 1] = (color >> 16) & 0xFF;
-				buffer[pixel + 2] = (color >> 8) & 0xFF;
-				buffer[pixel + 3] = (color)&0xFF;
-			}
-			else if (endian == 0) // Least significant (Blue) byte first
-			{
-				buffer[pixel + 0] = 0x00;
-				buffer[pixel + 1] = (y / (float) HEIGHT) * 0xFF;
-				buffer[pixel + 2] =	(x / (float) WIDTH) * 0xFF;
-				buffer[pixel + 3] = 0x00;
-				// buffer[pixel + 0] = (color)&0xFF;
-				// buffer[pixel + 1] = (color >> 8) & 0xFF;
-				// buffer[pixel + 2] = (color >> 16) & 0xFF;
-				// buffer[pixel + 3] = (color >> 24);
-			}
+			color = get_color(0,
+					(x / (float) WIDTH) * 255, (y / (float) HEIGHT) * 255, 0);
+			write_pixel(buffer, pixel, color, endian);
 			x++;
 		}
 		y++;
@@ -81,9 +95,9 @@ void	*fill_img(void *img)
 
 int	main(void)
 {
-	int	window_height;
-	int	window_width;
-	t_data		data;
+	int		window_height;
+	int		window_width;
+	t_data	data;
 
 	window_height = HEIGHT;
 	window_width = WIDTH;
