@@ -1,6 +1,3 @@
-[submodule "c-matrix-lib"]
-	path = c-matrix-lib
-	url = git@github.com:SuperDulli/c-matrix-lib.git
 [submodule "lin_algebra"]
 	path = lin_algebra
 	url = git@github.com:SuperDulli/c-matrix-lib.git

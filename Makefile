@@ -6,10 +6,11 @@ LFLAGS = -lmlx -framework OpenGL -framework AppKit
 
 MLX_DIR = /usr/local/lib
 # MLX_HEADER = $(MLX_DIR)
-INCLUDES = $(MLX_DIR)/
 
 LIN_ALGEBRA_DIR = lin_algebra
 LIN_ALGEBRA_NAME = lin_algebra_lib.a
+
+INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/
 
 SRCS	= main.c
 OBJDIR	= obj
@@ -20,17 +21,19 @@ all: $(NAME)
 clean:
 	$(RM) -r *.dSYM
 	$(RM) -r $(OBJDIR)
+	make clean -C $(LIN_ALGEBRA_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
+	make fclean -C $(LIN_ALGEBRA_DIR)
 
 re: fclean all
 
 $(NAME): $(OBJS) $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME)
-	$(CC) $(OBJS) $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) -L $(MLX_DIR) $(LFLAGS) -o $@
+	$(CC) $^ -L $(MLX_DIR) $(LFLAGS) -o $@
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
