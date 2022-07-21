@@ -6,30 +6,18 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/21 14:24:26 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/07/21 15:29:14 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
-#include <stdlib.h>
-
-#define HEIGHT 900
-#define WIDTH 1600
-
-struct					s_data
-{
-	void				*mlx;
-	void				*win;
-	void				*img;
-};
-typedef struct s_data	t_data;
+#include "mini_rt.h"
 
 static int	close_window(t_data *data)
 {
 	mlx_destroy_window(data->mlx, data->win);
 	//mlx_destroy_display(data->mlx_ptr);
 	//free(data->mlx_ptr); // if active, it causes mem leaks on MacOS?!
-	// system("leaks mini_rt");
+	system("leaks mini_rt");
 	exit(0);
 	return (0);
 }
@@ -55,7 +43,7 @@ void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
 unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
 {
 	unsigned int	color;
-	
+
 	color = 0;
 	color += (alpha << 24);
 	color += (r << 16);
@@ -66,29 +54,27 @@ unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
 
 void	*fill_img(void *img)
 {
-	int		color;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-	char	*buffer;
-	int		x;
-	int		y;
-	int		pixel;
+	struct s_img_info	img_info;
+	char				*buffer;
+	struct s_2d_coord	px_coord;
+	int					pixel_addr;
+	int					color;
 
-	buffer = mlx_get_data_addr(img, &bits_per_pixel, &size_line, &endian);
-	y = 0;
-	while (y < HEIGHT)
+	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
+			&img_info.line_size, &img_info.endian);
+	px_coord.y = 0;
+	while (px_coord.y < HEIGHT)
 	{
-		x = 0;
-		while (x < WIDTH)
+		px_coord.x = 0;
+		while (px_coord.x < WIDTH)
 		{
-			pixel = (y * size_line) + (x * 4);
-			color = get_color(0,
-					(x / (float) WIDTH) * 255, (y / (float) HEIGHT) * 255, 0);
-			write_pixel(buffer, pixel, color, endian);
-			x++;
+			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
+			color = get_color(0, (px_coord.x / (float)WIDTH) * 255, (px_coord.y
+						/ (float)HEIGHT) * 255, 0);
+			write_pixel(buffer, pixel_addr, color, img_info.endian);
+			px_coord.x++;
 		}
-		y++;
+		px_coord.y++;
 	}
 	return (img);
 }
