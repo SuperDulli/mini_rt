@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/21 15:29:14 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/07/21 17:20:09 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	close_window(t_data *data)
 	mlx_destroy_window(data->mlx, data->win);
 	//mlx_destroy_display(data->mlx_ptr);
 	//free(data->mlx_ptr); // if active, it causes mem leaks on MacOS?!
-	system("leaks mini_rt");
+	// system("leaks mini_rt");
 	exit(0);
 	return (0);
 }
@@ -52,6 +52,47 @@ unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
 	return (color);
 }
 
+bool	hit_sphere(struct s_ray ray, struct s_sphere sphere)
+{
+	float	oc[VEC3_SIZE];
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+
+	vec3_sub((float *)&ray.origin, (float *)&sphere.center, oc);
+	a = vec3_length_squared((float *)&ray.direction);
+	b = 2.0f * vec3_dot(oc, (float *)&ray.direction);
+	c = vec3_length_squared(oc) - sphere.radius * sphere.radius;
+	discriminant = b * b - 4 * a * c;
+	return (discriminant > 0);
+}
+
+unsigned int	choose_color(float u, float v)
+{
+	unsigned int	color;
+	struct s_sphere	sphere;
+	struct s_vec3	camera_pos;
+	struct s_vec3	camera_dir;
+	struct s_vec3	pixel_pos;
+	struct s_ray	ray;
+
+	vec3(0, 0, 0, (float *)&sphere.center);
+	sphere.radius = 1.f;
+	sphere.color = 0x000000FF;
+	vec3(0, 0, 5, (float *)&camera_pos);
+	vec3(0, 0, -1, (float *)&camera_dir);
+	vec3(u - 0.5f, v - 0.5f, 4, (float *)&pixel_pos); // u/v: -0.5 -> +0.5
+	ray.origin = camera_pos;
+	vec3_sub((float *)&pixel_pos, (float *)&camera_pos,
+			(float *)&ray.direction);
+	if (hit_sphere(ray, sphere))
+		color = sphere.color;
+	else
+		color = get_color(0, u * 255, v * 255, 0);
+	return (color);
+}
+
 void	*fill_img(void *img)
 {
 	struct s_img_info	img_info;
@@ -69,8 +110,9 @@ void	*fill_img(void *img)
 		while (px_coord.x < WIDTH)
 		{
 			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
-			color = get_color(0, (px_coord.x / (float)WIDTH) * 255, (px_coord.y
-						/ (float)HEIGHT) * 255, 0);
+			color = choose_color(
+				(px_coord.x / (float)WIDTH),
+				(px_coord.y / (float)HEIGHT));
 			write_pixel(buffer, pixel_addr, color, img_info.endian);
 			px_coord.x++;
 		}
