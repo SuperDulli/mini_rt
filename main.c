@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/26 16:44:14 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:25:11 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
 	return (color);
 }
 
-bool	hit_sphere(struct s_ray ray, struct s_sphere sphere)
+float	hit_sphere(struct s_ray ray, struct s_sphere sphere)
 {
 	float	oc[VEC3_SIZE];
 	float	a;
@@ -65,7 +65,18 @@ bool	hit_sphere(struct s_ray ray, struct s_sphere sphere)
 	b = 2.0f * vec3_dot(oc, (float *)&ray.direction);
 	c = vec3_length_squared(oc) - sphere.radius * sphere.radius;
 	discriminant = b * b - 4 * a * c;
-	return (discriminant > 0);
+	if (discriminant < 0)
+		return (-1.f);
+	return ((-b - sqrtf(discriminant)) / (2.f * a));
+}
+
+float	*ray_at(struct s_ray ray, float t, float *point)
+{
+	float	dir[VEC3_SIZE];
+
+	vec3_scalar_mult(ray.direction, t, dir);
+	vec3_add(ray.origin, dir, point);
+	return (point);
 }
 
 unsigned int	choose_color(float u, float v)
@@ -76,6 +87,9 @@ unsigned int	choose_color(float u, float v)
 	float	camera_dir[VEC3_SIZE];
 	float	pixel_pos[VEC3_SIZE];
 	struct s_ray	ray;
+	float	t;
+	float	normal[VEC3_SIZE];
+	float	tmp[VEC3_SIZE];
 
 	vec3(0, 0, 0, sphere.center);
 	sphere.radius = 1.f;
@@ -85,8 +99,17 @@ unsigned int	choose_color(float u, float v)
 	vec3(u - 0.5f, v - 0.5f, 4, pixel_pos); // u/v: -0.5 -> +0.5
 	vec3_copy(camera_pos, ray.origin); // ray.origin = camera_pos
 	vec3_sub(pixel_pos, camera_pos, ray.direction);
-	if (hit_sphere(ray, sphere))
-		color = sphere.color;
+	t = hit_sphere(ray, sphere);
+	if (t > 0.f)
+	{
+		ray_at(ray, t, normal);
+		// - 0,0,-1
+		vec3_sub(normal, vec3(0, 0, 0, tmp), normal);
+		// normalize
+		vec3_normalize(normal, normal);
+		// printf("hit at: (%f, %f, %f)\n", normal[0], normal[1], normal[2]);
+		color = get_color((normal[0] + 1.f) * 127, (normal[1] + 1.f) * 127, (normal[2] + 1.f) * 127, 0);
+	}
 	else
 		color = get_color(0, u * 255, v * 255, 0);
 	return (color);
