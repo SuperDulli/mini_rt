@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/21 17:20:09 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/07/26 16:44:14 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,19 @@ unsigned int	choose_color(float u, float v)
 {
 	unsigned int	color;
 	struct s_sphere	sphere;
-	struct s_vec3	camera_pos;
-	struct s_vec3	camera_dir;
-	struct s_vec3	pixel_pos;
+	float	camera_pos[VEC3_SIZE];
+	float	camera_dir[VEC3_SIZE];
+	float	pixel_pos[VEC3_SIZE];
 	struct s_ray	ray;
 
-	vec3(0, 0, 0, (float *)&sphere.center);
+	vec3(0, 0, 0, sphere.center);
 	sphere.radius = 1.f;
 	sphere.color = 0x000000FF;
-	vec3(0, 0, 5, (float *)&camera_pos);
-	vec3(0, 0, -1, (float *)&camera_dir);
-	vec3(u - 0.5f, v - 0.5f, 4, (float *)&pixel_pos); // u/v: -0.5 -> +0.5
-	ray.origin = camera_pos;
-	vec3_sub((float *)&pixel_pos, (float *)&camera_pos,
-			(float *)&ray.direction);
+	vec3(0, 0, 5, camera_pos);
+	vec3(0, 0, -1, camera_dir);
+	vec3(u - 0.5f, v - 0.5f, 4, pixel_pos); // u/v: -0.5 -> +0.5
+	vec3_copy(camera_pos, ray.origin); // ray.origin = camera_pos
+	vec3_sub(pixel_pos, camera_pos, ray.direction);
 	if (hit_sphere(ray, sphere))
 		color = sphere.color;
 	else

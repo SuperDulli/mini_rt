@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/21 17:00:56 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/07/26 13:59:51 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <unistd.h>
 # include <stdbool.h>
 
-# define HEIGHT 400
-# define WIDTH 400
+# define HEIGHT 800
+# define WIDTH 800
 
 struct					s_data
 {
@@ -48,7 +48,7 @@ struct					s_2d_coord
 
 struct					s_sphere
 {
-	struct s_vec3		center;
+	float		center[VEC3_SIZE];
 	float				radius;
 	// s_vec4	color;
 	unsigned			color;
@@ -56,8 +56,8 @@ struct					s_sphere
 
 struct s_ray
 {
-	struct s_vec3	origin;
-	struct s_vec3	direction;
+	float	origin[VEC3_SIZE];
+	float	direction[VEC3_SIZE];
 };
 
 
