@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/26 13:59:51 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/02 22:18:49 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "matrix.h"
 # include "mlx.h"
 # include "vector.h"
+# include "libft.h"
 # include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
