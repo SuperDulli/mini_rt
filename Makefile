@@ -4,6 +4,16 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
 LFLAGS = -lmlx -framework OpenGL -framework AppKit
 
+UNAME = $(shell uname -s)
+ifeq ($(UNAME), Linux)
+	MLX_NAME = libmlx_Linux.a
+	LFLAGS = -lmlx_Linux -lXext -lX11 -lm
+endif
+ifeq ($(UNAME), Darwin)
+	MLX_NAME = libmlx.a
+	LFLAGS = -lmlx -framework OpenGL -framework AppKit
+endif
+
 MLX_DIR = /usr/local/lib
 # MLX_HEADER = $(MLX_DIR)
 

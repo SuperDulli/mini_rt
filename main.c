@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/26 17:25:11 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:47:14 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 static int	close_window(t_data *data)
 {
-	mlx_destroy_window(data->mlx, data->win);
-	//mlx_destroy_display(data->mlx_ptr);
-	//free(data->mlx_ptr); // if active, it causes mem leaks on MacOS?!
-	// system("leaks mini_rt");
-	exit(0);
+	mlx_loop_end(data->mlx);
+	mlx_destroy_image(data->mlx, data->img);
+	data->img = 0;
+	return (0);
+}
+
+int	key_hook(int keycode, t_data *vars)
+{
+	if (keycode == 65307)
+		close_window(vars);
 	return (0);
 }
 
@@ -156,6 +161,10 @@ int	main(void)
 	data.img = mlx_new_image(data.mlx, window_width, window_height);
 	mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
 	mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
+	mlx_key_hook(data.win, &key_hook, &data);
 	mlx_loop(data.mlx);
+	mlx_destroy_window(data.mlx, data.win);
+	mlx_destroy_display(data.mlx);
+	free(data.mlx);
 	return (0);
 }
