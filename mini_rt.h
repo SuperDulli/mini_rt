@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/03 12:59:36 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/03 15:15:03 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,42 @@ struct s_ray
 	float	origin[VEC3_SIZE];
 	float	direction[VEC3_SIZE];
 };
+
+typedef struct s_amlight {
+	float	ratio;
+	int		color;
+}t_amlight;
+
+typedef struct s_camera {
+	float	pos[3];
+	float	ovector[3];
+	int		fov;			// float??
+}t_camera;
+
+typedef	struct s_light {
+	float	brightness;
+}t_light;
+
+typedef struct s_sphere {
+	float	diameter;
+}t_sphere;
+
+typedef struct s_plane {
+	float	ovector[3];
+}t_plane;
+
+typedef struct s_cylinder {
+	float	ovector[3];
+	float	diameter;
+	float	height;	
+}t_cylinder;
+
+typedef struct s_obj {
+	float	pos[3];
+	int		colourcode;	// farbwerte einzeln?
+	int		typ;
+	void	*specifics;
+}t_obj;
 
 //	check_file.c
 int	checkfile(char *path);
