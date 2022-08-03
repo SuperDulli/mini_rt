@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/02 18:47:14 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/03 11:44:08 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,23 +148,33 @@ void	*fill_img(void *img)
 	return (img);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int		window_height;
 	int		window_width;
 	t_data	data;
 
-	window_height = HEIGHT;
-	window_width = WIDTH;
-	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
-	data.img = mlx_new_image(data.mlx, window_width, window_height);
-	mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
-	mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
-	mlx_key_hook(data.win, &key_hook, &data);
-	mlx_loop(data.mlx);
-	mlx_destroy_window(data.mlx, data.win);
-	mlx_destroy_display(data.mlx);
-	free(data.mlx);
+	if (argc == 2)
+	{
+		if (checkfile(argv[1]) == -1)
+			return (0);
+		else
+		{
+			window_height = HEIGHT;
+			window_width = WIDTH;
+			data.mlx = mlx_init();
+			data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
+			data.img = mlx_new_image(data.mlx, window_width, window_height);
+			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
+			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
+			mlx_key_hook(data.win, &key_hook, &data);
+			mlx_loop(data.mlx);
+			mlx_destroy_window(data.mlx, data.win);
+			mlx_destroy_display(data.mlx);
+			free(data.mlx);
+		}
+	}
+	else
+		printf("Invalid arguments!\n");
 	return (0);
 }

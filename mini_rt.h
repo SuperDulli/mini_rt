@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/07/26 13:59:51 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/03 12:59:36 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+// # include <string.h>
+# include <fcntl.h>
 
 # define HEIGHT 800
 # define WIDTH 800
@@ -60,5 +62,7 @@ struct s_ray
 	float	direction[VEC3_SIZE];
 };
 
+//	check_file.c
+int	checkfile(char *path);
 
 #endif

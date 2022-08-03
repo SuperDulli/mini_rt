@@ -22,7 +22,7 @@ LIN_ALGEBRA_NAME = lin_algebra_lib.a
 
 INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/
 
-SRCS	= main.c
+SRCS	= main.c check_file.c
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
