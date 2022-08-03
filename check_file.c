@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/03 15:18:43 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/03 15:31:55 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	checkfile(char *path)
 {
 	int	fd;
-	t_obj	*obj;
+	// t_obj	*obj;
 
-	obj = malloc(sizeof(t_obj));
+	// obj = malloc(sizeof(t_obj));
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
@@ -25,17 +25,17 @@ int	checkfile(char *path)
 		perror(path);
 		return (-1);
 	}
-	return (readfile(fd));
+	// return (readfile(fd));
 
-	// return (0);	
+	return (0);	
 }
 
-int	readfile(int fd)
-{
-	char	*line;
+// int	readfile(int fd)
+// {
+// 	char	*line;
 
-	line = 
-}
+// 	line = 
+// }
 // t_obj	**obj;
 // obj = malloc(sizeof(t_obj *) * 5);
 // obj[0] = malloc(sizeof(t_obj));
