@@ -2,7 +2,6 @@ NAME = mini_rt
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
-LFLAGS = -lmlx -framework OpenGL -framework AppKit
 
 UNAME = $(shell uname -s)
 ifeq ($(UNAME), Linux)
@@ -20,7 +19,10 @@ MLX_DIR = /usr/local/lib
 LIN_ALGEBRA_DIR = lin_algebra
 LIN_ALGEBRA_NAME = lin_algebra_lib.a
 
-INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/
+LIBFT_DIR = libft
+LIBFT_NAME = libft.a
+
+INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/ -I$(LIBFT_DIR)
 
 SRCS	= main.c check_file.c
 OBJDIR	= obj
@@ -32,14 +34,16 @@ clean:
 	$(RM) -r *.dSYM
 	$(RM) -r $(OBJDIR)
 	make clean -C $(LIN_ALGEBRA_DIR)
+	make clean -C $(LIBFT_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
 	make fclean -C $(LIN_ALGEBRA_DIR)
+	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
-$(NAME): $(OBJS) $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME)
+$(NAME): $(OBJS) $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) $(LIBFT_DIR)/$(LIBFT_NAME)
 	$(CC) $^ -L $(MLX_DIR) $(LFLAGS) -o $@
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
@@ -50,5 +54,8 @@ $(OBJDIR):
 
 $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME):
 	make -C $(LIN_ALGEBRA_DIR)
+
+$(LIBFT_DIR)/$(LIBFT_NAME):
+	make -C $(LIBFT_DIR)
 
 .PHONY: all clean fclean re

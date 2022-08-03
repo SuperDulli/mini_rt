@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/03 15:15:03 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/03 15:26:33 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "matrix.h"
 # include "mlx.h"
 # include "vector.h"
+# include "libft.h"
 # include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
