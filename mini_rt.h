@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/03 15:31:15 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:34:29 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@
 
 # define HEIGHT 800
 # define WIDTH 800
+
+enum e_obj_type
+{
+	NONE,
+	SPHERE,
+	CYLINDER,
+	PLANE
+};
 
 struct					s_data
 {
@@ -49,13 +57,13 @@ struct					s_2d_coord
 	int					y;
 };
 
-struct					s_sphere
-{
-	float		center[VEC3_SIZE];
-	float				radius;
-	// s_vec4	color;
-	unsigned			color;
-};
+// struct					s_sphere
+// {
+// 	float		center[VEC3_SIZE];
+// 	float				radius;
+// 	// s_vec4	color;
+// 	unsigned			color;
+// };
 
 struct s_ray
 {
@@ -78,9 +86,9 @@ typedef	struct s_light {
 	float	brightness;
 }t_light;
 
-// typedef struct s_sphere {
-// 	float	diameter;
-// }t_sphere;
+typedef struct s_sphere {
+	float	diameter;
+}t_sphere;
 
 typedef struct s_plane {
 	float	ovector[3];
@@ -89,7 +97,7 @@ typedef struct s_plane {
 typedef struct s_cylinder {
 	float	ovector[3];
 	float	diameter;
-	float	height;	
+	float	height;
 }t_cylinder;
 
 typedef struct s_obj {
