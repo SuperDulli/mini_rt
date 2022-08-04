@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/04 12:23:46 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/04 13:15:31 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,6 @@ typedef struct s_obj {
 //	check_file.c
 int	checkfile(char *path);
 int	readfile(int fd);
+int	checkline(char *line);
 
 #endif
