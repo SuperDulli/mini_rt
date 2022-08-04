@@ -28,6 +28,14 @@ SRCS	= main.c check_file.c sphere.c
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
+VALGRIND_FLAGS = --leak-check=full
+ifeq ($(UNAME), Linux)
+	LEAKS = valgrind $(VALGRIND_FLAGS)
+endif
+ifeq ($(UNAME), Darwin)
+	LEAKS = leaks --atExit --
+endif
+
 all: $(NAME)
 
 clean:
@@ -58,4 +66,7 @@ $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME):
 $(LIBFT_DIR)/$(LIBFT_NAME):
 	make -C $(LIBFT_DIR)
 
-.PHONY: all clean fclean re
+leaks: $(NAME) test.rt
+	$(LEAKS) ./$(NAME) test.rt
+
+.PHONY: all clean fclean re leaks
