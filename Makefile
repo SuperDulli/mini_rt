@@ -1,4 +1,4 @@
-NAME = mini_rt
+NAME = miniRT
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
