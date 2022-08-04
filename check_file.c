@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/03 15:31:55 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/04 12:39:19 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,30 @@ int	checkfile(char *path)
 		perror(path);
 		return (-1);
 	}
-	// return (readfile(fd));
+	return (readfile(fd));
 
 	return (0);	
 }
 
-// int	readfile(int fd)
-// {
-// 	char	*line;
+int	readfile(int fd)
+{
+	char	*line;
 
-// 	line = 
-// }
+	line = get_next_line(fd);
+	if (!line)
+	{
+		printf("File empty!\n");
+		return (-1);
+	}
+	while (line)
+	{
+		printf("Line: %s\n", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	// close(fd);
+	return(0);
+}
 // t_obj	**obj;
 // obj = malloc(sizeof(t_obj *) * 5);
 // obj[0] = malloc(sizeof(t_obj));
