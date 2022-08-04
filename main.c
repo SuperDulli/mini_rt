@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/03 15:25:50 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/04 15:06:02 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
+void	destroy_object(t_obj *obj);
+t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter);
+float	hit_sphere(struct s_ray ray, t_obj *sphere);
 
 static int	close_window(t_data *data)
 {
@@ -57,24 +61,6 @@ unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
 	return (color);
 }
 
-float	hit_sphere(struct s_ray ray, struct s_sphere sphere)
-{
-	float	oc[VEC3_SIZE];
-	float	a;
-	float	b;
-	float	c;
-	float	discriminant;
-
-	vec3_sub((float *)&ray.origin, (float *)&sphere.center, oc);
-	a = vec3_length_squared((float *)&ray.direction);
-	b = 2.0f * vec3_dot(oc, (float *)&ray.direction);
-	c = vec3_length_squared(oc) - sphere.radius * sphere.radius;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
-		return (-1.f);
-	return ((-b - sqrtf(discriminant)) / (2.f * a));
-}
-
 float	*ray_at(struct s_ray ray, float t, float *point)
 {
 	float	dir[VEC3_SIZE];
@@ -87,7 +73,7 @@ float	*ray_at(struct s_ray ray, float t, float *point)
 unsigned int	choose_color(float u, float v)
 {
 	unsigned int	color;
-	struct s_sphere	sphere;
+	t_obj	*sphere;
 	float	camera_pos[VEC3_SIZE];
 	float	camera_dir[VEC3_SIZE];
 	float	pixel_pos[VEC3_SIZE];
@@ -96,9 +82,8 @@ unsigned int	choose_color(float u, float v)
 	float	normal[VEC3_SIZE];
 	float	tmp[VEC3_SIZE];
 
-	vec3(0, 0, 0, sphere.center);
-	sphere.radius = 1.f;
-	sphere.color = 0x000000FF;
+	vec3(0, 0, 0, tmp);
+	sphere = new_sphere(tmp, 0x000000FF, 2.f);
 	vec3(0, 0, 5, camera_pos);
 	vec3(0, 0, -1, camera_dir);
 	vec3(u - 0.5f, v - 0.5f, 4, pixel_pos); // u/v: -0.5 -> +0.5
@@ -117,6 +102,7 @@ unsigned int	choose_color(float u, float v)
 	}
 	else
 		color = get_color(0, u * 255, v * 255, 0);
+	destroy_object(sphere);
 	return (color);
 }
 
@@ -153,9 +139,9 @@ int	main(int argc, char **argv)
 	int		window_height;
 	int		window_width;
 	t_data	data;
-	char	*line;
+	// char	*line;
 
-	line = get_next_line(1);
+	// line = get_next_line(1);
 
 	if (argc == 2)
 	{
@@ -169,8 +155,8 @@ int	main(int argc, char **argv)
 			data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
 			data.img = mlx_new_image(data.mlx, window_width, window_height);
 			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
-			mlx_string_put(data.mlx, data.win, 10, 10, 0x00FF0000, line);
-			free(line);
+			// mlx_string_put(data.mlx, data.win, 10, 10, 0x00FF0000, line);
+			// free(line);
 			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
 			mlx_key_hook(data.win, &key_hook, &data);
 			mlx_loop(data.mlx);

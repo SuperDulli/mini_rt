@@ -1,4 +1,4 @@
-NAME = mini_rt
+NAME = miniRT
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
@@ -24,7 +24,7 @@ LIBFT_NAME = libft.a
 
 INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/ -I$(LIBFT_DIR)
 
-SRCS	= main.c check_file.c
+SRCS	= main.c check_file.c sphere.c
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
