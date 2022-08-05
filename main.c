@@ -6,15 +6,21 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/04 15:06:02 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:06:34 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-void	destroy_object(t_obj *obj);
-t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter);
 float	hit_sphere(struct s_ray ray, t_obj *sphere);
+
+t_scene	*build_scene(void);
+
+void	exit_fatal(void)
+{
+	printf("Fatal error.\n");
+	exit(1);
+}
 
 static int	close_window(t_data *data)
 {
@@ -70,12 +76,12 @@ float	*ray_at(struct s_ray ray, float t, float *point)
 	return (point);
 }
 
-unsigned int	choose_color(float u, float v)
+unsigned int	choose_color(t_scene *scene, float u, float v)
 {
 	unsigned int	color;
 	t_obj	*sphere;
-	float	camera_pos[VEC3_SIZE];
-	float	camera_dir[VEC3_SIZE];
+	// float	camera_pos[VEC3_SIZE];
+	// float	camera_dir[VEC3_SIZE];
 	float	pixel_pos[VEC3_SIZE];
 	struct s_ray	ray;
 	float	t;
@@ -83,12 +89,12 @@ unsigned int	choose_color(float u, float v)
 	float	tmp[VEC3_SIZE];
 
 	vec3(0, 0, 0, tmp);
-	sphere = new_sphere(tmp, 0x000000FF, 2.f);
-	vec3(0, 0, 5, camera_pos);
-	vec3(0, 0, -1, camera_dir);
-	vec3(u - 0.5f, v - 0.5f, 4, pixel_pos); // u/v: -0.5 -> +0.5
-	vec3_copy(camera_pos, ray.origin); // ray.origin = camera_pos
-	vec3_sub(pixel_pos, camera_pos, ray.direction);
+	sphere = scene->objects[0];
+	// vec3(0, 0, 5, camera_pos);
+	// vec3(0, 0, -1, camera_dir);
+	vec3(u - 0.5f, v - 0.5f, 4, pixel_pos); // screen at z=4 u/v: -0.5 -> +0.5
+	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
+	vec3_sub(pixel_pos, scene->camera->pos, ray.direction);
 	t = hit_sphere(ray, sphere);
 	if (t > 0.f)
 	{
@@ -102,7 +108,6 @@ unsigned int	choose_color(float u, float v)
 	}
 	else
 		color = get_color(0, u * 255, v * 255, 0);
-	destroy_object(sphere);
 	return (color);
 }
 
@@ -113,7 +118,10 @@ void	*fill_img(void *img)
 	struct s_2d_coord	px_coord;
 	int					pixel_addr;
 	int					color;
+	t_scene				*scene;
 
+	scene = build_scene();
+	(void) scene;
 	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
 			&img_info.line_size, &img_info.endian);
 	px_coord.y = 0;
@@ -124,6 +132,7 @@ void	*fill_img(void *img)
 		{
 			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
 			color = choose_color(
+				scene,
 				(px_coord.x / (float)WIDTH),
 				(px_coord.y / (float)HEIGHT));
 			write_pixel(buffer, pixel_addr, color, img_info.endian);
@@ -131,6 +140,7 @@ void	*fill_img(void *img)
 		}
 		px_coord.y++;
 	}
+	destroy_scene(scene);
 	return (img);
 }
 

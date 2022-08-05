@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/04 14:53:37 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:06:02 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,6 @@ float	hit_sphere(struct s_ray ray, t_obj *sphere)
 	return ((-b - sqrtf(discriminant)) / (2.f * a));
 }
 
-void	exit_fatal(void)
-{
-	printf("Fatal error.\n");
-	exit(1);
-}
-
 t_obj	*new_object(float pos[VEC3_SIZE], int color)
 {
 	t_obj	*obj;
@@ -57,7 +51,7 @@ t_obj	*new_object(float pos[VEC3_SIZE], int color)
 	obj = malloc(sizeof(t_obj));
 	if (!obj)
 		exit_fatal();
-	obj->typ = NONE;
+	obj->type = NONE;
 	obj->specifics = NULL;
 	obj->colourcode = color;
 	obj->pos[0] = pos[0];
@@ -73,7 +67,7 @@ t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter)
 	t_sphere	*sphere;
 
 	obj = new_object(pos, color);
-	obj->typ = SPHERE;
+	obj->type = SPHERE;
 	obj->specifics = malloc(sizeof(t_sphere));
 	if (!obj->specifics)
 		exit_fatal();
@@ -95,8 +89,10 @@ void	destroy_object(t_obj *obj)
 {
 	if (!obj)
 		return ;
-	if (obj->typ == SPHERE)
+	if (obj->type == SPHERE)
 		destroy_sphere((t_sphere *) obj->specifics);
+	else if (obj->type == LIGHT)
+		free((t_light *) obj->specifics);
 	free(obj);
 }
 
