@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/04 14:34:29 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:09:34 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,30 @@
 # define HEIGHT 800
 # define WIDTH 800
 
+# define RED 0x00FF0000
+# define GREEN 0x0000FF00
+# define BLUE 0x000000FF
+# define WHITE 0x00FFFFFF
+
+# define MIN_RATIO 0.f
+# define MAX_RATIO 1.f
+
+# define MAX_UNIT_VECTOR_COMP 1.f
+# define MIN_UNIT_VECTOR_COMP -(MAX_UNIT_VECTOR_COMP)
+
+# define MIN_COLOR_VALUE 0
+# define MAX_COLOR_VALUE 255
+
+# define MIN_FOV 0
+# define MAX_FOV 180
+
 enum e_obj_type
 {
 	NONE,
 	SPHERE,
 	CYLINDER,
-	PLANE
+	PLANE,
+	LIGHT
 };
 
 struct					s_data
@@ -103,11 +121,49 @@ typedef struct s_cylinder {
 typedef struct s_obj {
 	float	pos[3];
 	int		colourcode;	// farbwerte einzeln?
-	int		typ;
+	int		type;
 	void	*specifics;
 }t_obj;
 
+t_obj	*new_object(float pos[VEC3_SIZE], int color);
+void	destroy_object(t_obj *obj);
+
+t_amlight	*new_ambient_light(float ratio, int color);
+t_obj		*new_light(float pos[VEC3_SIZE], int color, float brightness);
+t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov);
+
+t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter);
+
 //	check_file.c
 int	checkfile(char *path);
+
+// scene
+
+// screen (depends on camera FOV, aspect ratio and resolution)
+// struct s_screen
+// {
+// 	float		aspect_ratio;
+// 	unsigned	width;
+// 	unsigned	height;
+// };
+// typedef struct s_screen t_screen;
+
+struct s_scene
+{
+	t_amlight	*ambient_light;
+	t_obj		*light;
+	t_camera	*camera;
+	// t_screen	screen;
+	size_t		obj_count; // or: NULL-terminate the object array
+	t_obj		**objects; // array of pointer to objects to render
+};
+typedef struct s_scene t_scene;
+
+t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera);
+void	destroy_scene(t_scene *scene);
+
+// util
+
+void	exit_fatal(void);
 
 #endif
