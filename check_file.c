@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/04 13:40:54 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/08 11:03:26 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	readfile(int fd)
 	{
 		if (*line != '\n' && err != -1)
 		{
-			printf("Line: %s", line);
+			// printf("Line: %s", line);
 			err = checkline(line);
 		}
 		free(line);
@@ -57,22 +57,22 @@ int	checkline(char *line)
 		line++;
 	if (!*line || *line == '\n')
 		return (0);
-	else if (*line == 65)
+	else if (!ft_strncmp(line, "A ", 2))
 		return (printf("Create amlight!\n"));
 		// return (create_amlight(line));
-	else if (*line == 67)
+	else if (!ft_strncmp(line, "C ", 2))
 		return (printf("Create camera!\n"));
 		// return (create_camera(line));
-	else if (*line == 76)
+	else if (!ft_strncmp(line, "L ", 2))
 		return (printf("Create light!\n"));
 		// return (create_light(line));
-	else if (*line == 115 && *(line + 1) == 112)
+	else if (!ft_strncmp(line, "sp ", 3))
 		return (printf("Create sphere!\n"));
 		// return (create_sphere(line));
-	else if (*line == 112 && *(line + 1) == 108)
+	else if (!ft_strncmp(line, "pl ", 3))
 		return (printf("Create plane!\n"));
 		// return (create_plane(line));
-	else if (*line == 99 && *(line + 1) == 121)
+	else if (!ft_strncmp(line, "cy ", 3))
 		return (printf("Create cylinder!\n"));
 		// return (create_cylinder(line));
 	else
