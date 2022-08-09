@@ -6,21 +6,11 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 10:57:32 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 12:22:10 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
-
-void	*new(size_t size)
-{
-	void	*n;
-
-	n = malloc(size);
-	if (!n)
-		exit_fatal();
-	return (n);
-}
 
 t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera)
 {
@@ -60,44 +50,6 @@ void	destroy_scene(t_scene *scene)
 	}
 	free(scene->objects);
 	free(scene);
-}
-
-t_amlight	*new_ambient_light(float ratio, int color)
-{
-	t_amlight	*ambient;
-
-	ambient = (t_amlight *) new(sizeof(t_amlight));
-	ambient->ratio = ratio;
-	ambient->color = color;
-	return (ambient);
-}
-
-t_obj	*new_light(float pos[VEC3_SIZE], int color, float brightness)
-{
-	t_obj	*obj;
-	t_light	*light;
-
-	obj = new_object(pos, color);
-	obj->type = LIGHT;
-	light = (t_light *) new(sizeof(t_light));
-	light->brightness = brightness;
-	obj->specifics = light;
-	return (obj);
-}
-
-t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov)
-{
-	t_camera	*camera;
-
-	camera = (t_camera *) new(sizeof(t_camera));
-	camera->pos[0] = pos[0];
-	camera->pos[1] = pos[1];
-	camera->pos[2] = pos[2];
-	camera->ovector[0] = ovector[0];
-	camera->ovector[1] = ovector[1];
-	camera->ovector[2] = ovector[2];
-	camera->fov = fov;
-	return (camera);
 }
 
 void	add_obj_to_scene(t_scene *scene, t_obj *obj)

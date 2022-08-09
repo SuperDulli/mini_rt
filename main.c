@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 10:57:03 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 12:19:26 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,6 @@
 float	hit_sphere(struct s_ray *ray, t_obj *sphere);
 
 t_scene	*build_scene(void);
-
-void	exit_fatal(void)
-{
-	printf("Fatal error.\n");
-	// clean up(data);
-	exit(1);
-}
 
 static int	close_window(t_data *data)
 {

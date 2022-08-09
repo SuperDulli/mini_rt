@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 10:40:51 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 12:26:45 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,27 @@ t_amlight	*new_ambient_light(float ratio, int color);
 t_obj		*new_light(float pos[VEC3_SIZE], int color, float brightness);
 t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov);
 
+// sphere
+
 t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter);
 void	destroy_sphere(t_sphere *sphere);
+
+// camera
+
+t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov);
+
+// light
+
+t_amlight	*new_ambient_light(float ratio, int color);
+t_obj	*new_light(float pos[VEC3_SIZE], int color, float brightness);
+
+// plane
+
+// TODO: add plane constructor
+
+// cylinder
+
+// TODO: add cylinder constructor
 
 //	check_file.c
 int	checkfile(char *path);
@@ -184,5 +203,6 @@ float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], int is_poi
 // util
 
 void	exit_fatal(void);
+void	*new(size_t size);
 
 #endif
