@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/05 17:09:34 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 10:40:51 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,16 @@ typedef struct s_cylinder {
 	float	height;
 }t_cylinder;
 
+struct s_transform
+{
+	float	forward[MAT4_SIZE];
+	float	backward[MAT4_SIZE];
+};
+typedef	struct s_transform t_tform; // read: type transform
+
 typedef struct s_obj {
-	float	pos[3];
+	float	pos[VEC3_SIZE];
+	t_tform	transform;
 	int		colourcode;	// farbwerte einzeln?
 	int		type;
 	void	*specifics;
@@ -133,6 +141,7 @@ t_obj		*new_light(float pos[VEC3_SIZE], int color, float brightness);
 t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov);
 
 t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter);
+void	destroy_sphere(t_sphere *sphere);
 
 //	check_file.c
 int	checkfile(char *path);
@@ -161,6 +170,16 @@ typedef struct s_scene t_scene;
 
 t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera);
 void	destroy_scene(t_scene *scene);
+
+// transform
+
+void	set_transform(
+	float transl[VEC3_SIZE],
+	float rotation[VEC3_SIZE],
+	float scale[VEC3_SIZE],
+	t_tform *transform
+);
+float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], int is_point, float *result);
 
 // util
 

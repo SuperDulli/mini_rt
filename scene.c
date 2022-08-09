@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/05 15:06:21 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 10:57:32 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ t_scene	*build_scene(void)
 
 	// just add one unit sphere (centerd at the origin) for now
 	scene->objects = malloc(sizeof(t_obj *) * 1);
-	add_obj_to_scene(scene, new_sphere(vec3(0, 0, 0, pos), BLUE, 2.f));
+	add_obj_to_scene(scene, new_sphere(vec3(2, 1, -4, pos), BLUE, 2.f));
 	return (scene);
 }

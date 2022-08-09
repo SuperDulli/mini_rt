@@ -6,19 +6,20 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/05 17:06:34 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 10:57:03 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-float	hit_sphere(struct s_ray ray, t_obj *sphere);
+float	hit_sphere(struct s_ray *ray, t_obj *sphere);
 
 t_scene	*build_scene(void);
 
 void	exit_fatal(void)
 {
 	printf("Fatal error.\n");
+	// clean up(data);
 	exit(1);
 }
 
@@ -95,10 +96,11 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	vec3(u - 0.5f, v - 0.5f, 4, pixel_pos); // screen at z=4 u/v: -0.5 -> +0.5
 	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
 	vec3_sub(pixel_pos, scene->camera->pos, ray.direction);
-	t = hit_sphere(ray, sphere);
+	t = hit_sphere(&ray, sphere);
 	if (t > 0.f)
 	{
 		ray_at(ray, t, normal);
+		// apply_transform(normal, sphere->transform.forward, 0, normal);
 		// - 0,0,-1
 		vec3_sub(normal, vec3(0, 0, 0, tmp), normal);
 		// normalize

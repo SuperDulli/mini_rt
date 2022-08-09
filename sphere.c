@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/05 15:06:02 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 10:51:49 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,51 +20,38 @@
  *
  * @param ray
  * @param sphere
- * @return float the closest hit point
+ * @return float the closest hit point, or -1 if it missed the sphere
  */
-float	hit_sphere(struct s_ray ray, t_obj *sphere)
+float	hit_sphere(struct s_ray *ray, t_obj *sphere)
 {
-	float	oc[VEC3_SIZE];
 	float	a;
 	float	b;
 	float	c;
 	float	discriminant;
-	t_sphere	*sphere_info;
 	float	radius;
 
-	sphere_info = (t_sphere *) sphere->specifics;
-	radius = sphere_info->diameter / 2.f;
-	vec3_sub((float *) &ray.origin, (float *) &sphere->pos, oc);
-	a = vec3_length_squared((float *) &ray.direction);
-	b = 2.0f * vec3_dot(oc, (float *) &ray.direction);
-	c = vec3_length_squared(oc) - radius * radius;
+	radius = ((t_sphere *) sphere->specifics)->diameter / 2.f;
+
+	apply_transform(ray->direction, sphere->transform.backward, 0, ray->direction);
+	apply_transform(ray->origin, sphere->transform.backward, 1, ray->origin);
+	a = vec3_length_squared(ray->direction);
+	b = 2.f * vec3_dot(ray->origin, ray->direction);
+	c = vec3_length_squared(ray->origin) - radius * radius;
+
 	discriminant = b * b - 4 * a * c;
+	// printf("discriminant=%f, a=%f, b=%f, c=%f\n", discriminant, a, b, c);
 	if (discriminant < 0)
 		return (-1.f);
 	return ((-b - sqrtf(discriminant)) / (2.f * a));
-}
-
-t_obj	*new_object(float pos[VEC3_SIZE], int color)
-{
-	t_obj	*obj;
-
-	obj = malloc(sizeof(t_obj));
-	if (!obj)
-		exit_fatal();
-	obj->type = NONE;
-	obj->specifics = NULL;
-	obj->colourcode = color;
-	obj->pos[0] = pos[0];
-	obj->pos[1] = pos[1];
-	obj->pos[2] = pos[2];
-
-	return (obj);
 }
 
 t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter)
 {
 	t_obj		*obj;
 	t_sphere	*sphere;
+	float		transl[VEC3_SIZE];
+	float		rot[VEC3_SIZE];
+	float		scale[VEC3_SIZE];
 
 	obj = new_object(pos, color);
 	obj->type = SPHERE;
@@ -74,25 +61,17 @@ t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter)
 	sphere = (t_sphere *) obj->specifics;
 	sphere->diameter = diameter;
 
+	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
+	vec3(0, 0, 0, rot);
+	vec3(1.f, 1.f, 1.f, scale);
+	set_transform(transl, rot, scale, &obj->transform);
+
 	return (obj);
 }
 
-static
 void	destroy_sphere(t_sphere *sphere)
 {
 	if (!sphere)
 		return ;
 	free(sphere);
 }
-
-void	destroy_object(t_obj *obj)
-{
-	if (!obj)
-		return ;
-	if (obj->type == SPHERE)
-		destroy_sphere((t_sphere *) obj->specifics);
-	else if (obj->type == LIGHT)
-		free((t_light *) obj->specifics);
-	free(obj);
-}
-
