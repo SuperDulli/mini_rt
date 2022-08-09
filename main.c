@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 12:19:26 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 15:29:30 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,6 @@ void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
 	}
 }
 
-unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
-{
-	unsigned int	color;
-
-	color = 0;
-	color += (alpha << 24);
-	color += (r << 16);
-	color += (g << 8);
-	color += b;
-	return (color);
-}
 
 float	*ray_at(struct s_ray ray, float t, float *point)
 {
@@ -93,13 +82,19 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	if (t > 0.f)
 	{
 		ray_at(ray, t, normal);
-		// apply_transform(normal, sphere->transform.forward, 0, normal);
+		apply_transform(normal, sphere->transform.forward, 1, normal);
 		// - 0,0,-1
-		vec3_sub(normal, vec3(0, 0, 0, tmp), normal);
+		vec3_sub(normal, sphere->pos, normal);
 		// normalize
 		vec3_normalize(normal, normal);
 		// printf("hit at: (%f, %f, %f)\n", normal[0], normal[1], normal[2]);
-		color = get_color((normal[0] + 1.f) * 127, (normal[1] + 1.f) * 127, (normal[2] + 1.f) * 127, 0);
+		// printf("colors (RGB): (%d, %d, %d) from %i\n", get_red(sphere->colourcode), get_green(sphere->colourcode),get_blue(sphere->colourcode), sphere->colourcode);
+		color = get_color(0,
+			(normal[0] + 1.f) * (get_red(sphere->colourcode) / 2.f),
+			(normal[1] + 1.f) * (get_green(sphere->colourcode) / 2.f),
+			(normal[2] + 1.f) * (get_blue(sphere->colourcode) / 2.f)
+			);
+		// color = sphere->colourcode;
 	}
 	else
 		color = get_color(0, u * 255, v * 255, 0);
