@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 12:26:45 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/09 15:28:47 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,15 @@ float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], int is_poi
 
 void	exit_fatal(void);
 void	*new(size_t size);
+
+// color
+
+int				get_red(int color);
+int				get_green(int color);
+int				get_blue(int color);
+unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b);
+float			*color_vec(int red, int green, int blue, float *result);
+float			*color_vec_from_int(int argb, float *result);
+int				convert_to_argb(float rgb[VEC3_SIZE]);
 
 #endif
