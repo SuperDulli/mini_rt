@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/08 16:21:44 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/09 11:26:29 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,17 @@
 int	checkfile(char *path)
 {
 	int	fd;
+	int	suffix;
 
+	suffix = ft_strlen(path);
+	if (suffix > 3)
+	{
+		if (ft_strncmp(path + suffix - 3, ".rt", 3))
+		{
+			ft_putendl_fd("Invalid file extension", 1);
+			return (-1);
+		}
+	}
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 	{
@@ -28,12 +38,13 @@ int	checkfile(char *path)
 int	readfile(int fd)
 {
 	char	*line;
+	char	*temp;
 	int		err;
 
 	line = get_next_line(fd);
 	if (!line)
 	{
-		printf("File empty!\n");
+		ft_putendl_fd("File empty!", 1);
 		return (-1);
 	}
 	err = 0;
@@ -41,40 +52,38 @@ int	readfile(int fd)
 	{
 		if (*line != '\n' && err != -1)
 		{
-			// printf("Line: %s", line);
-			err = checkline(line);
+			temp = ft_strtrim(line, "\n \t");
+			err = checkline(temp);
+			free(temp);
 		}
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return(0);
+	return (0);
 }
 
 int	checkline(char *line)
 {
-	while (*line && (*line == ' ' || *line == '\t'))		// recognize tabs? 
-		line++;
-	if (!*line || *line == '\n')
+	if (!*line)
 		return (0);
 	else if (!ft_strncmp(line, "A ", 2))
-		return (check_amlight(line));	// check_amlight
-		// return (create_amlight(line));
+		return (check_amlight(line)); // check_amlight
 	else if (!ft_strncmp(line, "C ", 2))
 		return (printf("Create camera!\n"));
-		// return (create_camera(line));
+		// return (check_camera(line));
 	else if (!ft_strncmp(line, "L ", 2))
 		return (printf("Create light!\n"));
-		// return (create_light(line));
+		// return (check_light(line));
 	else if (!ft_strncmp(line, "sp ", 3))
 		return (printf("Create sphere!\n"));
-		// return (create_sphere(line));
+		// return (check_sphere(line));
 	else if (!ft_strncmp(line, "pl ", 3))
 		return (printf("Create plane!\n"));
-		// return (create_plane(line));
+		// return (check_plane(line));
 	else if (!ft_strncmp(line, "cy ", 3))
 		return (printf("Create cylinder!\n"));
-		// return (create_cylinder(line));
+		// return (check_cylinder(line));
 	else
 		return (-1);
 }
@@ -84,7 +93,6 @@ int	checkline(char *line)
 // obj[0] = malloc(sizeof(t_obj));
 // obj[0]->specifics = malloc(sizeof(t_sphere));
 // obj[1]->speficis = malloc(sizeof(t_cylinder));
-
 
 // // t_sphere  *temp;
 // // temp = (t_sphere *) obj->specifics;

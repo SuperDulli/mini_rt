@@ -1,31 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_elements.c                                   :+:      :+:    :+:   */
+/*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 14:55:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/09 12:00:10 by pcordeir         ###   ########.fr       */
+/*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
+/*   Updated: 2022/08/09 11:55:15 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-int check_amlight(char *line)
+int	arr_size(char **arr)
 {
-	char	**arr;
+	int	len;
 
-	ft_putendl_fd(line, 1); //testing
-	arr = ft_split(line, ' ');
-	if (arr_size(arr) > 3)
-		return (-1);
-	ft_putendl_fd("Valid arguments for amlight!", 1); //testing
-	trim_info(arr);
-	ft_putendl_fd(arr[0], 1);
-	ft_putendl_fd(arr[1], 1);
-	ft_putendl_fd(arr[2], 1);
-	arr_free(arr);
+	len = 0;
+	while (arr[len])
+		len++;
+	return (len);
+}
 
-	return(0);
+void	arr_free(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+void	trim_info(char **arr)
+{
+	int 	i;
+	char	*temp;
+
+	i = 1;
+	while (arr[i])
+	{
+		temp = ft_strtrim(arr[i], "\t ");
+		free(arr[i]);
+		arr[i] = temp;
+		i++;
+	}
 }

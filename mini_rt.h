@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/08 14:56:03 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/09 11:55:27 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,10 @@ int	checkline(char *line);
 
 //	check_elements.c
 int check_amlight(char *line);
+
+//	check_utils.c
+int		arr_size(char **arr);
+void	arr_free(char **arr);
+void	trim_info(char **arr);
 
 #endif
