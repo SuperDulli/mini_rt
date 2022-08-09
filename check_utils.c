@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/09 15:22:08 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/09 17:00:29 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	trim_info(char **arr)
 	i = 1;
 	while (arr[i])
 	{
-		temp = ft_strtrim(arr[i], "\t ");
+		temp = ft_strtrim(arr[i], "\t "); // do we need to look for spaces anymore?
 		free(arr[i]);
 		arr[i] = temp;
 		i++;
