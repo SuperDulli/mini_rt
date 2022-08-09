@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/09 11:26:29 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/09 14:39:14 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ int	readfile(int fd)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (err == -1)
+	{
+		ft_putendl_fd("Invalid file!", 1);
+		return (-1);
+	}
 	return (0);
 }
 
