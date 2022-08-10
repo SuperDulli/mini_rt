@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/09 16:35:44 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/10 15:38:47 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,40 @@ int	check_color(char *color)
 			else
 				break ;
 		}
-		if (i == 3)
-		{
-			arr_free(arr);
-			return (0);
-		}
 	}
 	arr_free(arr);
-	return (-1);
+	if (i == 3)
+		return (0);
+	else
+		return (-1);
 }
 
 int	check_int(char *info)
 {
-	int	i;
+	int		sign;
+	int		res;
+	long	temp;
 
-	i = 1;
-	while (info[i])
+	sign = 1;
+	res = 0;
+	temp = 0;
+	if (*info == '+' || *info == '-')
 	{
-		if (ft_isdigit(info[i]))
-			i++;
-		else
-			break ;
+		if (*info == '-')
+			sign = -1;
+		info++;
 	}
-	if (info[i] == '\0')
-		return (0);
-	else
-		return (-1);
-	// return (0);
+	while (*info && ft_isdigit(*info))
+	{
+		temp = temp * 10 + (*info - '0');
+		info++;
+	}
+	if (!*info)
+	{
+		temp *= sign;
+		res = (int)temp;
+		if (res == temp)
+			return (0);
+	}
+	return (-1);
 }
