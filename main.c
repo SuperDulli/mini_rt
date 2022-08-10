@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/10 12:13:55 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/10 16:20:35 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,20 @@ float	*ray_at(struct s_ray ray, float t, float *point)
 unsigned int	choose_color(t_scene *scene, float u, float v)
 {
 	unsigned int	color;
-	t_obj	*sphere;
-	// float	camera_pos[VEC3_SIZE];
-	// float	camera_dir[VEC3_SIZE];
-	float	pixel_pos[VEC3_SIZE];
+	t_obj		*sphere;
+	t_light		*light;
 	struct s_ray	ray;
 	float	t;
-	float	light_intensity;
+	float	pixel_color;
 	float	normal[VEC3_SIZE];
-	float	tmp[VEC3_SIZE];
+	float	color_v[VEC3_SIZE];
+	float	ambient_color_v[VEC3_SIZE];
+	float	light_color_v[VEC3_SIZE];
+	float	light_dir[VEC3_SIZE];
 
-	vec3(0, 0, 0, tmp);
 	sphere = scene->objects[0];
-	// vec3(0, 0, 5, camera_pos);
-	// vec3(0, 0, -1, camera_dir);
-	vec3(u - 0.5f, v - 0.5f, 4, pixel_pos); // screen at z=4 u/v: -0.5 -> +0.5
 	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
-	vec3_sub(pixel_pos, scene->camera->pos, ray.direction);
+	vec3(u, v, -1.f, ray.direction);
 	t = hit_sphere(&ray, sphere);
 	if (t > 0.f)
 	{
@@ -89,15 +86,40 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		// normalize
 		vec3_normalize(normal, normal);
 
-		// apply shading
-		color_vec_from_int(sphere->colourcode, tmp);
-		light_intensity = ft_maxf(vec3_dot(normal, tmp), 0.0f);
-		vec3_scalar_mult(tmp, light_intensity, tmp);
+		// get light direction
+		vec3_sub(normal, scene->light->pos, light_dir); // dir from hitpoint to light (-lightdir)
+		// vec3(1, 1, 1, light_dir); // parallel light
+		vec3_normalize(light_dir, light_dir);
 
-		color = convert_to_argb(tmp);
+		// colors as vectors
+		color_vec_from_int(sphere->colourcode, color_v);
+		color_vec_from_int(scene->ambient_light->color, ambient_color_v);
+		color_vec_from_int(scene->light->colourcode, light_color_v);
+
+		// light intensity - inverse square law? to
+		vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
+		light = (t_light *) scene->light->specifics;
+		vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
+
+		// printf("colors (RGB): (%f, %f, %f) from %i\n", ambient_color_v[0], ambient_color_v[1], ambient_color_v[2], scene->light->colourcode);
+		// printf("normal (xyz): (%f, %f, %f)\n", normal[0], normal[1], normal[2]);
+		// printf("light_dir (xyz): (%f, %f, %f)\n", light_dir[0], light_dir[1], light_dir[2]);
+
+		// apply shading
+		pixel_color = 0;
+		// pixel_color += ft_maxf(vec3_dot(color_v, ambient_color_v), 0.0f);
+		pixel_color += ft_maxf(vec3_dot(normal, light_dir), 0.0f); // * color(obj) * color(light) // = * 1, because light is white
+		// printf("pixelcolor=%f\n", pixel_color);
+		vec3_scalar_mult(color_v, pixel_color, color_v);
+
+		// map [-1, 1] -> [0, 1] -- useful for seeing the normals
+		// vec3_scalar_mult(color_v, 0.5f, color_v);
+		// vec3(color_v[0] + 0.5f, color_v[1] + 0.5f, color_v[2] + 0.5f, color_v);
+
+		color = convert_to_argb(color_v);
 	}
 	else
-		color = get_color(0, u * 255, v * 255, 0);
+		color = BLACK;
 	return (color);
 }
 
@@ -123,8 +145,8 @@ void	*fill_img(void *img)
 			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
 			color = choose_color(
 				scene,
-				(px_coord.x / (float)WIDTH),
-				(px_coord.y / (float)HEIGHT));
+				(px_coord.x / (float)WIDTH) * 2.f - 1.f,
+				(px_coord.y / (float)HEIGHT) * 2.f - 1.f);
 			write_pixel(buffer, pixel_addr, color, img_info.endian);
 			px_coord.x++;
 		}

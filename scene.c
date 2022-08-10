@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 12:22:10 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/10 16:15:13 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,15 @@ t_scene	*build_scene(void)
 	float		dir[VEC3_SIZE];
 
 	// debug values
-	ambient = new_ambient_light(MAX_RATIO, WHITE);
-	obj = new_light(vec3(5, 5, 5, pos), WHITE, MAX_RATIO);
-	camera = new_camera(vec3(0, 0, 5, pos), vec3(0, 0, -1, dir), 90);
+	ambient = new_ambient_light(0.5f, WHITE);
+
+	// far away light source creates light rays that are "more" parallel
+	obj = new_light(vec3(900,900,-900, pos), WHITE, 0.5f);
+	camera = new_camera(vec3(0, 0, 2, pos), vec3(0, 0, -1, dir), 90);
 	scene = new_scene(ambient, obj, camera);
 
 	// just add one unit sphere (centerd at the origin) for now
 	scene->objects = malloc(sizeof(t_obj *) * 1);
-	add_obj_to_scene(scene, new_sphere(vec3(2, 1, -4, pos), BLUE, 2.f));
+	add_obj_to_scene(scene, new_sphere(vec3(0,0,0, pos), BLUE, 2.f));
 	return (scene);
 }
