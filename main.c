@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 15:29:30 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/10 12:13:55 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	float	pixel_pos[VEC3_SIZE];
 	struct s_ray	ray;
 	float	t;
+	float	light_intensity;
 	float	normal[VEC3_SIZE];
 	float	tmp[VEC3_SIZE];
 
@@ -87,14 +88,13 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		vec3_sub(normal, sphere->pos, normal);
 		// normalize
 		vec3_normalize(normal, normal);
-		// printf("hit at: (%f, %f, %f)\n", normal[0], normal[1], normal[2]);
-		// printf("colors (RGB): (%d, %d, %d) from %i\n", get_red(sphere->colourcode), get_green(sphere->colourcode),get_blue(sphere->colourcode), sphere->colourcode);
-		color = get_color(0,
-			(normal[0] + 1.f) * (get_red(sphere->colourcode) / 2.f),
-			(normal[1] + 1.f) * (get_green(sphere->colourcode) / 2.f),
-			(normal[2] + 1.f) * (get_blue(sphere->colourcode) / 2.f)
-			);
-		// color = sphere->colourcode;
+
+		// apply shading
+		color_vec_from_int(sphere->colourcode, tmp);
+		light_intensity = ft_maxf(vec3_dot(normal, tmp), 0.0f);
+		vec3_scalar_mult(tmp, light_intensity, tmp);
+
+		color = convert_to_argb(tmp);
 	}
 	else
 		color = get_color(0, u * 255, v * 255, 0);

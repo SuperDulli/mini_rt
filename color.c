@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:02:38 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 15:25:54 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/10 12:11:29 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,12 @@ int	convert_to_argb(float rgb[VEC3_SIZE])
 	int	green;
 	int	blue;
 
+	vec3_clamp(rgb, 0.0f, 1.0f, rgb);
+
 	if (0.f > rgb[0] || rgb[0] > 1.f || 0.f > rgb[1] || rgb[1] > 1.f || 0.f > rgb[2] || rgb[2] > 1.f)
 	{
+		// should be dead code because of clamp()
+		printf("rgb(%f,%f,%f)\n", rgb[0], rgb[1], rgb[2]);
 		ft_error(1, "colors not in 0.0 to 1.0 range.");
 	}
 
@@ -91,7 +95,7 @@ int	convert_to_argb(float rgb[VEC3_SIZE])
 	green = rgb[1] * 255;
 	blue = rgb[2] * 255;
 
-	printf("red=%X, green=%X, blue=%X\n", red, green, blue);
+	// printf("red=%X, green=%X, blue=%X\n", red, green, blue);
 	color = (0 << 24) | (red << 16) | (green << 8) | blue;
 	return (color);
 }
