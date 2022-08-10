@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/09 17:00:29 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/10 12:52:46 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,13 @@ void	arr_free(char **arr)
 	free(arr);
 }
 
-void	trim_info(char **arr)
+void	replace_tabs(char *line)
 {
-	int 	i;
-	char	*temp;
-
-	i = 1;
-	while (arr[i])
+	while (*line)
 	{
-		temp = ft_strtrim(arr[i], "\t "); // do we need to look for spaces anymore?
-		free(arr[i]);
-		arr[i] = temp;
-		i++;
+		if (*line == '\t' || *line == '\n')
+			*line = ' ';
+		line++;
 	}
 }
 

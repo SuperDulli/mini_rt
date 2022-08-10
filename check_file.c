@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/09 14:39:14 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/10 12:58:27 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	readfile(int fd)
 	{
 		if (*line != '\n' && err != -1)
 		{
-			temp = ft_strtrim(line, "\n \t");
+			replace_tabs(line); // exchange tabs and the last new line character with spaces
+			temp = ft_strtrim(line, " ");
 			err = checkline(temp);
 			free(temp);
 		}
