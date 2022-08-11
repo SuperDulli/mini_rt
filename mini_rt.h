@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/12 16:09:09 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/16 14:21:31 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ void	*new(size_t size);
 
 // float_utils
 float	ft_maxf(float a, float b);
+float	ft_minf(float a, float b);
 
 // color
 
