@@ -24,7 +24,7 @@ LIBFT_NAME = libft.a
 
 INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/ -I$(LIBFT_DIR)
 
-SRCS	= main.c utils.c float_utils.c color.c check_file.c object.c camera.c light.c sphere.c scene.c transform.c
+SRCS	= main.c utils.c float_utils.c color.c check_file.c object.c camera.c light.c sphere.c plane.c scene.c transform.c
 # SRCS	= color.c # test only one file with included main
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
