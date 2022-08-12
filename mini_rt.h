@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/10 12:58:49 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/12 14:26:25 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	checkline(char *line);
 
 //	check_elements.c
 int check_amlight(char *line);
+int	check_camera(char *line);
 
 //	check_utils.c
 int		arr_size(char **arr);
@@ -117,5 +118,6 @@ float	ft_atof(const char *str);
 //	check_info.c
 int	check_color(char *color);
 int	check_int(char *info);
+int	check_vector(char *vector);
 
 #endif

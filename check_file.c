@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/10 12:58:27 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/12 14:27:19 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ int	checkline(char *line)
 	else if (!ft_strncmp(line, "A ", 2))
 		return (check_amlight(line)); // check_amlight
 	else if (!ft_strncmp(line, "C ", 2))
-		return (printf("Create camera!\n"));
-		// return (check_camera(line));
+		return (check_camera(line)); // check_camera
 	else if (!ft_strncmp(line, "L ", 2))
 		return (printf("Create light!\n"));
 		// return (check_light(line));
