@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/11 10:23:48 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/12 13:56:02 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	check_int(char *info)
 	long	temp;
 
 	sign = 1;
-	res = 0;
+	res = 1;
 	temp = 0;
 	if (*info == '+' || *info == '-')
 	{
