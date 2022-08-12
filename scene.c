@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/11 16:21:51 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/12 15:50:14 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ t_scene	*build_scene(void)
 	camera = new_camera(vec3(0, 1, 2, pos), vec3(0, 0, -1, dir), 90);
 	scene = new_scene(ambient, obj, camera);
 
-	// just add two planes - a green floor and a white wall
-	scene->objects = malloc(sizeof(t_obj *) * 2);
-	add_obj_to_scene(scene, new_plane(vec3(0,0,0, pos), GREEN, vec3(0, 1, 0, dir)));
-	add_obj_to_scene(scene, new_plane(vec3(0,0,-3, pos), WHITE, vec3(0, 0, 1, dir)));
+	scene->objects = malloc(sizeof(t_obj *) * 3);
+	add_obj_to_scene(scene, new_plane(vec3(0,0,0, pos), GREEN, vec3(0, 1, 0, dir))); // floor
+	add_obj_to_scene(scene, new_plane(vec3(0,0,-1, pos), WHITE, vec3(0, 0, 1, dir))); // wall
+	add_obj_to_scene(scene, new_plane(vec3(0, 2, 0, pos), BLUE, vec3(0, 1, 0, dir))); // ceiling
 	return (scene);
 }

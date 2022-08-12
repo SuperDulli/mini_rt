@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/12 14:15:06 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/12 15:49:24 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,31 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 {
 	t_obj		*plane;
 	t_obj		*plane2;
+	t_obj		*plane3;
 	struct s_ray	ray;
 	float	t;
 	float	t2;
+	float	t3;
 
 	plane = scene->objects[0];
 	plane2 = scene->objects[1];
+	plane3 = scene->objects[2];
 	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
 	vec3(u, v, -1.f, ray.direction);
 	t = hit_plane(&ray, plane);
 	t2 = hit_plane(&ray, plane2);
-	if (t > 0.f && t < t2)
+	t3 = hit_plane(&ray, plane3);
+	if (t > 0.f && t <= fabsf(t2) && t <= fabsf(t3))
 	{
 		return plane->colourcode;
 	}
-	else if (t2 > 0.f)
+	else if (t2 > 0.f && ((t == 0.f && t3 == 0.f) || t2 <= fabsf(t3)))
 	{
 		return plane2->colourcode;
+	}
+	else if (t3 > 0.f)
+	{
+		return plane3->colourcode;
 	}
 	return BLACK;
 }
