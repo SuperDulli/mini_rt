@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/11 16:16:52 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/12 14:15:06 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,15 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	vec3(u, v, -1.f, ray.direction);
 	t = hit_plane(&ray, plane);
 	t2 = hit_plane(&ray, plane2);
-	if ((t == 0.f && t2 == 0.f) || t == t2 || t < 0.f || t2 < 0.0f)
-		return BLACK;
-	if (t < t2)
+	if (t > 0.f && t < t2)
+	{
 		return plane->colourcode;
-	return plane2->colourcode;
+	}
+	else if (t2 > 0.f)
+	{
+		return plane2->colourcode;
+	}
+	return BLACK;
 }
 
 void	*fill_img(void *img)
