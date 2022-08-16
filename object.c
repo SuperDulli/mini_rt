@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:26:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/08 14:14:16 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/12 17:13:07 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	destroy_object(t_obj *obj)
 		destroy_sphere((t_sphere *) obj->specifics);
 	else if (obj->type == LIGHT)
 		free((t_light *) obj->specifics);
+	else if (obj->type == CYLINDER)
+		free((t_cylinder *) obj->specifics);
 	else
 		ft_error(1, "destroy_object: unkon object type.");
 

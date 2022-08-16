@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/10 15:55:44 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/12 16:09:09 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,13 @@ t_obj	*new_light(float pos[VEC3_SIZE], int color, float brightness);
 
 // cylinder
 
-// TODO: add cylinder constructor
+t_obj	*new_cylinder(
+	float pos[VEC3_SIZE],
+	int color,
+	float orientation[VEC3_SIZE],
+	float diameter,
+	float height
+);
 
 //	check_file.c
 int	checkfile(char *path);
