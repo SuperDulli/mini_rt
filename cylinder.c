@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/20 13:54:10 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/21 13:25:31 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 
 	apply_transform(ray->direction, cylinder->transform.backward, 0, ray->direction);
 	apply_transform(ray->origin, cylinder->transform.backward, 1, ray->origin);
+	// vec3_normalize(ray->direction, ray->direction);
 	a = ray->direction[0] * ray->direction[0] + ray->direction[1] * ray->direction[1];
 	b = 2.f * (ray->origin[0] * ray->direction[0] + ray->origin[1] * ray->direction[1]);
 	c = ray->origin[0] * ray->origin[0] + ray->origin[1] * ray->origin[1] - radius * radius;
@@ -92,21 +93,23 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 	}
 
 	// caps
-	// if (close_enough(ray->direction[2], 0.f))
-	// {
-	// 	t3_valid = false;
-	// 	t4_valid = false;
-	// 	t3 = INFINITY;
-	// 	t4 = INFINITY;
-	// }
-	// else
+	if (close_enough(ray->direction[2], 0.f))
 	{
+		t3_valid = false;
+		t4_valid = false;
+		t3 = INFINITY;
+		t4 = INFINITY;
+	}
+	else
+	{
+		//t3 = (z_min - z_origin) / z_dir
 		t3 = (-1.f - ray->origin[2]) / ray->direction[2];
 		t4 = (+1.f - ray->origin[2]) / ray->direction[2];
+		// printf("t: %f, %f\n", t3, t4);
 
 
 		ray_at(*ray, t3, intersection2);
-		if (t3 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) < 1.f)
+		if (t3 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= 1.f)
 		{
 			t3_valid = true;
 		}
@@ -116,7 +119,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 			t3 = INFINITY;
 		}
 		ray_at(*ray, t4, intersection2);
-		if (t4 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) < 1.f)
+		if (t4 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= 1.f)
 		{
 			t4_valid = true;
 		}
@@ -153,7 +156,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		i++;
 	}
 
-	ray_at(*ray, t_values[min_index], intersection);
+	ray_at(*ray, min_value, intersection);
 	vec3_copy(intersection, point);
 	local_color = color_vec_from_int(cylinder->colourcode, local_color);
 	// wall or caps?
@@ -163,10 +166,11 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		// local_color[2] = 1.f;
 		return (true);
 	}
-	else if (!close_enough(ray->direction[2], 0.f) && sqrtf(intersection[0] * intersection[0] + intersection[1] * intersection[1]) < 1.f)
+	else if (!close_enough(ray->direction[2], 0.f) && sqrtf(intersection[0] * intersection[0] + intersection[1] * intersection[1]) <= 1.f)
 	{
+		printf("cap normal (xyz): (%f, %f, %f) min_index=%d\n", intersection[0], intersection[1], intersection[2], min_index);
 		normal_cap(cylinder, intersection, local_normal);
-		printf("cap\n"); // this should be hit but its not??!?!
+		// printf("cap\n"); // this should be hit but its not??!?!
 		return (true);
 	}
 
@@ -179,8 +183,8 @@ void	normal_curved(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SI
 	float	tmp_normal[VEC3_SIZE];
 	float	origin[VEC3_SIZE];
 
-	apply_transform(point, cylinder->transform.forward, 1, point);
 	vec3(point[0], point[1], 0.f, tmp_normal);
+	apply_transform(point, cylinder->transform.forward, 1, point);
 	vec_fill(0.f, 3, origin);
 	apply_transform(origin, cylinder->transform.forward, 1, origin);
 	apply_transform(tmp_normal, cylinder->transform.forward, 1, tmp_normal);
@@ -232,7 +236,7 @@ t_obj	*new_cylinder(
 
 	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
 	// vec3(M_PI_2 / 2, M_PI_2 / 2, 0, rot); // TODO calc rot from orientation
-	vec3(0, 0, 0, rot); // TODO calc rot from orientation
+	vec3(-M_PI_2, 0, 0, rot); // TODO calc rot from orientation
 	vec3(1.f, 1.f, 1.f, scale);
 	set_transform(transl, rot, scale, &obj->transform);
 
