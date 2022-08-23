@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/12 14:27:19 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/23 18:15:04 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	checkline(char *line)
 	else if (!ft_strncmp(line, "C ", 2))
 		return (check_camera(line)); // check_camera
 	else if (!ft_strncmp(line, "L ", 2))
-		return (printf("Create light!\n"));
+		return (check_light(line));
 		// return (check_light(line));
 	else if (!ft_strncmp(line, "sp ", 3))
 		return (printf("Create sphere!\n"));

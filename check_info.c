@@ -6,9 +6,12 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/23 15:53:10 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/23 18:19:22 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+int		max_float = 2000;
+unsigned int	max_precision = 4;	//where to define this?
 
 #include "mini_rt.h"
 
@@ -66,10 +69,38 @@ int	check_int(char *info)
 	return ((res == temp) - 1);
 }
 
-int	check_vector(char **vector)
+int	check_float(char *info)
 {
-	int i;
+	char	**arr;
+	int		prefix;
 
+	arr = ft_split(info, '.');
+	if (arr_size(arr) == 2)
+	{
+		if (ft_isdigit(*arr[1]))
+		{
+			if (!check_int(arr[0]) && !check_int(arr[1]))
+			{
+				prefix = ft_atoi(arr[0]);
+				if (prefix <= max_float && prefix >= max_float * -1 \
+					&& ft_strlen(arr[1]) <= max_precision)
+				{
+					arr_free(arr);
+					return (0);
+				}
+			}
+		}
+	}
+	arr_free(arr);
+	return (-1);
+}
+
+int	check_vector(char *argument)
+{
+	char	**vector;
+	int 	i;
+
+	vector = ft_split(argument, ',');
 	if (arr_size(vector) == 3)
 	{
 		i = 0;
@@ -81,7 +112,11 @@ int	check_vector(char **vector)
 				break ;
 		}
 		if (i == 3)
+		{
+			arr_free(vector);
 			return (0);
+		}
 	}
+	arr_free(vector);
 	return (-1);
 }
