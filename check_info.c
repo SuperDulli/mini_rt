@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/22 15:28:32 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/23 15:53:10 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,21 @@ int	check_int(char *info)
 	return ((res == temp) - 1);
 }
 
-int	check_vector(char *vector)
+int	check_vector(char **vector)
 {
-	char	**arr;
+	int i;
 
-	arr = ft_split(vector, ',');
-	if (arr_size(arr) == 3)
+	if (arr_size(vector) == 3)
 	{
-		if (!check_float(arr[0]) && !check_float(arr[1]) && !check_float(arr[2]))
+		i = 0;
+		while(vector[i])
+		{
+			if (!check_float(vector[i]) || !check_int(vector[i]))
+				i++;
+			else
+				break ;
+		}
+		if (i == 3)
 			return (0);
 	}
 	return (-1);

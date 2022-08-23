@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/12 14:26:25 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/23 15:46:01 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,6 @@ float	ft_atof(const char *str);
 //	check_info.c
 int	check_color(char *color);
 int	check_int(char *info);
-int	check_vector(char *vector);
+int	check_vector(char **vector);
 
 #endif

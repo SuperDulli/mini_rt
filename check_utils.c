@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/12 13:27:53 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/23 15:27:35 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,14 @@ int	check_float(char *info)
 				prefix = ft_atoi(arr[0]);
 				if (prefix <= max_float && prefix >= max_float * -1 \
 					&& ft_strlen(arr[1]) <= max_precision)
+				{
+					arr_free(arr);
 					return (0);
+				}
 			}
 		}
 	}
+	arr_free(arr);
 	return (-1);
 }
 
