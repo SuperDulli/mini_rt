@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/23 17:12:53 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/24 17:48:30 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,38 +158,38 @@ void	*fill_img(void *img)
 	return (img);
 }
 
-int	main(int argc, char **argv)
-{
-	int		window_height;
-	int		window_width;
-	t_data	data;
-	// char	*line;
+// int	main(int argc, char **argv)
+// {
+// 	int		window_height;
+// 	int		window_width;
+// 	t_data	data;
+// 	// char	*line;
 
-	// line = get_next_line(1);
+// 	// line = get_next_line(1);
 
-	if (argc == 2)
-	{
-		if (checkfile(argv[1]) == -1)
-			return (0);
-		else
-		{
-			window_height = HEIGHT;
-			window_width = WIDTH;
-			data.mlx = mlx_init();
-			data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
-			data.img = mlx_new_image(data.mlx, window_width, window_height);
-			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
-			// mlx_string_put(data.mlx, data.win, 10, 10, 0x00FF0000, line);
-			// free(line);
-			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
-			mlx_key_hook(data.win, &key_hook, &data);
-			mlx_loop(data.mlx);
-			mlx_destroy_window(data.mlx, data.win);
-			mlx_destroy_display(data.mlx);
-			free(data.mlx);
-		}
-	}
-	else
-		printf("Invalid arguments!\n");
-	return (0);
-}
+// 	if (argc == 2)
+// 	{
+// 		if (checkfile(argv[1]) == -1)
+// 			return (0);
+// 		else
+// 		{
+// 			window_height = HEIGHT;
+// 			window_width = WIDTH;
+// 			data.mlx = mlx_init();
+// 			data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
+// 			data.img = mlx_new_image(data.mlx, window_width, window_height);
+// 			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
+// 			// mlx_string_put(data.mlx, data.win, 10, 10, 0x00FF0000, line);
+// 			// free(line);
+// 			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
+// 			mlx_key_hook(data.win, &key_hook, &data);
+// 			mlx_loop(data.mlx);
+// 			mlx_destroy_window(data.mlx, data.win);
+// 			mlx_destroy_display(data.mlx);
+// 			free(data.mlx);
+// 		}
+// 	}
+// 	else
+// 		printf("Invalid arguments!\n");
+// 	return (0);
+// }

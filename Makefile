@@ -22,12 +22,18 @@ LIN_ALGEBRA_NAME = lin_algebra_lib.a
 LIBFT_DIR = libft
 LIBFT_NAME = libft.a
 
-INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/ -I$(LIBFT_DIR)
+LIBS = $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) $(LIBFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME)
+
+INCLUDES = -I$(MLX_DIR) -I$(LIN_ALGEBRA_DIR) -I$(LIBFT_DIR)
 
 SRCS	= main.c utils.c float_utils.c color.c check_file.c object.c camera.c light.c sphere.c cylinder.c scene.c transform.c
 # SRCS	= color.c # test only one file with included main
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
+
+TEST = tests
+TESTS = $(wildcard $(TEST)/*.c)
+TESTBINS = $(patsubst $(TEST)/%.c,$(TEST)/bin/%,$(TESTS))
 
 VALGRIND_FLAGS = --leak-check=full --track-origins=yes
 ifeq ($(UNAME), Linux)
@@ -47,16 +53,23 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) -r $(TEST)/bin
 	make fclean -C $(LIN_ALGEBRA_DIR)
 	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
-$(NAME): $(OBJS) $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) $(LIBFT_DIR)/$(LIBFT_NAME)
-	$(CC) $^ -L $(MLX_DIR) $(LFLAGS) -o $@
+$(NAME): $(OBJS) $(LIBS)
+	$(CC) $^ $(LFLAGS) -o $@
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+
+$(TEST)/bin/%:  $(OBJS) $(TEST)/%.c  $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -lcriterion $(LFLAGS) -o $@
+
+$(TEST)/bin:
+	mkdir $@
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
@@ -65,9 +78,12 @@ $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME):
 	make -C $(LIN_ALGEBRA_DIR)
 
 $(LIBFT_DIR)/$(LIBFT_NAME):
-	make -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR)
 
 leaks: $(NAME) test.rt
 	$(LEAKS) ./$(NAME) test.rt
 
-.PHONY: all clean fclean re leaks
+test: $(TEST)/bin $(TESTBINS)
+	for test in $(TESTBINS) ; do ./$$test ; done
+
+.PHONY: all clean fclean re leaks test
