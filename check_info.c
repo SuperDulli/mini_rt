@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 11:16:25 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 11:45:21 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,3 +120,8 @@ int	check_vector(char *argument)
 	arr_free(vector);
 	return (-1);
 }
+
+// int	check_normalized(char *vector)
+// {
+
+// }

@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 11:17:56 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 11:22:49 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	checkfile(char *path)
 	return (readfile(fd));
 }
 
-int	readfile(int fd)
+int	readfile(int fd)		// function too long...
 {
 	char	*line;
 	char	*temp;

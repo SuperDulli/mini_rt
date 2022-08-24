@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:55:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 11:17:19 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 12:01:17 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 int	check_amlight(char *line)
 {
 	char	**arg;
-	float	res;
 
 	arg = ft_split(line, ' ');
 	if (arr_size(arg) == 3)
 	{
 		if (!check_float(arg[1]) && !check_color(arg[2]))
 		{
-			res = ft_atof(arg[1]);
-			if (0 <= res && res <= 1)
+			if (check_range(ft_atof(arg[1]), 0, 1))
 			{
 				arr_free(arg);
 				return (0);
@@ -36,8 +34,8 @@ int	check_amlight(char *line)
 
 int	check_camera(char *line)
 {
+	// FOV allowed 120.0?
 	char	**arg;
-	int		res;
 
 	arg = ft_split(line, ' ');
 	if (arr_size(arg) == 4)
@@ -45,8 +43,7 @@ int	check_camera(char *line)
 		if (!check_vector(arg[1]) && !check_vector(arg[2]) && \
 			!check_int(arg[3]))
 		{
-			res = ft_atoi(arg[3]);
-			if (0 <= res && res <= 180)
+			if (check_range(ft_atoi(arg[3]), 0, 180))
 			{
 				arr_free(arg);
 				return (0);
@@ -59,22 +56,19 @@ int	check_camera(char *line)
 
 int	check_light(char *line)
 {
+	// brightness 1 allowed?
 	char	**arg;
-	float	res;
 
 	arg = ft_split(line, ' ');
 	if (arr_size(arg) == 4)
 	{
-		if (!check_vector(arg[1]) && !check_color(arg[3]))
+		if (!check_vector(arg[1]) && !check_float(arg[2]) && \
+			!check_color(arg[3]))
 		{
-			if (!check_float(arg[2]))
+			if (check_range(ft_atof(arg[2]), 0, 1))
 			{
-				res = ft_atof(arg[2]);
-				if (res >= 0 && res <= 1)
-				{
-					arr_free(arg);
-					return (0);
-				}
+				arr_free(arg);
+				return (0);
 			}
 		}
 	}

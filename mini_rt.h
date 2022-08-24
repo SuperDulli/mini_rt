@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/24 11:05:04 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 11:51:42 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,13 @@ int		arr_size(char **arr);
 void	arr_free(char **arr);
 void	replace_tabs(char *line);
 float	ft_atof(const char *str);
+int		check_range(float nbr, int min, int max);
 
 //	check_info.c
 int	check_color(char *color);
 int	check_int(char *info);
 int	check_float(char *info);
 int	check_vector(char *argument);
+// int	check_normalized(char *vector);
 
 #endif
