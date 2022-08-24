@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/21 13:25:31 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/23 17:12:27 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	normal_cap(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SIZE]
 	float	tmp_normal[VEC3_SIZE];
 	float	origin[VEC3_SIZE];
 
-	apply_transform(point, cylinder->transform.forward, 1, point);
+	// apply_transform(point, cylinder->transform.forward, 1, tmp_normal);
 	vec3(0.f, 0.f, point[2], tmp_normal);
 	vec_fill(0.f, 3, origin);
 	apply_transform(origin, cylinder->transform.forward, 1, origin);
@@ -236,7 +236,7 @@ t_obj	*new_cylinder(
 
 	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
 	// vec3(M_PI_2 / 2, M_PI_2 / 2, 0, rot); // TODO calc rot from orientation
-	vec3(-M_PI_2, 0, 0, rot); // TODO calc rot from orientation
+	vec3(-M_PI_2 / 2, M_PI_2 / 2, 0, rot); // TODO calc rot from orientation
 	vec3(1.f, 1.f, 1.f, scale);
 	set_transform(transl, rot, scale, &obj->transform);
 

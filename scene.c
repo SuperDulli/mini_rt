@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/19 14:28:50 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/23 17:12:07 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_scene	*build_scene(void)
 
 	// far away light source creates light rays that are "more" parallel
 	obj = new_light(vec3(3,3,5, pos), WHITE, 0.5f);
-	camera = new_camera(vec3(0, 2, 3, pos), vec3(0, 0, -1, dir), 90);
+	camera = new_camera(vec3(0, 0, 3, pos), vec3(0, 0, -1, dir), 90);
 	scene = new_scene(ambient, obj, camera);
 
 	// just add one unit cylinder (centerd at the origin) for now

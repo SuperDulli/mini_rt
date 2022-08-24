@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/21 12:44:49 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/23 17:12:53 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 
 	if (hit_cylinder(&ray, cylinder, point, normal, color_v))
 	{
-		printf("u,v = %f, %f\n", u, v);
+		// printf("u,v = %f, %f\n", u, v);
 		// return convert_to_argb(normal);
 		// get light direction
 		vec3_sub(scene->light->pos, point, light_dir); // dir from hitpoint to light (-lightdir)
@@ -119,7 +119,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		// vec3_scalar_mult(color_v, 0.5f, color_v);
 		// vec3(color_v[0] + 0.5f, color_v[1] + 0.5f, color_v[2] + 0.5f, color_v);
 
-		return (convert_to_argb(normal));
+		return (convert_to_argb(color_v));
 	}
 	return (BLACK);
 }
