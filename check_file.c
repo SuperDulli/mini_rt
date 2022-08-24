@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/23 18:15:04 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 11:17:56 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	readfile(int fd)
 	{
 		if (*line != '\n' && err != -1)
 		{
-			replace_tabs(line); // exchange tabs and the last new line character with spaces
+			replace_tabs(line);
 			temp = ft_strtrim(line, " ");
 			err = checkline(temp);
 			free(temp);
@@ -74,23 +74,38 @@ int	checkline(char *line)
 	if (!*line)
 		return (0);
 	else if (!ft_strncmp(line, "A ", 2))
-		return (check_amlight(line)); // check_amlight
+		return (check_amlight(line));
 	else if (!ft_strncmp(line, "C ", 2))
-		return (check_camera(line)); // check_camera
+		return (check_camera(line));
 	else if (!ft_strncmp(line, "L ", 2))
 		return (check_light(line));
-		// return (check_light(line));
 	else if (!ft_strncmp(line, "sp ", 3))
-		return (printf("Create sphere!\n"));
-		// return (check_sphere(line));
+		return (check_sphere(line));
 	else if (!ft_strncmp(line, "pl ", 3))
-		return (printf("Create plane!\n"));
-		// return (check_plane(line));
+		return (check_plane(line));
 	else if (!ft_strncmp(line, "cy ", 3))
-		return (printf("Create cylinder!\n"));
-		// return (check_cylinder(line));
+		return (check_cylinder(line));
 	else
 		return (-1);
+}
+
+int	check_cylinder(char *line)
+{
+	char	**arg;
+
+	arg = ft_split(line, ' ');
+	if (arr_size(arg) == 6)
+	{
+		if (!check_vector(arg[1]) && !check_vector(arg[2]) && \
+			!check_float(arg[3]) && !check_float(arg[4]) && \
+			!check_color(arg[5]))
+		{
+			arr_free(arg);
+			return (0);
+		}
+	}
+	arr_free(arg);
+	return (-1);
 }
 
 // t_obj	**obj;

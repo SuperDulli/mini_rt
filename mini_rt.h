@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/23 18:18:38 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 11:05:04 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,14 @@ typedef struct s_obj {
 int	checkfile(char *path);
 int	readfile(int fd);
 int	checkline(char *line);
+int	check_cylinder(char *line);
 
 //	check_elements.c
 int check_amlight(char *line);
 int	check_camera(char *line);
 int	check_light(char *line);
 int	check_sphere(char *line);
+int	check_plane(char *line);
 
 //	check_utils.c
 int		arr_size(char **arr);
