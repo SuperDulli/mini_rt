@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:55:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 12:01:17 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 16:48:55 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_amlight(char *line)
 	{
 		if (!check_float(arg[1]) && !check_color(arg[2]))
 		{
-			if (check_range(ft_atof(arg[1]), 0, 1))
+			if (check_float_range(ft_atof(arg[1]), 0, 1))
 			{
 				arr_free(arg);
 				return (0);
@@ -43,7 +43,7 @@ int	check_camera(char *line)
 		if (!check_vector(arg[1]) && !check_vector(arg[2]) && \
 			!check_int(arg[3]))
 		{
-			if (check_range(ft_atoi(arg[3]), 0, 180))
+			if (check_float_range(ft_atoi(arg[3]), 0, 180))
 			{
 				arr_free(arg);
 				return (0);
@@ -65,7 +65,7 @@ int	check_light(char *line)
 		if (!check_vector(arg[1]) && !check_float(arg[2]) && \
 			!check_color(arg[3]))
 		{
-			if (check_range(ft_atof(arg[2]), 0, 1))
+			if (check_float_range(ft_atof(arg[2]), 0, 1))
 			{
 				arr_free(arg);
 				return (0);
@@ -84,7 +84,7 @@ int	check_sphere(char *line)
 	if (arr_size(arg) == 4)
 	{
 		if (!check_vector(arg[1]) && !check_color(arg[3]) && \
-			(!check_float(arg[2]) || !check_int(arg[2])))		//diameter can be int or float XD!!!
+			(!check_float(arg[2]) || !check_int(arg[2])))
 		{
 			arr_free(arg);
 			return (0);

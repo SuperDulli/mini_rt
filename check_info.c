@@ -6,12 +6,12 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 11:45:21 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/24 16:14:49 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		max_float = 2000;
-unsigned int	max_precision = 4;	//where to define this?
+// int		max_float = 2000;
+// unsigned int	max_precision = 4;
 
 #include "mini_rt.h"
 
@@ -82,8 +82,8 @@ int	check_float(char *info)
 			if (!check_int(arr[0]) && !check_int(arr[1]))
 			{
 				prefix = ft_atoi(arr[0]);
-				if (prefix <= max_float && prefix >= max_float * -1 \
-					&& ft_strlen(arr[1]) <= max_precision)
+				if (prefix <= MAX_FLOAT && prefix >= MAX_FLOAT * -1 \
+					&& ft_strlen(arr[1]) <= MAX_PRECISION)
 				{
 					arr_free(arr);
 					return (0);
