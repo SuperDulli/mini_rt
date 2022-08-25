@@ -47,6 +47,7 @@ OBJS_NO_MAIN = $(filter-out obj/main.o, $(OBJS)) # useful for building tests
 TEST = tests
 TESTS = $(wildcard $(TEST)/*.c)
 TESTBINS = $(patsubst $(TEST)/%.c,$(TEST)/bin/%,$(TESTS))
+# CRITERION_VERBOSITY_LEVEL = 1
 
 VALGRIND_FLAGS = --leak-check=full --track-origins=yes
 ifeq ($(UNAME), Linux)
@@ -61,14 +62,14 @@ all: $(NAME)
 clean:
 	$(RM) -r *.dSYM
 	$(RM) -r $(OBJDIR)
-	make clean -C $(LIN_ALGEBRA_DIR)
-	make clean -C $(LIBFT_DIR)
+	make clean -C $(LIN_ALGEBRA_DIR) --quiet
+	make clean -C $(LIBFT_DIR) --quiet
 
 fclean: clean
 	$(RM) $(NAME)
 	$(RM) -r $(TEST)/bin
-	make fclean -C $(LIN_ALGEBRA_DIR)
-	make fclean -C $(LIBFT_DIR)
+	make fclean -C $(LIN_ALGEBRA_DIR) --quiet
+	make fclean -C $(LIBFT_DIR) --quiet
 
 re: fclean all
 
@@ -88,15 +89,15 @@ $(OBJDIR):
 	mkdir $(OBJDIR)
 
 $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME):
-	make -C $(LIN_ALGEBRA_DIR)
+	make -C $(LIN_ALGEBRA_DIR) --quiet
 
 $(LIBFT_DIR)/$(LIBFT_NAME):
-	@make -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR) --quiet
 
 leaks: $(NAME) test.rt
 	$(LEAKS) ./$(NAME) test.rt
 
 test: $(TEST)/bin $(TESTBINS)
-	for test in $(TESTBINS) ; do ./$$test ; done
+	@for test in $(TESTBINS) ; do ./$$test --verbose; done
 
 .PHONY: all clean fclean re leaks test
