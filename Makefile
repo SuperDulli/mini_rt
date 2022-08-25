@@ -26,10 +26,23 @@ LIBS = $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) $(LIBFT_DIR)/$(LIBFT_NAME) $(MLX_D
 
 INCLUDES = -I$(MLX_DIR) -I$(LIN_ALGEBRA_DIR) -I$(LIBFT_DIR)
 
-SRCS	= main.c utils.c float_utils.c color.c check_file.c object.c camera.c light.c sphere.c cylinder.c scene.c transform.c
+SRCS	= main.c \
+			ray.c \
+			utils.c \
+			float_utils.c \
+			color.c \
+			check_file.c \
+			object.c \
+			camera.c \
+			light.c \
+			sphere.c \
+			cylinder.c \
+			scene.c \
+			transform.c
 # SRCS	= color.c # test only one file with included main
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
+OBJS_NO_MAIN = $(filter-out obj/main.o, $(OBJS)) # useful for building tests
 
 TEST = tests
 TESTS = $(wildcard $(TEST)/*.c)
@@ -65,7 +78,7 @@ $(NAME): $(OBJS) $(LIBS)
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 
-$(TEST)/bin/%:  $(OBJS) $(TEST)/%.c  $(LIBS)
+$(TEST)/bin/%: $(OBJS_NO_MAIN) $(TEST)/%.c  $(LIBS)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -lcriterion $(LFLAGS) -o $@
 
 $(TEST)/bin:
