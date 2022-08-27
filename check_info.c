@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 16:14:49 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:22:47 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_int(char *info)
 	long	temp;
 
 	sign = 1;
-	res = 1;
+	res = -1;
 	temp = 0;
 	if (*info == '+' || *info == '-')
 	{
@@ -65,8 +65,9 @@ int	check_int(char *info)
 	{
 		temp *= sign;
 		res = (int)temp;
+		return (0);
 	}
-	return ((res == temp) - 1);
+	return (res);
 }
 
 int	check_float(char *info)
@@ -121,7 +122,28 @@ int	check_vector(char *argument)
 	return (-1);
 }
 
-// int	check_normalized(char *vector)
-// {
+int	check_vector_range(char *argument, int min, int max)
+{
+	char	**vector;
+	int		i;
 
-// }
+	vector = ft_split(argument, ',');
+	if (arr_size(vector) == 3)
+	{
+		i = 0;
+		while (vector[i])
+		{
+			if (!check_string_range(vector[i], min, max))
+				i++;
+			else
+				break ;
+		}
+		if (i == 3)
+		{
+			arr_free(vector);
+			return (0);
+		}
+	}
+	arr_free(vector);
+	return (-1);
+}

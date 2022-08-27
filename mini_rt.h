@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/24 16:48:00 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:29:30 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,11 @@ typedef struct s_obj {
 }t_obj;
 
 //	check_file.c
-int	checkfile(char *path);
-int	readfile(int fd);
-int	checkline(char *line);
-int	check_cylinder(char *line);
+int		checkfile(char *path);
+int		readfile(int fd);
+int		checkline(char *line);
+int		check_cylinder(char *line);
+void	readfile_helper(char *line, int fd, int *err);
 
 //	check_elements.c
 int check_amlight(char *line);
@@ -120,13 +121,13 @@ int		arr_size(char **arr);
 void	arr_free(char **arr);
 void	replace_tabs(char *line);
 float	ft_atof(const char *str);
-int		check_float_range(float nbr, int min, int max);
+int		check_string_range(char *str, int min, int max);
 
 //	check_info.c
 int	check_color(char *color);
 int	check_int(char *info);
 int	check_float(char *info);
 int	check_vector(char *argument);
-// int	check_vector_range(char *vector, int min, int max);
+int	check_vector_range(char *argument, int min, int max);
 
 #endif

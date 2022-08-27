@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 16:54:01 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:31:56 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ int	checkfile(char *path)
 	return (readfile(fd));
 }
 
-int	readfile(int fd)		// function too long...
+int	readfile(int fd)
 {
 	char	*line;
-	char	*temp;
 	int		err;
 
 	line = get_next_line(fd);
@@ -48,18 +47,7 @@ int	readfile(int fd)		// function too long...
 		return (-1);
 	}
 	err = 0;
-	while (line)
-	{
-		if (*line != '\n' && err != -1)
-		{
-			replace_tabs(line);
-			temp = ft_strtrim(line, " ");
-			err = checkline(temp);
-			free(temp);
-		}
-		free(line);
-		line = get_next_line(fd);
-	}
+	readfile_helper(line, fd, &err);
 	close(fd);
 	if (err == -1)
 	{
@@ -96,8 +84,9 @@ int	check_cylinder(char *line)
 	arg = ft_split(line, ' ');
 	if (arr_size(arg) == 6)
 	{
-		if (!check_vector(arg[1]) && !check_vector(arg[2]) && \
-			!check_float(arg[3]) && !check_float(arg[4]) && \
+		if (!check_vector(arg[1]) && !check_vector_range(arg[2], 0, 1) && \
+			(!check_float(arg[3]) || !check_int(arg[3])) && \
+			(!check_float(arg[4]) || !check_int(arg[4])) && \
 			!check_color(arg[5]))
 		{
 			arr_free(arg);
@@ -106,6 +95,24 @@ int	check_cylinder(char *line)
 	}
 	arr_free(arg);
 	return (-1);
+}
+
+void	readfile_helper(char *line, int fd, int *err)
+{
+	char	*temp;
+
+	while (line)
+	{
+		if (*line != '\n' && *err != -1)
+		{
+			replace_tabs(line);
+			temp = ft_strtrim(line, " ");
+			*err = checkline(temp);
+			free(temp);
+		}
+		free(line);
+		line = get_next_line(fd);
+	}
 }
 
 // t_obj	**obj;

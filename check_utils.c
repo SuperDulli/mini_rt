@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/24 16:48:14 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:11:13 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,20 @@ float	ft_atof(const char *str)
 	return (res);
 }
 
-int	check_float_range(float nbr, int min, int max)
+int	check_string_range(char *str, int min, int max)
 {
-	return (min <= nbr && nbr <= max);
+	float	res;
+	int		temp;
+
+	temp = check_float(str);
+	if (!temp || !check_int(str))
+	{
+		if (!temp)
+			res = ft_atof(str);
+		else
+			res = ft_atoi(str);
+		if (min <= res && res <= max)
+			return (0);
+	}
+	return (-1);
 }
