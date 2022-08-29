@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/29 18:06:00 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/29 21:26:42 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,16 +163,18 @@ int	main(int argc, char **argv)
 	int		window_height;
 	int		window_width;
 	t_data	data;
-	// char	*line;
-
-	// line = get_next_line(1);
+	// t_scene	*scene;
 
 	if (argc == 2)
 	{
 		if (checkfile(argv[1]) == -1)
 			return (0);
+		// scene = new_scene();
+		// else if (store_data(argv[1], scene) == -1)
+		// 	return (0);
 		else
 		{
+
 			window_height = HEIGHT;
 			window_width = WIDTH;
 			data.mlx = mlx_init();

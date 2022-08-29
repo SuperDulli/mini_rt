@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/29 15:56:58 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/29 20:35:53 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,32 +49,29 @@ int	readfile(int fd)
 	err = 0;
 	readfile_helper(line, fd, &err);
 	close(fd);
-	if (err == -1)
-	{
-		ft_putendl_fd("Invalid file!", 1);
-		return (-1);
-	}
-	return (0);
+	if (!err)
+		return (0);
+	ft_putendl_fd("Invalid file!", 1);
+	return (-1);
 }
 
 int	checkline(char *line, char *duplicate)
 {
 	if (!*line)
 		return (0);
-	else if (!ft_strncmp(line, "A ", 2) && ((*duplicate & 1) == 0))
+	if (!ft_strncmp(line, "A ", 2) && ((*duplicate & 1) == 0))
 		return (check_amlight(line, duplicate));
-	else if (!ft_strncmp(line, "C ", 2) && (((*duplicate >> 1) & 1) == 0))
+	if (!ft_strncmp(line, "C ", 2) && (((*duplicate >> 1) & 1) == 0))
 		return (check_camera(line, duplicate));
-	else if (!ft_strncmp(line, "L ", 2) && (((*duplicate >> 2) & 1) == 0))
+	if (!ft_strncmp(line, "L ", 2) && (((*duplicate >> 2) & 1) == 0))
 		return (check_light(line, duplicate));
-	else if (!ft_strncmp(line, "sp ", 3))
+	if (!ft_strncmp(line, "sp ", 3))
 		return (check_sphere(line));
-	else if (!ft_strncmp(line, "pl ", 3))
+	if (!ft_strncmp(line, "pl ", 3))
 		return (check_plane(line));
-	else if (!ft_strncmp(line, "cy ", 3))
+	if (!ft_strncmp(line, "cy ", 3))
 		return (check_cylinder(line));
-	else
-		return (-1);
+	return (-1);
 }
 
 int	check_cylinder(char *line)
@@ -105,7 +102,7 @@ void	readfile_helper(char *line, int fd, int *err)
 	duplicate = 0;
 	while (line)
 	{
-		if (*line != '\n' && *err != -1)
+		if (*line != '\n' && *err == 0)
 		{
 			replace_tabs(line);
 			temp = ft_strtrim(line, " ");

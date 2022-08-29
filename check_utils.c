@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/27 15:11:13 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/29 21:26:23 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ float	ft_atof(const char *str)
 	res = ft_atoi(arr[0]);
 	if (*arr[0] == '-')
 		res -= (float)(ft_atoi(arr[1])) / pow(10, ft_strlen(arr[1]));
-	else
+	else if (arr[1])
 		res += (float)(ft_atoi(arr[1])) / pow(10, ft_strlen(arr[1]));
 	arr_free(arr);
 	return (res);
