@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/25 11:05:29 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/29 20:19:53 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		// apply shading
 		pixel_color = 0;
 		// pixel_color += ft_maxf(vec3_dot(color_v, ambient_color_v), 0.0f);
-		pixel_color += ft_maxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
+		pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
 		// printf("pixelcolor=%f\n", pixel_color);
 		vec3_scalar_mult(color_v, pixel_color, color_v);
 
