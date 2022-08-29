@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/29 17:51:40 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/29 18:07:23 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ t_obj	*new_light(float pos[VEC3_SIZE], int color, float brightness);
 
 // plane
 
-// TODO: add plane constructor
+t_obj	*new_plane(float pos[VEC3_SIZE], int color, float orientation[VEC3_SIZE]);
 
 // cylinder
 

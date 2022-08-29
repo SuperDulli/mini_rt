@@ -37,6 +37,7 @@ SRCS	= main.c \
 			light.c \
 			sphere.c \
 			cylinder.c \
+			plane.c \
 			scene.c \
 			transform.c
 # SRCS	= color.c # test only one file with included main check_elements.c check_utils.c check_info.c
