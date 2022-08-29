@@ -6,13 +6,13 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:55:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/27 15:31:06 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/29 15:57:38 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-int	check_amlight(char *line)
+int	check_amlight(char *line, char *duplicate)
 {
 	char	**arg;
 
@@ -22,6 +22,7 @@ int	check_amlight(char *line)
 		if (!check_string_range(arg[1], 0, 1) && !check_color(arg[2]))
 		{
 			arr_free(arg);
+			*duplicate |= 1;
 			return (0);
 		}
 	}
@@ -29,7 +30,7 @@ int	check_amlight(char *line)
 	return (-1);
 }
 
-int	check_camera(char *line)
+int	check_camera(char *line, char *duplicate)
 {
 	char	**arg;
 
@@ -40,6 +41,7 @@ int	check_camera(char *line)
 			!check_string_range(arg[3], 0, 180))
 		{
 			arr_free(arg);
+			*duplicate |= 1 << 1;
 			return (0);
 		}
 	}
@@ -47,7 +49,7 @@ int	check_camera(char *line)
 	return (-1);
 }
 
-int	check_light(char *line)
+int	check_light(char *line, char *duplicate)
 {
 	char	**arg;
 
@@ -58,6 +60,7 @@ int	check_light(char *line)
 			!check_color(arg[3]))
 		{
 			arr_free(arg);
+			*duplicate |= 1 << 2;
 			return (0);
 		}
 	}

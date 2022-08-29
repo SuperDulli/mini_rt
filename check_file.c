@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/27 15:31:56 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/29 15:56:58 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,16 @@ int	readfile(int fd)
 	return (0);
 }
 
-int	checkline(char *line)
+int	checkline(char *line, char *duplicate)
 {
 	if (!*line)
 		return (0);
-	else if (!ft_strncmp(line, "A ", 2))
-		return (check_amlight(line));
-	else if (!ft_strncmp(line, "C ", 2))
-		return (check_camera(line));
-	else if (!ft_strncmp(line, "L ", 2))
-		return (check_light(line));
+	else if (!ft_strncmp(line, "A ", 2) && ((*duplicate & 1) == 0))
+		return (check_amlight(line, duplicate));
+	else if (!ft_strncmp(line, "C ", 2) && (((*duplicate >> 1) & 1) == 0))
+		return (check_camera(line, duplicate));
+	else if (!ft_strncmp(line, "L ", 2) && (((*duplicate >> 2) & 1) == 0))
+		return (check_light(line, duplicate));
 	else if (!ft_strncmp(line, "sp ", 3))
 		return (check_sphere(line));
 	else if (!ft_strncmp(line, "pl ", 3))
@@ -100,14 +100,16 @@ int	check_cylinder(char *line)
 void	readfile_helper(char *line, int fd, int *err)
 {
 	char	*temp;
+	char	duplicate;
 
+	duplicate = 0;
 	while (line)
 	{
 		if (*line != '\n' && *err != -1)
 		{
 			replace_tabs(line);
 			temp = ft_strtrim(line, " ");
-			*err = checkline(temp);
+			*err = checkline(temp, &duplicate);
 			free(temp);
 		}
 		free(line);
