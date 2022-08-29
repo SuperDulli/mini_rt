@@ -24,11 +24,26 @@ LIBFT_NAME = libft.a
 
 INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/ -I$(LIBFT_DIR)
 
-SRCS	= main.c check_file.c check_elements.c check_utils.c check_info.c
+SRCS	= main.c \
+			utils.c \
+			float_utils.c \
+			color.c \
+			check_file.c \
+			check_elements.c \
+			check_info.c \
+			check_utils.c \
+			object.c \
+			camera.c \
+			light.c \
+			sphere.c \
+			cylinder.c \
+			scene.c \
+			transform.c
+# SRCS	= color.c # test only one file with included main check_elements.c check_utils.c check_info.c
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
-VALGRIND_FLAGS = --leak-check=full
+VALGRIND_FLAGS = --leak-check=full --track-origins=yes
 ifeq ($(UNAME), Linux)
 	LEAKS = valgrind $(VALGRIND_FLAGS)
 endif

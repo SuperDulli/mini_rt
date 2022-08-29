@@ -35,6 +35,7 @@ OBJS_EXTRA		= $(patsubst %.c, %.o, $(SRCS_EXTRA))
 BUFFER_SIZE = 81
 
 all: $(NAME)
+	make clean
 
 clean:
 	rm -f $(OBJS_MANDATORY)
