@@ -6,13 +6,11 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:12:07 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:17:48 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
-
-float	*ray_at(struct s_ray ray, float t, float *point);
 
 // in this file:
 
