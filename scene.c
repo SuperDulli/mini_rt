@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/29 18:07:44 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:32:21 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera)
 		ft_error(1, "new_scene: mandatory component not set (NULL-pointer).");
 	}
 
-	// scene = malloc(sizeof(t_scene));
-	// if (!scene)
-	// 	exit_fatal();
-	scene = (t_scene *) new(sizeof(t_scene));
+	scene = new(sizeof(t_scene));
+	if (!scene)
+		return (NULL);
 	scene->ambient_light = ambient_light;
 	scene->light = light;
 	scene->camera = camera;
@@ -79,6 +78,8 @@ t_scene	*build_scene(void)
 	obj = new_light(vec3(3,3,5, pos), WHITE, 0.5f);
 	camera = new_camera(vec3(0, 0, 3, pos), vec3(0, 0, -1, dir), 90);
 	scene = new_scene(ambient, obj, camera);
+	if (!scene)
+		return (NULL);
 
 	// just add one unit cylinder (centerd at the origin) for now
 	scene->objects = malloc(sizeof(t_obj *) * 1);

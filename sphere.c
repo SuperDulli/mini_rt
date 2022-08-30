@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 10:51:49 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:12:48 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,15 @@ t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter)
 	float		scale[VEC3_SIZE];
 
 	obj = new_object(pos, color);
-	obj->type = SPHERE;
-	obj->specifics = malloc(sizeof(t_sphere));
+	if (!obj)
+		return (NULL);
+	obj->specifics = new(sizeof(t_sphere));
 	if (!obj->specifics)
-		exit_fatal();
+	{
+		destroy_object(obj);
+		return (NULL);
+	}
+	obj->type = SPHERE;
 	sphere = (t_sphere *) obj->specifics;
 	sphere->diameter = diameter;
 

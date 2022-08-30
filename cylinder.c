@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/29 17:57:19 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:12:07 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,10 +225,15 @@ t_obj	*new_cylinder(
 	float		scale[VEC3_SIZE];
 
 	obj = new_object(pos, color);
-	obj->type = CYLINDER;
-	obj->specifics = malloc(sizeof(t_cylinder));
+	if (!obj)
+		return (NULL);
+	obj->specifics = new(sizeof(t_cylinder));
 	if (!obj->specifics)
-		exit_fatal();
+	{
+		destroy_object(obj);
+		return (NULL);
+	}
+	obj->type = CYLINDER;
 	cylinder = (t_cylinder *) obj->specifics;
 	cylinder->diameter = diameter;
 	cylinder->height = height;

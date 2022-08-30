@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:26:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/12 17:13:07 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:17:00 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ t_obj	*new_object(float pos[VEC3_SIZE], int color)
 {
 	t_obj	*obj;
 
-	obj = malloc(sizeof(t_obj));
+	obj = new(sizeof(t_obj));
 	if (!obj)
-		exit_fatal();
+	{
+		return (NULL);
+	}
 	obj->type = NONE;
 	obj->specifics = NULL;
 	obj->colourcode = color;
@@ -42,7 +44,7 @@ void	destroy_object(t_obj *obj)
 	else if (obj->type == CYLINDER)
 		free((t_cylinder *) obj->specifics);
 	else
-		ft_error(1, "destroy_object: unkon object type.");
+		ft_error(1, "destroy_object: unkown object type.");
 
 	free(obj);
 }

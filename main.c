@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/29 21:26:42 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:26:28 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		// apply shading
 		pixel_color = 0;
 		// pixel_color += ft_maxf(vec3_dot(color_v, ambient_color_v), 0.0f);
-		pixel_color += ft_maxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
+		pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
 		// printf("pixelcolor=%f\n", pixel_color);
 		vec3_scalar_mult(color_v, pixel_color, color_v);
 
@@ -134,7 +134,8 @@ void	*fill_img(void *img)
 	t_scene				*scene;
 
 	scene = build_scene();
-	(void) scene;
+	if (!scene)
+		exit_fatal();
 	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
 			&img_info.line_size, &img_info.endian);
 	px_coord.y = 0;
