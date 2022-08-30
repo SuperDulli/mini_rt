@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/29 21:26:23 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/30 13:24:11 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ float	ft_atof(const char *str)
 
 	arr = ft_split(str, '.');
 	res = ft_atoi(arr[0]);
-	if (*arr[0] == '-')
+	if (*arr[0] == '-' && arr[1])
 		res -= (float)(ft_atoi(arr[1])) / pow(10, ft_strlen(arr[1]));
 	else if (arr[1])
 		res += (float)(ft_atoi(arr[1])) / pow(10, ft_strlen(arr[1]));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/29 20:35:53 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/30 13:27:46 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	check_cylinder(char *line)
 	arg = ft_split(line, ' ');
 	if (arr_size(arg) == 6)
 	{
-		if (!check_vector(arg[1]) && !check_vector_range(arg[2], 0, 1) && \
+		if (!check_vector(arg[1]) && !check_vector_range(arg[2], -1, 1) && \
 			(!check_float(arg[3]) || !check_int(arg[3])) && \
 			(!check_float(arg[4]) || !check_int(arg[4])) && \
 			!check_color(arg[5]))
