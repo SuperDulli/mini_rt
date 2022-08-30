@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 15:20:22 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:12:18 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,6 @@ void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
 		buffer[pixel_addr + 2] = (color >> 16) & 0xFF;
 		buffer[pixel_addr + 3] = (color >> 24);
 	}
-}
-
-
-float	*ray_at(struct s_ray ray, float t, float *point)
-{
-	float	dir[VEC3_SIZE];
-
-	vec3_scalar_mult(ray.direction, t, dir);
-	vec3_add(ray.origin, dir, point);
-	return (point);
 }
 
 unsigned int	choose_color(t_scene *scene, float u, float v)

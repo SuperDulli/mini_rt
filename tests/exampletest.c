@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   float_utils.c                                      :+:      :+:    :+:   */
+/*   exampletest.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/10 11:43:58 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/11 14:55:41 by chelmerd         ###   ########.fr       */
+/*   Created: 2022/08/24 12:12:37 by chelmerd          #+#    #+#             */
+/*   Updated: 2022/08/24 17:52:40 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-float	ft_maxf(float a, float b)
-{
-	if (a > b)
-		return (a);
-	else
-		return (b);
-}
+#include <criterion/criterion.h>
 
-float	ft_minf(float a, float b)
-{
-	if (a < b)
-		return (a);
-	else
-		return (b);
+// Test(misc, failing) {
+// 	cr_assert(0);
+// }
+
+Test(misc, passing) {
+	cr_assert(1);
 }

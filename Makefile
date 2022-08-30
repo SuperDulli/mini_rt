@@ -22,11 +22,12 @@ LIN_ALGEBRA_NAME = lin_algebra_lib.a
 LIBFT_DIR = libft
 LIBFT_NAME = libft.a
 
-INCLUDES = -I$(MLX_DIR)/ -I$(LIN_ALGEBRA_DIR)/ -I$(LIBFT_DIR)
+LIBS = $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) $(LIBFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME)
+INCLUDES = -I$(MLX_DIR) -I$(LIN_ALGEBRA_DIR) -I$(LIBFT_DIR)
 
 SRCS	= main.c \
 			utils.c \
-			float_utils.c \
+			ray.c \
 			color.c \
 			check_file.c \
 			check_elements.c \
@@ -43,6 +44,12 @@ SRCS	= main.c \
 # SRCS	= color.c # test only one file with included main check_elements.c check_utils.c check_info.c
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
+OBJS_NO_MAIN = $(filter-out obj/main.o, $(OBJS)) # useful for building tests
+
+TEST = tests
+TESTS = $(wildcard $(TEST)/*.c)
+TESTBINS = $(patsubst $(TEST)/%.c,$(TEST)/bin/%,$(TESTS))
+# CRITERION_VERBOSITY_LEVEL = 1
 
 VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 ifeq ($(UNAME), Linux)
@@ -57,32 +64,42 @@ all: $(NAME)
 clean:
 	$(RM) -r *.dSYM
 	$(RM) -r $(OBJDIR)
-	make clean -C $(LIN_ALGEBRA_DIR)
-	make clean -C $(LIBFT_DIR)
+	make clean -C $(LIN_ALGEBRA_DIR) --quiet
+	make clean -C $(LIBFT_DIR) --quiet
 
 fclean: clean
 	$(RM) $(NAME)
-	make fclean -C $(LIN_ALGEBRA_DIR)
-	make fclean -C $(LIBFT_DIR)
+	$(RM) -r $(TEST)/bin
+	make fclean -C $(LIN_ALGEBRA_DIR) --quiet
+	make fclean -C $(LIBFT_DIR) --quiet
 
 re: fclean all
 
-$(NAME): $(OBJS) $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) $(LIBFT_DIR)/$(LIBFT_NAME)
-	$(CC) $^ -L $(MLX_DIR) $(LFLAGS) -o $@
+$(NAME): $(OBJS) $(LIBS)
+	$(CC) $^ $(LFLAGS) -o $@
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+
+$(TEST)/bin/%: $(OBJS_NO_MAIN) $(TEST)/%.c  $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -lcriterion $(LFLAGS) -o $@
+
+$(TEST)/bin:
+	mkdir $@
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
 $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME):
-	make -C $(LIN_ALGEBRA_DIR)
+	make -C $(LIN_ALGEBRA_DIR) --quiet
 
 $(LIBFT_DIR)/$(LIBFT_NAME):
-	make -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR) --quiet
 
 leaks: $(NAME) test.rt
 	$(LEAKS) ./$(NAME) test.rt
 
-.PHONY: all clean fclean re leaks
+test: $(TEST)/bin $(TESTBINS)
+	@for test in $(TESTBINS) ; do ./$$test --verbose; done
+
+.PHONY: all clean fclean re leaks test

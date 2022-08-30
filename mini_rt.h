@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 15:20:39 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:17:16 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,10 @@ int	check_vector_range(char *argument, int min, int max);
 
 void	exit_fatal(void);
 void	*new(size_t size);
+
+// ray
+
+float	*ray_at(struct s_ray ray, float t, float *point);
 
 // color
 
