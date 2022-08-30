@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:40:03 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:11:38 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:41:21 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ t_obj	*new_plane(float pos[VEC3_SIZE], int color, float orientation[VEC3_SIZE])
 	obj = new_object(pos, color);
 	if (!obj)
 		return (NULL);
-	obj->specifics = new(sizeof(t_sphere));
+	obj->specifics = new(sizeof(t_plane));
 	if (!obj->specifics)
 	{
 		destroy_object(obj);
 		return (NULL);
 	}
-	obj->type = SPHERE;
+	obj->type = PLANE;
 	plane = (t_plane *) obj->specifics;
 	vec3_copy(orientation, plane->ovector);
 
