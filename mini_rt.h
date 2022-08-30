@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:00:07 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:40:43 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov);
 // sphere
 
 t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter);
-void	destroy_sphere(t_sphere *sphere);
 
 // camera
 

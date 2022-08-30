@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:12:48 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:40:25 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,4 @@ t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter)
 	set_transform(transl, rot, scale, &obj->transform);
 
 	return (obj);
-}
-
-void	destroy_sphere(t_sphere *sphere)
-{
-	if (!sphere)
-		return ;
-	free(sphere);
 }

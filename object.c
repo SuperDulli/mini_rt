@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:26:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:17:00 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:40:50 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	destroy_object(t_obj *obj)
 	if (!obj)
 		return ;
 	if (obj->type == SPHERE)
-		destroy_sphere((t_sphere *) obj->specifics);
+		free((t_sphere *) obj->specifics);
 	else if (obj->type == LIGHT)
 		free((t_light *) obj->specifics);
 	else if (obj->type == CYLINDER)
