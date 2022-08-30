@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:40:43 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 13:59:42 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,7 @@ typedef struct s_scene t_scene;
 
 t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera);
 void	destroy_scene(t_scene *scene);
+void	add_obj_to_scene(t_scene *scene, t_obj *obj);
 
 // transform
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:26:28 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 15:38:34 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,15 +164,15 @@ int	main(int argc, char **argv)
 	int		window_height;
 	int		window_width;
 	t_data	data;
-	// t_scene	*scene;
+	t_scene	*scene;
 
 	if (argc == 2)
 	{
 		if (checkfile(argv[1]) == -1)
 			return (0);
-		// scene = new_scene();
-		// else if (store_data(argv[1], scene) == -1)
-		// 	return (0);
+		scene = new_scene(); //check failure, retunr error
+		if (store_data(argv[1], scene) == -1)
+			return (0);
 		else
 		{
 

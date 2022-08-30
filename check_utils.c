@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/30 13:24:11 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 14:29:09 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	arr_size(char **arr)
 	int	len;
 
 	len = 0;
-	while (arr[len])
+	while (arr && arr[len])
 		len++;
 	return (len);
 }
@@ -27,6 +27,8 @@ void	arr_free(char **arr)
 	int	i;
 
 	i = 0;
+	if (!arr)
+		return ;
 	while (arr[i])
 	{
 		free(arr[i]);
