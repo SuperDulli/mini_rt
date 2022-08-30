@@ -44,7 +44,7 @@ SRCS	= main.c \
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
-VALGRIND_FLAGS = --leak-check=full --track-origins=yes
+VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 ifeq ($(UNAME), Linux)
 	LEAKS = valgrind $(VALGRIND_FLAGS)
 endif
