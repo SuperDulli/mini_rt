@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:40:43 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 15:20:39 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,13 +231,15 @@ struct s_scene
 	t_obj		*light;
 	t_camera	*camera;
 	// t_screen	screen;
-	size_t		obj_count; // or: NULL-terminate the object array
-	t_obj		**objects; // array of pointer to objects to render
+	int		obj_count; // or: NULL-terminate the object array
+	t_list		*objects; // array of pointer to objects to render
 };
 typedef struct s_scene t_scene;
 
-t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera);
+t_scene	*new_scene(void);
 void	destroy_scene(t_scene *scene);
+bool	add_obj_to_scene(t_scene *scene, t_obj *obj);
+t_obj	*get_obj_from_scene(t_scene * scene, int index);
 
 // transform
 

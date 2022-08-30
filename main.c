@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:26:28 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/30 15:20:22 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	float	light_color_v[VEC3_SIZE];
 	float	light_dir[VEC3_SIZE];
 
-	cylinder = scene->objects[0];
+	cylinder = get_obj_from_scene(scene, 0);
 	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
 	vec3(u, v, -1.f, ray.direction);
 
