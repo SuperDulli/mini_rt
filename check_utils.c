@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 11:40:15 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/30 14:29:09 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 11:59:57 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,27 @@ void	replace_tabs(char *line)
 
 float	ft_atof(const char *str)
 {
-	char	**arr;
 	float	res;
+	int		sign;
 
-	arr = ft_split(str, '.');
-	res = ft_atoi(arr[0]);
-	if (*arr[0] == '-' && arr[1])
-		res -= (float)(ft_atoi(arr[1])) / pow(10, ft_strlen(arr[1]));
-	else if (arr[1])
-		res += (float)(ft_atoi(arr[1])) / pow(10, ft_strlen(arr[1]));
-	arr_free(arr);
+	sign = 1;
+	res = ft_atoi(str);
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str && ft_isdigit(*str))
+		str++;
+	if (*str == '.')
+	{
+		str++;
+		if (sign == 1)
+			res += (float)(ft_atoi(str)) / pow(10, ft_strlen(str));
+		else
+			res -= (float)(ft_atoi(str)) / pow(10, ft_strlen(str));
+	}
 	return (res);
 }
 
