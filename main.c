@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/31 17:28:47 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:20:07 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,6 @@ int	main(int argc, char **argv)
 		}
 		else
 		{
-
 			window_height = HEIGHT;
 			window_width = WIDTH;
 			data.mlx = mlx_init();

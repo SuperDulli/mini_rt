@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:08:56 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 16:59:26 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:53:11 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,58 @@ int	save_amlight(char *line, t_scene *scene)
 	return (-1);
 }
 
+int	save_camera(char *line, t_scene *scene)
+{
+	char	**arg;
+	float	pos[VEC3_SIZE];
+	float	vec[VEC3_SIZE];
+
+	arg = ft_split(line, ' ');
+	if (arg)
+	{
+		if (!str_to_vec(arg[1], pos) && !str_to_vec(arg[2], vec))
+		{
+			scene->camera = new_camera(pos, vec, ft_atof(arg[3]));		//FOV float?
+			arr_free(arg);
+			if (scene->camera)
+				return (0);
+		}
+	}
+	return (-1);
+}
+
+int	save_light(char *line, t_scene *scene)
+{
+	char	**arg;
+	float	pos[VEC3_SIZE];
+
+	arg = ft_split(line, ' ');
+	if (arg)
+	{
+		if (!str_to_vec(arg[1], pos))
+		{
+			scene->light = new_light(pos, 16777215, ft_atof(arg[2]));		//always white?? -> edit checking!
+			arr_free(arg);
+			if (scene->light)
+				return (0);
+		}
+	}
+	return (-1);
+}
+
 int	save_sphere(char *line, t_scene *scene)
 {
 	char	**arg;
 	char	**color;
 	t_obj	*sphere;
-	float	vec[VEC3_SIZE];
+	float	pos[VEC3_SIZE];
 
 	arg = ft_split(line, ' ');
 	if (arg)
 		color = ft_split(arg[3], ',');
-	if (color && !str_to_vec(arg[1], vec))
+	if (color && !str_to_vec(arg[1], pos))
 	{
-		sphere = new_sphere(vec, get_color(0, ft_atoi(color[0]), \
+		sphere = new_sphere(pos, get_color(0, ft_atoi(color[0]), \
 			ft_atoi(color[1]), ft_atoi(color[2])), ft_atof(arg[2]));
 		arr_free(arg);
 		arr_free(color);
@@ -54,3 +93,8 @@ int	save_sphere(char *line, t_scene *scene)
 	}
 	return (-1);
 }
+
+// int	save_plane(char *line, t_scene *scene)
+// {
+// 	too many variables?
+// }

@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 19:59:30 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 17:04:47 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:39:24 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,17 @@ int	save_data(char *line, t_scene *scene)
 		return (0);
 	if (!ft_strncmp(line, "A ", 2))
 		return (save_amlight(line, scene));
-	// if (!ft_strncmp(line, "C ", 2))
-	// 	return (save_camera(line, scene));
-	// if (!ft_strncmp(line, "L ", 2))
-	// 	return (save_light(line, scene));
+	if (!ft_strncmp(line, "C ", 2))
+		return (save_camera(line, scene));
+	if (!ft_strncmp(line, "L ", 2))
+		return (save_light(line, scene));
 	if (!ft_strncmp(line, "sp ", 3))
 		return (save_sphere(line, scene));
-	// if (!ft_strncmp(line, "pl ", 3))
+	if (!ft_strncmp(line, "pl ", 3))
+		return (0);
 	// 	return (save_plane(line, scene));
-	// if (!ft_strncmp(line, "cy ", 3))
+	if (!ft_strncmp(line, "cy ", 3))
+		return (0);
 	// 	return (save_cylinder(line, scene));
 	return (-1);
-}
-
-int	str_to_vec(char *info, float *vec)
-{
-	char	**pos;
-
-	pos = ft_split(info, ',');
-	if (!pos)
-		return (-1);
-	vec3(ft_atof(pos[0]), ft_atof(pos[1]), ft_atof(pos[2]), vec);
-	arr_free(pos);
-	return(0);
 }

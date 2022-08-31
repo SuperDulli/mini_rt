@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/31 17:31:11 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:52:36 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
-// # include <string.h>
 # include <fcntl.h>
 
 # define HEIGHT 800
@@ -125,7 +124,7 @@ typedef	struct s_transform t_tform; // read: type transform
 typedef struct s_obj {
 	float	pos[VEC3_SIZE];
 	t_tform	transform;
-	int		colourcode;	// farbwerte einzeln?
+	int		colourcode;
 	int		type;
 	void	*specifics;
 }t_obj;
@@ -136,8 +135,8 @@ struct s_scene
 	t_obj		*light;
 	t_camera	*camera;
 	// t_screen	screen;
-	size_t		obj_count; // or: NULL-terminate the object array
-	t_obj		**objects; // array of pointer to objects to render
+	int		obj_count; // or: NULL-terminate the object array
+	t_list		*objects; // array of pointer to objects to render
 };
 typedef struct s_scene t_scene;
 
@@ -175,17 +174,6 @@ t_obj	*new_cylinder(
 	float height
 );
 
-struct s_scene
-{
-	t_amlight	*ambient_light;
-	t_obj		*light;
-	t_camera	*camera;
-	// t_screen	screen;
-	int		obj_count; // or: NULL-terminate the object array
-	t_list		*objects; // array of pointer to objects to render
-};
-typedef struct s_scene t_scene;
-
 //	check_file.c
 int		checkfile(char *path);
 int		readfile(int fd);
@@ -218,16 +206,18 @@ int	check_vector_range(char *argument, int min, int max);
 int		store_data(char *path, t_scene	*scene);
 int		save_data(char *line, t_scene *scene);
 void	get_data(char *line, int fd, int *err, t_scene *scene);
-int		str_to_vec(char *info, float *vec);
 // int		save_cylinder(char *line, t_scene *scene);
 
 //store_elements.c
 int	save_amlight(char *line, t_scene *scene);
-// int	save_camera(char *line, t_scene *scene);
-// int save_light(char *line, t_scene *scene);
+int	save_camera(char *line, t_scene *scene);
+int save_light(char *line, t_scene *scene);
 int	save_sphere(char *line, t_scene *scene);
 // int save_plane(char *line, t_scene *scene);
 
+//store_utils.c
+int	str_to_vec(char *info, float *vec);
+// int	str_to_color(char *info);
 
 // util
 
