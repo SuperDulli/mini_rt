@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 13:59:42 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:14:15 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,21 @@ int	check_int(char *info);
 int	check_float(char *info);
 int	check_vector(char *argument);
 int	check_vector_range(char *argument, int min, int max);
+
+//store_data.c
+int		store_data(char *path, t_scene	*scene);
+int		save_data(char *line, t_scene *scene);
+void	get_data(char *line, int fd, int *err, t_scene *scene);
+int		str_to_vec(char *info, float *vec);
+// int		save_cylinder(char *line, t_scene *scene);
+
+//store_elements.c
+int	save_amlight(char *line, t_scene *scene);
+// int	save_camera(char *line, t_scene *scene);
+// int save_light(char *line, t_scene *scene);
+int	save_sphere(char *line, t_scene *scene);
+// int save_plane(char *line, t_scene *scene);
+
 
 // util
 
