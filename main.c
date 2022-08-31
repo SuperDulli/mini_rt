@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 17:12:18 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/08/31 15:01:18 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,23 @@ t_scene	*build_scene(void);
 
 static int	close_window(t_data *data)
 {
+	#ifdef __linux__
 	mlx_loop_end(data->mlx);
+	#endif
 	mlx_destroy_image(data->mlx, data->img);
-	data->img = 0;
+	mlx_destroy_window(data->mlx, data->win);
+	#ifdef __linux__
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+	#endif
+	exit(0);
+	// data->img = 0;
 	return (0);
 }
 
 int	key_hook(int keycode, t_data *vars)
 {
-	if (keycode == 65307)
+	if (keycode == ESC_KEY)
 		close_window(vars);
 	return (0);
 }
@@ -177,9 +185,6 @@ int	main(int argc, char **argv)
 			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
 			mlx_key_hook(data.win, &key_hook, &data);
 			mlx_loop(data.mlx);
-			mlx_destroy_window(data.mlx, data.win);
-			mlx_destroy_display(data.mlx);
-			free(data.mlx);
 		}
 	}
 	else

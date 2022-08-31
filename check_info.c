@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_info.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/27 15:22:47 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 14:50:30 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	check_color(char *color)
 	int		res;
 
 	arr = ft_split(color, ',');
+	i = 0;
 	if (arr_size(arr) == 3)
 	{
-		i = 0;
 		while (arr[i] && !check_int(arr[i]))
 		{
 			res = ft_atoi(arr[i]);
