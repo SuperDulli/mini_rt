@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/31 16:14:15 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 17:09:50 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,6 @@ struct					s_2d_coord
 	int					y;
 };
 
-// struct					s_sphere
-// {
-// 	float		center[VEC3_SIZE];
-// 	float				radius;
-// 	// s_vec4	color;
-// 	unsigned			color;
-// };
-
 struct s_ray
 {
 	float	origin[VEC3_SIZE];
@@ -136,6 +128,17 @@ typedef struct s_obj {
 	int		type;
 	void	*specifics;
 }t_obj;
+
+struct s_scene
+{
+	t_amlight	*ambient_light;
+	t_obj		*light;
+	t_camera	*camera;
+	// t_screen	screen;
+	size_t		obj_count; // or: NULL-terminate the object array
+	t_obj		**objects; // array of pointer to objects to render
+};
+typedef struct s_scene t_scene;
 
 t_obj	*new_object(float pos[VEC3_SIZE], int color);
 void	destroy_object(t_obj *obj);
@@ -239,17 +242,6 @@ int				convert_to_argb(float rgb[VEC3_SIZE]);
 // 	unsigned	height;
 // };
 // typedef struct s_screen t_screen;
-
-struct s_scene
-{
-	t_amlight	*ambient_light;
-	t_obj		*light;
-	t_camera	*camera;
-	// t_screen	screen;
-	size_t		obj_count; // or: NULL-terminate the object array
-	t_obj		**objects; // array of pointer to objects to render
-};
-typedef struct s_scene t_scene;
 
 t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera);
 void	destroy_scene(t_scene *scene);

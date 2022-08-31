@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 19:59:30 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 16:14:49 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 17:04:47 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	get_data(char *line, int fd, int *err, t_scene *scene)
 			replace_tabs(line);
 			temp = ft_strtrim(line, " ");
 			*err = save_data(temp, scene);
-			free(temp)
+			free(temp);
 		}
 		free(line);
 		line = get_next_line(fd);

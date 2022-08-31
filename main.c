@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/31 11:49:28 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 17:11:13 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,15 +164,18 @@ int	main(int argc, char **argv)
 	int		window_height;
 	int		window_width;
 	t_data	data;
-	// t_scene	*scene;
+	t_scene	*scene;
 
 	if (argc == 2)
 	{
 		if (checkfile(argv[1]) == -1)
 			return (0);
-		// scene = new_scene(); //check failure, retunr error
-		// if (store_data(argv[1], scene) == -1)
-		// 	return (0);
+		scene = new_scene();
+		if (store_data(argv[1], scene) == -1)
+		{
+			destroy_scene(scene);
+			return (0);
+		}
 		else
 		{
 

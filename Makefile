@@ -32,6 +32,8 @@ SRCS	= main.c \
 			check_elements.c \
 			check_info.c \
 			check_utils.c \
+			store_data.c \
+			store_eöements.c \
 			object.c \
 			camera.c \
 			light.c \
