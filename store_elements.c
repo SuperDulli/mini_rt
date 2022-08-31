@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 16:08:56 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 16:14:03 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 16:59:26 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	save_amlight(char *line, t_scene *scene)
 
 	arg = ft_split(line, ' ');
 	if (arg)
-		color = ft_split(arr[2], ',');
+		color = ft_split(arg[2], ',');
 	if (color)
 	{
 		scene->ambient_light = new_ambient_light(ft_atof(arg[1]), \
-			get_color(0, ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2])));
+		get_color(0, ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2])));
 		arr_free(color);
 		arr_free(arg);
 		if (scene->ambient_light)
