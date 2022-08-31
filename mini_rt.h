@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/31 17:09:50 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 17:31:11 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "mlx.h"
 # include "vector.h"
 # include "libft.h"
+# include "keys.h"
 # include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -174,6 +175,17 @@ t_obj	*new_cylinder(
 	float height
 );
 
+struct s_scene
+{
+	t_amlight	*ambient_light;
+	t_obj		*light;
+	t_camera	*camera;
+	// t_screen	screen;
+	int		obj_count; // or: NULL-terminate the object array
+	t_list		*objects; // array of pointer to objects to render
+};
+typedef struct s_scene t_scene;
+
 //	check_file.c
 int		checkfile(char *path);
 int		readfile(int fd);
@@ -222,6 +234,10 @@ int	save_sphere(char *line, t_scene *scene);
 void	exit_fatal(void);
 void	*new(size_t size);
 
+// ray
+
+float	*ray_at(struct s_ray ray, float t, float *point);
+
 // color
 
 int				get_red(int color);
@@ -243,9 +259,10 @@ int				convert_to_argb(float rgb[VEC3_SIZE]);
 // };
 // typedef struct s_screen t_screen;
 
-t_scene	*new_scene(t_amlight *ambient_light, t_obj *light, t_camera *camera);
+t_scene	*new_scene(void);
 void	destroy_scene(t_scene *scene);
-void	add_obj_to_scene(t_scene *scene, t_obj *obj);
+bool	add_obj_to_scene(t_scene *scene, t_obj *obj);
+t_obj	*get_obj_from_scene(t_scene * scene, int index);
 
 // transform
 

@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 17:00:08 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/08/31 17:28:36 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	check_color(char *color)
 
 	i = 0;
 	arr = ft_split(color, ',');
+	i = 0;
 	if (arr_size(arr) == 3)
 	{
 		while (arr[i] && !check_int(arr[i]))
