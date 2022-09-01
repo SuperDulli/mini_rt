@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/31 18:20:07 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:52:35 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,6 @@ int	main(int argc, char **argv)
 		}
 	}
 	else
-		printf("Invalid arguments!\n");
+		ft_putendl_fd("Invalid arguments!", 1);
 	return (0);
 }
