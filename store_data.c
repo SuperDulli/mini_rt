@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 19:59:30 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 18:39:24 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:40:50 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,45 @@ int	save_data(char *line, t_scene *scene)
 	if (!ft_strncmp(line, "sp ", 3))
 		return (save_sphere(line, scene));
 	if (!ft_strncmp(line, "pl ", 3))
-		return (0);
-	// 	return (save_plane(line, scene));
+		return (save_plane(line, scene));
 	if (!ft_strncmp(line, "cy ", 3))
-		return (0);
-	// 	return (save_cylinder(line, scene));
+		return (save_cylinder(line, scene));
+	return (-1);
+}
+
+int	str_to_vec(char *info, float *vec)
+{
+	char	**pos;
+
+	pos = ft_split(info, ',');
+	if (!pos)
+		return (-1);
+	vec3(ft_atof(pos[0]), ft_atof(pos[1]), ft_atof(pos[2]), vec);
+	arr_free(pos);
+	return (0);
+}
+
+int	save_cylinder(char *line, t_scene *scene)
+{
+	t_obj	*cylinder;
+	char	**arg;
+	char	**color;
+	float	pos[VEC3_SIZE];
+	float	vec[VEC3_SIZE];
+
+	arg = ft_split(line, ' ');
+	if (arg)
+		color = ft_split(arg[5], ',');
+	if (color && !str_to_vec(arg[1], pos) && !str_to_vec(arg[2], vec))
+	{
+		cylinder = new_cylinder(pos, get_color(0, ft_atoi(color[0]), \
+					ft_atoi(color[1]), ft_atoi(color[2])), vec, \
+					ft_atof(arg[3]), ft_atof(arg[4]));
+		arr_free(color);
+		arr_free(arg);
+		if (add_obj_to_scene(scene, cylinder))
+			return (0);
+		destroy_object(cylinder);
+	}
 	return (-1);
 }
