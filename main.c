@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/31 18:20:07 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:21:17 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 
 		// apply shading
 		pixel_color = 0;
-		// pixel_color += ft_maxf(vec3_dot(color_v, ambient_color_v), 0.0f);
+		pixel_color += fmaxf(vec3_dot(color_v, ambient_color_v), 0.0f);
 		pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
 		// printf("pixelcolor=%f\n", pixel_color);
 		vec3_scalar_mult(color_v, pixel_color, color_v);
