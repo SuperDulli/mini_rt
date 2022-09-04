@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:26:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:40:50 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 13:40:25 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	destroy_object(t_obj *obj)
 		free((t_light *) obj->specifics);
 	else if (obj->type == CYLINDER)
 		free((t_cylinder *) obj->specifics);
+	else if (obj->type == PLANE)
+		free((t_plane *) obj->specifics);
 	else
 		ft_error(1, "destroy_object: unkown object type.");
 

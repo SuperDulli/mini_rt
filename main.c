@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/01 13:52:35 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/04 13:37:39 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,8 +182,7 @@ int	main(int argc, char **argv)
 			data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
 			data.img = mlx_new_image(data.mlx, window_width, window_height);
 			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
-			// mlx_string_put(data.mlx, data.win, 10, 10, 0x00FF0000, line);
-			// free(line);
+			destroy_scene(scene);
 			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
 			mlx_key_hook(data.win, &key_hook, &data);
 			mlx_loop(data.mlx);
