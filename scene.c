@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/01 12:20:22 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:17:24 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ t_scene	*build_scene(void)
 	float		dir[VEC3_SIZE];
 
 	// debug values
-	ambient = new_ambient_light(0.5f, WHITE);
+	ambient = new_ambient_light(0.5f, 0x0000FF);
 	// far away light source creates light rays that are "more" parallel
-	light = new_light(vec3(-3,3,4, pos), WHITE, 0.5f);
+	light = new_light(vec3(3,3,5, pos), WHITE, 0.5f);
 	camera = new_camera(vec3(0, 0, 3, pos), vec3(0, 0, -1, dir), 90);
 	scene = new_scene();
 	if (!ambient || !light || !camera || !scene)
@@ -116,7 +116,7 @@ t_scene	*build_scene(void)
 
 	// just add one unit cylinder (centerd at the origin) for now
 	// scene->objects = malloc(sizeof(t_obj *) * 1);
-	if (!add_obj_to_scene(scene, new_cylinder(vec3(0,0,0, pos), BLUE, vec3(0.f,1.f,0.f, dir), 2.f, 2.f)))
+	if (!add_obj_to_scene(scene, new_cylinder(vec3(0,0,0, pos), 0xFF00FF, vec3(0.f,1.f,0.f, dir), 2.f, 2.f)))
 	{
 		ft_error(2, "build_scene: cannot add obj to scene.");
 		destroy_scene(scene);
