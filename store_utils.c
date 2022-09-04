@@ -6,9 +6,11 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:37:58 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 18:48:48 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/03 12:43:19 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+//	file not necessary atm!
 
 #include "mini_rt.h"
 

@@ -6,12 +6,9 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 13:28:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/31 17:28:36 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/04 13:47:01 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// int		max_float = 2000;
-// unsigned int	max_precision = 4;
 
 #include "mini_rt.h"
 
@@ -29,7 +26,7 @@ int	check_color(char *color)
 		while (arr[i] && !check_int(arr[i]))
 		{
 			res = ft_atoi(arr[i]);
-			if (res >= 0 && res <= 255)
+			if (res >= MIN_COLOR_VALUE && res <= MAX_COLOR_VALUE)
 				i++;
 			else
 				break ;

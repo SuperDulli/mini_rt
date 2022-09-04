@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_elements.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 14:55:12 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/30 13:27:21 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/03 12:42:03 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_camera(char *line, char *duplicate)
 	if (arr_size(arg) == 4)
 	{
 		if (!check_vector(arg[1]) && !check_vector_range(arg[2], -1, 1) && \
-			!check_string_range(arg[3], 0, 180))
+			!check_string_range(arg[3], MIN_FOV, MAX_FOV))
 		{
 			arr_free(arg);
 			*duplicate |= 1 << 1;
