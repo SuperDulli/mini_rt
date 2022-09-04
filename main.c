@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 13:37:39 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 15:53:06 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	float	light_color_v[VEC3_SIZE];
 	float	light_dir[VEC3_SIZE];
 
-	cylinder = get_obj_from_scene(scene, 0);
+	cylinder = get_obj_from_scene(scene, 2);
 	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
 	vec3(u, v, -1.f, ray.direction);
 
@@ -106,9 +106,11 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 
 		// apply shading
 		pixel_color = 0;
-		// pixel_color += ft_maxf(vec3_dot(color_v, ambient_color_v), 0.0f);
+		pixel_color += fmaxf(vec3_dot(color_v, ambient_color_v), 0.0f);
+		vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], color_v);
 		pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
 		// printf("pixelcolor=%f\n", pixel_color);
+		
 		vec3_scalar_mult(color_v, pixel_color, color_v);
 
 		// map [-1, 1] -> [0, 1] -- useful for seeing the normals
@@ -122,16 +124,14 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	return (BLACK);
 }
 
-void	*fill_img(void *img)
+void	*fill_img(void *img, t_scene *scene)
 {
 	struct s_img_info	img_info;
 	char				*buffer;
 	struct s_2d_coord	px_coord;
 	int					pixel_addr;
 	int					color;
-	t_scene				*scene;
 
-	scene = build_scene();
 	if (!scene)
 		exit_fatal();
 	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
@@ -153,7 +153,6 @@ void	*fill_img(void *img)
 		}
 		px_coord.y++;
 	}
-	destroy_scene(scene);
 	return (img);
 }
 
@@ -181,7 +180,7 @@ int	main(int argc, char **argv)
 			data.mlx = mlx_init();
 			data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
 			data.img = mlx_new_image(data.mlx, window_width, window_height);
-			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img), 0, 0);
+			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img, scene), 0, 0);
 			destroy_scene(scene);
 			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
 			mlx_key_hook(data.win, &key_hook, &data);
