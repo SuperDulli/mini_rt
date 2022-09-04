@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:26:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 13:40:25 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:29:40 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-t_obj	*new_object(float pos[VEC3_SIZE], int color)
+t_obj	*new_object(float pos[VEC3_SIZE], float color[VEC3_SIZE])
 {
 	t_obj	*obj;
 
@@ -23,7 +23,9 @@ t_obj	*new_object(float pos[VEC3_SIZE], int color)
 	}
 	obj->type = NONE;
 	obj->specifics = NULL;
-	obj->colourcode = color;
+	obj->colorcode[0] = color[0];
+	obj->colorcode[1] = color[1];
+	obj->colorcode[2] = color[2];
 	obj->pos[0] = pos[0];
 	obj->pos[1] = pos[1];
 	obj->pos[2] = pos[2];

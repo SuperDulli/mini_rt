@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 12:21:19 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:13:40 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:17:56 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov)
+t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 {
 	t_camera	*camera;
 

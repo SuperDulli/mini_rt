@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:40:03 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:41:21 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:40:06 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ float	hit_plane(struct s_ray *ray, t_obj *plane)
  * @param orientation normalized (len == 1)
  * @return t_obj*
  */
-t_obj	*new_plane(float pos[VEC3_SIZE], int color, float orientation[VEC3_SIZE])
+t_obj	*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], float orientation[VEC3_SIZE])
 {
 	t_obj	*obj;
 	t_plane	*plane;

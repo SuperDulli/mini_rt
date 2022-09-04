@@ -6,14 +6,14 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 15:53:06 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/04 17:21:32 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
 float	hit_sphere(struct s_ray *ray, t_obj *sphere);
-bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE], float local_color[VEC3_SIZE]);
+bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]); //, float local_color[VEC3_SIZE]);
 
 t_scene	*build_scene(void);
 
@@ -82,7 +82,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	vec3(color_v[0] + 0.5f, color_v[1] + 0.5f, color_v[2] + 0.0f, color_v);
 	// return (convert_to_argb(color_v));
 
-	if (hit_cylinder(&ray, cylinder, point, normal, color_v))
+	if (hit_cylinder(&ray, cylinder, point, normal)) //, color_v))
 	{
 		// printf("u,v = %f, %f\n", u, v);
 		// return convert_to_argb(normal);
@@ -92,8 +92,8 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		vec3_normalize(light_dir, light_dir);
 
 		// colors as vectors
-		color_vec_from_int(scene->ambient_light->color, ambient_color_v);
-		color_vec_from_int(scene->light->colourcode, light_color_v);
+		// color_vec_from_int(scene->ambient_light->color, ambient_color_v);
+		// color_vec_from_int(scene->light->colorcode, light_color_v);
 
 		// light intensity - inverse square law? to
 		vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
@@ -107,7 +107,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		// apply shading
 		pixel_color = 0;
 		pixel_color += fmaxf(vec3_dot(color_v, ambient_color_v), 0.0f);
-		vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], color_v);
+		vec3(cylinder->colorcode[0] * ambient_color_v[0], cylinder->colorcode[1] * ambient_color_v[1], cylinder->colorcode[2] * ambient_color_v[2], color_v);
 		pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
 		// printf("pixelcolor=%f\n", pixel_color);
 		

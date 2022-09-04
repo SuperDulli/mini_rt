@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 19:59:30 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/09/01 13:40:50 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:53:36 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,16 @@ int	save_cylinder(char *line, t_scene *scene)
 {
 	t_obj	*cylinder;
 	char	**arg;
-	char	**color;
+	float	color[VEC3_SIZE];
 	float	pos[VEC3_SIZE];
 	float	vec[VEC3_SIZE];
 
 	arg = ft_split(line, ' ');
-	if (arg)
-		color = ft_split(arg[5], ',');
-	if (color && !str_to_vec(arg[1], pos) && !str_to_vec(arg[2], vec))
+	if (arg && !str_to_vec(arg[1], pos) && !str_to_vec(arg[2], vec) && \
+		!str_to_vec(arg[5], color))
 	{
-		cylinder = new_cylinder(pos, get_color(0, ft_atoi(color[0]), \
-					ft_atoi(color[1]), ft_atoi(color[2])), vec, \
+		cylinder = new_cylinder(pos, color_vec(color, color), vec, \
 					ft_atof(arg[3]), ft_atof(arg[4]));
-		arr_free(color);
 		arr_free(arg);
 		if (add_obj_to_scene(scene, cylinder))
 			return (0);

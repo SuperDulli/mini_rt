@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 12:40:25 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:40:45 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ float	hit_sphere(struct s_ray *ray, t_obj *sphere)
 	return ((-b - sqrtf(discriminant)) / (2.f * a));
 }
 
-t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter)
+t_obj	*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter)
 {
 	t_obj		*obj;
 	t_sphere	*sphere;

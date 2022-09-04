@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/30 17:17:48 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/04 17:12:00 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	close_enough(float a, float b)
 	return (fabsf(a - b) < __FLT_EPSILON__);
 }
 
-bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE], float local_color[VEC3_SIZE])
+bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]) //, float local_color[VEC3_SIZE])
 {
 	float	a;
 	float	b;
@@ -156,7 +156,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 
 	ray_at(*ray, min_value, intersection);
 	vec3_copy(intersection, point);
-	local_color = color_vec_from_int(cylinder->colourcode, local_color);
+	// local_color = color_vec_from_int(cylinder->colourcode, local_color);
 	// wall or caps?
 	if (min_index < 2)
 	{
@@ -210,7 +210,7 @@ void	normal_cap(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SIZE]
 
 t_obj	*new_cylinder(
 	float pos[VEC3_SIZE],
-	int color,
+	float color[VEC3_SIZE],
 	float orientation[VEC3_SIZE],
 	float diameter,
 	float height

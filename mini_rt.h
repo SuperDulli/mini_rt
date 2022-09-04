@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/01 13:40:27 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/04 17:00:11 by pcordeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ struct s_ray
 
 typedef struct s_amlight {
 	float	ratio;
-	int		color;
+	float	color[VEC3_SIZE];
 }t_amlight;
 
 typedef struct s_camera {
@@ -124,7 +124,7 @@ typedef	struct s_transform t_tform; // read: type transform
 typedef struct s_obj {
 	float	pos[VEC3_SIZE];
 	t_tform	transform;
-	int		colourcode;
+	float	colorcode[VEC3_SIZE];
 	int		type;
 	void	*specifics;
 }t_obj;
@@ -140,35 +140,31 @@ struct s_scene
 };
 typedef struct s_scene t_scene;
 
-t_obj	*new_object(float pos[VEC3_SIZE], int color);
+t_obj	*new_object(float pos[VEC3_SIZE], float color[VEC3_SIZE]);
 void	destroy_object(t_obj *obj);
-
-t_amlight	*new_ambient_light(float ratio, int color);
-t_obj		*new_light(float pos[VEC3_SIZE], int color, float brightness);
-t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov);
 
 // sphere
 
-t_obj	*new_sphere(float pos[VEC3_SIZE], int color, float diameter);
+t_obj	*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter);
 
 // camera
 
-t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], int fov);
+t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov);
 
 // light
 
-t_amlight	*new_ambient_light(float ratio, int color);
-t_obj	*new_light(float pos[VEC3_SIZE], int color, float brightness);
+t_amlight	*new_ambient_light(float ratio, float color[VEC3_SIZE]);
+t_obj		*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], float brightness);
 
 // plane
 
-t_obj	*new_plane(float pos[VEC3_SIZE], int color, float orientation[VEC3_SIZE]);
+t_obj	*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], float orientation[VEC3_SIZE]);
 
 // cylinder
 
 t_obj	*new_cylinder(
 	float pos[VEC3_SIZE],
-	int color,
+	float color[VEC3_SIZE],
 	float orientation[VEC3_SIZE],
 	float diameter,
 	float height
@@ -235,7 +231,7 @@ int				get_red(int color);
 int				get_green(int color);
 int				get_blue(int color);
 unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b);
-float			*color_vec(int red, int green, int blue, float *result);
+float			*color_vec(float color[VEC3_SIZE], float *result);
 float			*color_vec_from_int(int argb, float *result);
 int				convert_to_argb(float rgb[VEC3_SIZE]);
 
