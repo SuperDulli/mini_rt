@@ -130,7 +130,8 @@ void	*new(size_t size);
 
 // ray
 
-float	*ray_at(struct s_ray ray, float t, float *point);
+float	*ray_at(struct s_ray *ray, float t, float *point);
+void	ray_cast(float *origin, float *point, struct s_ray *ray);
 
 // color
 

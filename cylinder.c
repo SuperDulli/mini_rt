@@ -61,7 +61,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		t = (-b - sqrtf(discriminant)) / (2.f * a);
 		t2 = (-b + sqrtf(discriminant)) / (2.f * a);
 
-		ray_at(*ray, t, intersection);
+		ray_at(ray, t, intersection);
 		if (t > 0.f && fabsf(intersection[2]) < 1.0f) // clinder wall
 		{
 			t1_valid = true;
@@ -71,7 +71,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 			t1_valid = false;
 			t = INFINITY;
 		}
-		ray_at(*ray, t2, intersection);
+		ray_at(ray, t2, intersection);
 		if (t2 > 0.f && fabsf(intersection[2]) < 1.0f) // clinder wall
 		{
 			t2_valid = true;
@@ -106,7 +106,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		// printf("t: %f, %f\n", t3, t4);
 
 
-		ray_at(*ray, t3, intersection2);
+		ray_at(ray, t3, intersection2);
 		if (t3 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= 1.f)
 		{
 			t3_valid = true;
@@ -116,7 +116,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 			t3_valid = false;
 			t3 = INFINITY;
 		}
-		ray_at(*ray, t4, intersection2);
+		ray_at(ray, t4, intersection2);
 		if (t4 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= 1.f)
 		{
 			t4_valid = true;
@@ -154,7 +154,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		i++;
 	}
 
-	ray_at(*ray, min_value, intersection);
+	ray_at(ray, min_value, intersection);
 	vec3_copy(intersection, point);
 	// local_color = color_vec_from_int(cylinder->colourcode, local_color);
 	// wall or caps?

@@ -98,8 +98,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	float	color_v[VEC3_SIZE];
 
 	cylinder = get_obj_from_scene(scene, 2);
-	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
-	vec3(u, v, -1.f, ray.direction);
+	ray_cast(scene->camera->pos, vec3(u, v, scene->camera->pos[2] - 1, point), &ray); // TODO: camera rotation
 
 	if (hit_cylinder(&ray, cylinder, point, normal))
 	{

@@ -12,11 +12,17 @@
 
 #include "mini_rt.h"
 
-float	*ray_at(struct s_ray ray, float t, float *point)
+float	*ray_at(struct s_ray *ray, float t, float *point)
 {
 	float	dir[VEC3_SIZE];
 
-	vec3_scalar_mult(ray.direction, t, dir);
-	vec3_add(ray.origin, dir, point);
+	vec3_scalar_mult(ray->direction, t, dir);
+	vec3_add(ray->origin, dir, point);
 	return (point);
+}
+
+void	ray_cast(float *origin, float *point, struct s_ray *ray)
+{
+	vec3_copy(origin, ray->origin);
+	vec3_sub(point, origin, ray->direction);
 }
