@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/01 11:43:41 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/05 15:56:44 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "libft.h"
 # include "keys.h"
 # include "scene.h"
+# include "ray.h"
 # include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -71,11 +72,13 @@ struct					s_2d_coord
 	int					y;
 };
 
-struct s_ray
+struct s_hit_record
 {
-	float	origin[VEC3_SIZE];
-	float	direction[VEC3_SIZE];
+	float	pos[VEC3_SIZE];
+	float	normal[VEC3_SIZE];
+	float	color[VEC3_SIZE];
 };
+typedef struct s_hit_record t_hit_record;
 
 //	check_file.c
 int		checkfile(char *path);
@@ -130,8 +133,7 @@ void	*new(size_t size);
 
 // ray
 
-float	*ray_at(struct s_ray *ray, float t, float *point);
-void	ray_cast(float *origin, float *point, struct s_ray *ray);
+bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections);
 
 // color
 
@@ -152,5 +154,11 @@ void	set_transform(
 	t_tform *transform
 );
 float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], bool is_point, float *result);
+
+// intersection
+
+t_hit_record	*new_hit_record(float *pos, float *normal, float *color);
+bool			add_hit_record(t_list **records, t_hit_record *hit);
+t_hit_record	*get_hit_record(t_list *records, int index);
 
 #endif

@@ -1,0 +1,69 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intersection.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/05 14:15:00 by chelmerd          #+#    #+#             */
+/*   Updated: 2022/09/05 15:05:13 by chelmerd         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "mini_rt.h"
+
+t_hit_record	*new_hit_record(float *pos, float *normal, float *color)
+{
+	t_hit_record	*hit_record;
+
+	hit_record = new(sizeof(t_hit_record));
+	if (!hit_record)
+	{
+		return (NULL);
+	}
+	vec3_copy(pos, hit_record->pos);
+	vec3_copy(normal, hit_record->normal);
+	vec3_copy(color, hit_record->color);
+	return (hit_record);
+}
+
+bool	add_hit_record(t_list **records, t_hit_record *hit)
+{
+	t_list	*elem;
+
+	if (!hit)
+	{
+		ft_error(1, "add_hit_record: hit is NULL.");
+		return (false);
+	}
+	elem = ft_lstnew(hit);
+	if (!elem)
+	{
+		ft_error(2, "add_hit_record: cannnot put hit_record into the list.");
+		return (false);
+	}
+	ft_lstadd_back(records, elem);
+	return (true);
+}
+
+t_hit_record	*get_hit_record(t_list *records, int index)
+{
+	t_hit_record	*hit;
+	t_list	*tmp;
+	int		i;
+
+	if (index < 0 || index > ft_lstsize(records))
+	{
+		ft_error(1, "get_hit_record: index not in range.");
+		return (NULL);
+	}
+	tmp = records;
+	i = 0;
+	while (i < index)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	hit = (t_hit_record *) tmp->content;
+	return (hit);
+}

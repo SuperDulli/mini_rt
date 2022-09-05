@@ -6,14 +6,13 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 16:16:41 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/05 16:42:56 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
 float	hit_sphere(struct s_ray *ray, t_obj *sphere);
-bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]); //, float local_color[VEC3_SIZE]);
 
 t_scene	*build_scene(void);
 
@@ -91,22 +90,32 @@ void	apply_shading(t_scene *scene, float	point[VEC3_SIZE], float	normal[VEC3_SIZ
 
 unsigned int	choose_color(t_scene *scene, float u, float v)
 {
-	t_obj		*cylinder;
 	struct s_ray	ray;
-	float	point[VEC3_SIZE];
-	float	normal[VEC3_SIZE];
-	float	color_v[VEC3_SIZE];
+	t_list			*ray_intersections;
+	float			point[VEC3_SIZE];
+	float			color_v[VEC3_SIZE];
+	t_hit_record	*hit;
 
-	cylinder = get_obj_from_scene(scene, 2);
 	ray_cast(scene->camera->pos, vec3(u, v, scene->camera->pos[2] - 1, point), &ray); // TODO: camera rotation
-
-	if (hit_cylinder(&ray, cylinder, point, normal))
+	ray_intersections = NULL;
+	if (!ray_intersect(&ray, scene, &ray_intersections))
 	{
-		vec3_copy(cylinder->color, color_v);
-		apply_shading(scene, point, normal, color_v);
-		return (convert_to_argb(color_v));
+		ft_lstclear(&ray_intersections, free);
+		exit_fatal();
 	}
-	return (BLACK);
+	if (ft_lstsize(ray_intersections) == 0)
+	{
+		return (BLACK);
+	}
+
+	// TODO: find closest hit point in list
+
+	hit = get_hit_record(ray_intersections, 0);
+	vec3_copy(hit->color, color_v);
+	apply_shading(scene, hit->pos, hit->normal, color_v);
+	ft_lstclear(&ray_intersections, free);
+
+	return (convert_to_argb(color_v));
 }
 
 void	*fill_img(void *img, t_scene *scene)

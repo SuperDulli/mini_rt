@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:03:18 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/25 11:04:00 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/05 15:56:35 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,31 @@ void	ray_cast(float *origin, float *point, struct s_ray *ray)
 {
 	vec3_copy(origin, ray->origin);
 	vec3_sub(point, origin, ray->direction);
+}
+
+bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections)
+{
+	int		i;
+	t_obj	*obj;
+	float	point[VEC3_SIZE];
+	float	normal[VEC3_SIZE];
+
+	i = 0;
+	while (i < scene->obj_count)
+	{
+		obj = get_obj_from_scene(scene, i);
+		if (obj->type == CYLINDER)
+		{
+			if (hit_cylinder(ray, obj, point, normal))
+			{
+				if (!add_hit_record(intersections, new_hit_record(point, normal, obj->color)))
+				{
+					ft_error(1, "ray_intersect: cannot add cylinder hit to list of intersections.");
+					return (false);
+				}
+			}
+		}
+		i++;
+	}
+	return (true);
 }
