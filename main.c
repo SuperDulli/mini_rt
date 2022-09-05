@@ -58,67 +58,53 @@ void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
 	}
 }
 
+void	apply_shading(t_scene *scene, float	point[VEC3_SIZE], float	normal[VEC3_SIZE], float color_v[VEC3_SIZE])
+{
+	float	ambient_color_v[VEC3_SIZE];
+	t_light	*light;
+	float	light_color_v[VEC3_SIZE];
+	float	light_dir[VEC3_SIZE];
+	float	pixel_color;
+
+	// get light direction
+	vec3_sub(scene->light->pos, point, light_dir); // dir from hitpoint to light (-lightdir)
+	// vec3(1, 1, 1, light_dir); // parallel light
+	vec3_normalize(light_dir, light_dir);
+
+	// colors as vectors
+	vec3_copy(scene->ambient_light->color, ambient_color_v);
+	vec3_copy(scene->light->color, light_color_v); // TODO: cast ray towards light to check if its blocked
+
+	// light intensity - inverse square law? to
+	vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
+	light = (t_light *) scene->light->specifics;
+	vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
+
+	// apply shading
+	vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], ambient_color_v);
+
+	pixel_color = 0;
+	pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
+	vec3_scalar_mult(color_v, pixel_color, light_color_v);
+	vec3_add(ambient_color_v, light_color_v, color_v);
+}
+
 unsigned int	choose_color(t_scene *scene, float u, float v)
 {
-	// unsigned int	color;
 	t_obj		*cylinder;
 	struct s_ray	ray;
 	float	point[VEC3_SIZE];
 	float	normal[VEC3_SIZE];
-	float	pixel_color;
 	float	color_v[VEC3_SIZE];
-	float	ambient_color_v[VEC3_SIZE];
-	t_light		*light;
-	float	light_color_v[VEC3_SIZE];
-	float	light_dir[VEC3_SIZE];
 
 	cylinder = get_obj_from_scene(scene, 2);
 	vec3_copy(scene->camera->pos, ray.origin); // ray.origin = camera_pos
 	vec3(u, v, -1.f, ray.direction);
 
-	// debug display u, v
-	// vec3(u, v, 0, color_v);
-	// vec3_scalar_mult(color_v, 0.5f, color_v);
-	// vec3(color_v[0] + 0.5f, color_v[1] + 0.5f, color_v[2] + 0.0f, color_v);
-	// return (convert_to_argb(color_v));
-	if (hit_cylinder(&ray, cylinder, point, normal)) //, color_v))
+	if (hit_cylinder(&ray, cylinder, point, normal))
 	{
 		vec3_copy(cylinder->color, color_v);
-		// printf("u,v = %f, %f\n", u, v);
-		// return convert_to_argb(normal);
-		// get light direction
-		vec3_sub(scene->light->pos, point, light_dir); // dir from hitpoint to light (-lightdir)
-		// vec3(1, 1, 1, light_dir); // parallel light
-		vec3_normalize(light_dir, light_dir);
-
-		// colors as vectors
-		vec3_copy(scene->ambient_light->color, ambient_color_v);
-		vec3_copy(scene->light->color, light_color_v);
-
-		// light intensity - inverse square law? to
-		vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
-		light = (t_light *) scene->light->specifics;
-		vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
-
-		// printf("colors (RGB): (%f, %f, %f) from %i\n", ambient_color_v[0], ambient_color_v[1], ambient_color_v[2], scene->light->colourcode);
-		// printf("normal (xyz): (%f, %f, %f)\n", normal[0], normal[1], normal[2]);
-		// printf("light_dir (xyz): (%f, %f, %f)\n", light_dir[0], light_dir[1], light_dir[2]);
-
-		// apply shading
-		vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], ambient_color_v);
-
-		pixel_color = 0;
-		pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
-		vec3_scalar_mult(color_v, pixel_color, light_color_v);
-		// printf("pixelcolor=%f\n", pixel_color);
-		vec3_add(ambient_color_v, light_color_v, color_v);
-
-		// map [-1, 1] -> [0, 1] -- useful for seeing the normals
-		// vec3_scalar_mult(color_v, 0.5f, normal);
-		// vec3(normal[0] + 0.5f, normal[1] + 0.5f, normal[2] + 0.5f, normal);
-		// vec3_scalar_mult(color_v, 0.5f, color_v);
-		// vec3(color_v[0] + 0.5f, color_v[1] + 0.5f, color_v[2] + 0.5f, color_v);
-
+		apply_shading(scene, point, normal, color_v);
 		return (convert_to_argb(color_v));
 	}
 	return (BLACK);
@@ -132,8 +118,6 @@ void	*fill_img(void *img, t_scene *scene)
 	int					pixel_addr;
 	int					color;
 
-	if (!scene)
-		exit_fatal();
 	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
 			&img_info.line_size, &img_info.endian);
 	px_coord.y = 0;
