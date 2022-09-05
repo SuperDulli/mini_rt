@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 17:21:32 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:16:41 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	vec3(u, v, -1.f, ray.direction);
 
 	// debug display u, v
-	vec3(u, v, 0, color_v);
-	vec3_scalar_mult(color_v, 0.5f, color_v);
-	vec3(color_v[0] + 0.5f, color_v[1] + 0.5f, color_v[2] + 0.0f, color_v);
+	// vec3(u, v, 0, color_v);
+	// vec3_scalar_mult(color_v, 0.5f, color_v);
+	// vec3(color_v[0] + 0.5f, color_v[1] + 0.5f, color_v[2] + 0.0f, color_v);
 	// return (convert_to_argb(color_v));
-
 	if (hit_cylinder(&ray, cylinder, point, normal)) //, color_v))
 	{
+		vec3_copy(cylinder->color, color_v);
 		// printf("u,v = %f, %f\n", u, v);
 		// return convert_to_argb(normal);
 		// get light direction
@@ -92,8 +92,8 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		vec3_normalize(light_dir, light_dir);
 
 		// colors as vectors
-		// color_vec_from_int(scene->ambient_light->color, ambient_color_v);
-		// color_vec_from_int(scene->light->colorcode, light_color_v);
+		vec3_copy(scene->ambient_light->color, ambient_color_v);
+		vec3_copy(scene->light->color, light_color_v);
 
 		// light intensity - inverse square law? to
 		vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
@@ -105,13 +105,13 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		// printf("light_dir (xyz): (%f, %f, %f)\n", light_dir[0], light_dir[1], light_dir[2]);
 
 		// apply shading
+		vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], ambient_color_v);
+
 		pixel_color = 0;
-		pixel_color += fmaxf(vec3_dot(color_v, ambient_color_v), 0.0f);
-		vec3(cylinder->colorcode[0] * ambient_color_v[0], cylinder->colorcode[1] * ambient_color_v[1], cylinder->colorcode[2] * ambient_color_v[2], color_v);
 		pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
+		vec3_scalar_mult(color_v, pixel_color, light_color_v);
 		// printf("pixelcolor=%f\n", pixel_color);
-		
-		vec3_scalar_mult(color_v, pixel_color, color_v);
+		vec3_add(ambient_color_v, light_color_v, color_v);
 
 		// map [-1, 1] -> [0, 1] -- useful for seeing the normals
 		// vec3_scalar_mult(color_v, 0.5f, normal);
@@ -139,7 +139,7 @@ void	*fill_img(void *img, t_scene *scene)
 	px_coord.y = 0;
 	while (px_coord.y < HEIGHT)
 	{
-		// printf("line %d of %d\n", px_coord.y, HEIGHT);
+		printf("line %d of %d\n", px_coord.y, HEIGHT);
 		px_coord.x = 0;
 		while (px_coord.x < WIDTH)
 		{

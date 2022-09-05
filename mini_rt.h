@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 17:00:11 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/01 11:43:41 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "vector.h"
 # include "libft.h"
 # include "keys.h"
+# include "scene.h"
 # include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -38,7 +39,7 @@
 # define MAX_RATIO 1.f
 
 # define MAX_UNIT_VECTOR_COMP 1.f
-# define MIN_UNIT_VECTOR_COMP -(MAX_UNIT_VECTOR_COMP)
+# define MIN_UNIT_VECTOR_COMP -1.f
 
 # define MIN_COLOR_VALUE 0
 # define MAX_COLOR_VALUE 255
@@ -48,15 +49,6 @@
 
 # define MAX_FLOAT 2000
 # define MAX_PRECISION 4
-
-enum e_obj_type
-{
-	NONE,
-	SPHERE,
-	CYLINDER,
-	PLANE,
-	LIGHT
-};
 
 struct					s_data
 {
@@ -85,91 +77,6 @@ struct s_ray
 	float	direction[VEC3_SIZE];
 };
 
-typedef struct s_amlight {
-	float	ratio;
-	float	color[VEC3_SIZE];
-}t_amlight;
-
-typedef struct s_camera {
-	float	pos[3];
-	float	ovector[3];
-	int		fov;			// float??
-}t_camera;
-
-typedef	struct s_light {
-	float	brightness;
-}t_light;
-
-typedef struct s_sphere {
-	float	diameter;
-}t_sphere;
-
-typedef struct s_plane {
-	float	ovector[3];
-}t_plane;
-
-typedef struct s_cylinder {
-	float	ovector[3];
-	float	diameter;
-	float	height;
-}t_cylinder;
-
-struct s_transform
-{
-	float	forward[MAT4_SIZE];
-	float	backward[MAT4_SIZE];
-};
-typedef	struct s_transform t_tform; // read: type transform
-
-typedef struct s_obj {
-	float	pos[VEC3_SIZE];
-	t_tform	transform;
-	float	colorcode[VEC3_SIZE];
-	int		type;
-	void	*specifics;
-}t_obj;
-
-struct s_scene
-{
-	t_amlight	*ambient_light;
-	t_obj		*light;
-	t_camera	*camera;
-	// t_screen	screen;
-	int		obj_count; // or: NULL-terminate the object array
-	t_list		*objects; // array of pointer to objects to render
-};
-typedef struct s_scene t_scene;
-
-t_obj	*new_object(float pos[VEC3_SIZE], float color[VEC3_SIZE]);
-void	destroy_object(t_obj *obj);
-
-// sphere
-
-t_obj	*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter);
-
-// camera
-
-t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov);
-
-// light
-
-t_amlight	*new_ambient_light(float ratio, float color[VEC3_SIZE]);
-t_obj		*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], float brightness);
-
-// plane
-
-t_obj	*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], float orientation[VEC3_SIZE]);
-
-// cylinder
-
-t_obj	*new_cylinder(
-	float pos[VEC3_SIZE],
-	float color[VEC3_SIZE],
-	float orientation[VEC3_SIZE],
-	float diameter,
-	float height
-);
-
 //	check_file.c
 int		checkfile(char *path);
 int		readfile(int fd);
@@ -178,7 +85,7 @@ int		check_cylinder(char *line);
 void	readfile_helper(char *line, int fd, int *err);
 
 //	check_elements.c
-int check_amlight(char *line, char *duplicate);
+int	check_amlight(char *line, char *duplicate);
 int	check_camera(char *line, char *duplicate);
 int	check_light(char *line, char *duplicate);
 int	check_sphere(char *line);
@@ -235,22 +142,6 @@ float			*color_vec(float color[VEC3_SIZE], float *result);
 float			*color_vec_from_int(int argb, float *result);
 int				convert_to_argb(float rgb[VEC3_SIZE]);
 
-// scene
-
-// screen (depends on camera FOV, aspect ratio and resolution)
-// struct s_screen
-// {
-// 	float		aspect_ratio;
-// 	unsigned	width;
-// 	unsigned	height;
-// };
-// typedef struct s_screen t_screen;
-
-t_scene	*new_scene(void);
-void	destroy_scene(t_scene *scene);
-bool	add_obj_to_scene(t_scene *scene, t_obj *obj);
-t_obj	*get_obj_from_scene(t_scene * scene, int index);
-
 // transform
 
 void	set_transform(
@@ -259,6 +150,6 @@ void	set_transform(
 	float scale[VEC3_SIZE],
 	t_tform *transform
 );
-float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], int is_point, float *result);
+float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], bool is_point, float *result);
 
 #endif

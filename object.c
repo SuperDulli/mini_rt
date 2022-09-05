@@ -23,9 +23,9 @@ t_obj	*new_object(float pos[VEC3_SIZE], float color[VEC3_SIZE])
 	}
 	obj->type = NONE;
 	obj->specifics = NULL;
-	obj->colorcode[0] = color[0];
-	obj->colorcode[1] = color[1];
-	obj->colorcode[2] = color[2];
+	obj->color[0] = color[0];
+	obj->color[1] = color[1];
+	obj->color[2] = color[2];
 	obj->pos[0] = pos[0];
 	obj->pos[1] = pos[1];
 	obj->pos[2] = pos[2];

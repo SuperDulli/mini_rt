@@ -39,7 +39,7 @@ void	set_transform(
 	mat4_inverse(transform->forward, transform->backward);
 }
 
-float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], int is_point, float *result)
+float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], bool is_point, float *result)
 {
 	float	tmp[VEC4_SIZE];
 

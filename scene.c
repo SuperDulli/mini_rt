@@ -6,7 +6,7 @@
 /*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 13:27:49 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 17:18:23 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/04 16:17:24 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,38 +89,3 @@ t_obj	*get_obj_from_scene(t_scene * scene, int index)
 	obj = (t_obj *) tmp->content;
 	return (obj);
 }
-
-// t_scene	*build_scene(void)
-// {
-// 	t_scene		*scene;
-// 	t_amlight	*ambient;
-// 	t_obj		*light;
-// 	t_camera	*camera;
-// 	float		pos[VEC3_SIZE];
-// 	float		dir[VEC3_SIZE];
-
-// 	// debug values
-// 	ambient = new_ambient_light(0.5f, WHITE);
-// 	// far away light source creates light rays that are "more" parallel
-// 	light = new_light(vec3(3,3,5, pos), WHITE, 0.5f);
-// 	camera = new_camera(vec3(0, 0, 3, pos), vec3(0, 0, -1, dir), 90);
-// 	scene = new_scene();
-// 	if (!ambient || !light || !camera || !scene)
-// 	{
-// 		ft_error(1, "build_scene: cannnot create create scene.");
-// 		return (NULL);
-// 	}
-// 	scene->ambient_light = ambient;
-// 	scene->light = light;
-// 	scene->camera = camera;
-
-// 	// just add one unit cylinder (centerd at the origin) for now
-// 	// scene->objects = malloc(sizeof(t_obj *) * 1);
-// 	if (!add_obj_to_scene(scene, new_cylinder(vec3(0,0,0, pos), BLUE, vec3(0.f,1.f,0.f, dir), 2.f, 2.f)))
-// 	{
-// 		ft_error(2, "build_scene: cannot add obj to scene.");
-// 		destroy_scene(scene);
-// 		return (NULL);
-// 	}
-// 	return (scene);
-// }
