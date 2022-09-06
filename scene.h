@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 11:28:53 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/05 15:02:37 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:16:37 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_obj		*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], float brightness
 // sphere
 
 t_obj		*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter);
+bool		hit_sphere(struct s_ray *ray, t_obj *sphere, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
 
 // plane
 
