@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 11:39:03 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 12:14:44 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 	float	t_values[4];
 
 
-	radius = ((t_cylinder *) cylinder->specifics)->diameter / 2.f;
+	radius = 1.f;
 
 	apply_transform(ray->direction, cylinder->transform.backward, 0, ray->direction);
 	apply_transform(ray->origin, cylinder->transform.backward, 1, ray->origin);
@@ -107,7 +107,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 
 
 		ray_at(ray, t3, intersection2);
-		if (t3 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= 1.f)
+		if (t3 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= radius)
 		{
 			t3_valid = true;
 		}
@@ -117,7 +117,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 			t3 = INFINITY;
 		}
 		ray_at(ray, t4, intersection2);
-		if (t4 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= 1.f)
+		if (t4 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= radius)
 		{
 			t4_valid = true;
 		}
@@ -164,7 +164,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		// local_color[2] = 1.f;
 		return (true);
 	}
-	else if (!close_enough(ray->direction[2], 0.f) && sqrtf(intersection[0] * intersection[0] + intersection[1] * intersection[1]) <= 1.f)
+	else if (!close_enough(ray->direction[2], 0.f) && sqrtf(intersection[0] * intersection[0] + intersection[1] * intersection[1]) <= radius)
 	{
 		// printf("cap normal (xyz): (%f, %f, %f) min_index=%d\n", intersection[0], intersection[1], intersection[2], min_index);
 		normal_cap(cylinder, intersection, local_normal);
@@ -239,7 +239,7 @@ t_obj	*new_cylinder(
 
 	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
 	rot_vec_from_orientation(orientation, rot);
-	vec3(1.f, 1.f, 1.f, scale);
+	vec3(diameter / 2.f, diameter / 2.f, height / 2.f, scale);
 	set_transform(transl, rot, scale, &obj->transform);
 
 	return (obj);
