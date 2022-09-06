@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 16:15:49 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:44:08 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_obj	*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter)
 
 	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
 	vec3(0, 0, 0, rot);
-	vec3(1.f, 1.f, 1.f, scale);
+	vec_fill(diameter / 2.f, 3, scale);
 	set_transform(transl, rot, scale, &obj->transform);
 
 	return (obj);
