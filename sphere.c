@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 16:40:45 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:15:49 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param sphere
  * @return float the closest hit point, or -1 if it missed the sphere
  */
-float	hit_sphere(struct s_ray *ray, t_obj *sphere)
+bool	hit_sphere(struct s_ray *ray, t_obj *sphere, float point[VEC3_SIZE], float local_normal[VEC3_SIZE])
 {
 	float	a;
 	float	b;
@@ -30,7 +30,7 @@ float	hit_sphere(struct s_ray *ray, t_obj *sphere)
 	float	discriminant;
 	float	radius;
 
-	radius = ((t_sphere *) sphere->specifics)->diameter / 2.f;
+	radius = 1.f;
 
 	apply_transform(ray->direction, sphere->transform.backward, 0, ray->direction);
 	apply_transform(ray->origin, sphere->transform.backward, 1, ray->origin);
@@ -41,8 +41,13 @@ float	hit_sphere(struct s_ray *ray, t_obj *sphere)
 	discriminant = b * b - 4 * a * c;
 	// printf("discriminant=%f, a=%f, b=%f, c=%f\n", discriminant, a, b, c);
 	if (discriminant < 0)
-		return (-1.f);
-	return ((-b - sqrtf(discriminant)) / (2.f * a));
+		return (false);
+	ray_at(ray, (-b - sqrtf(discriminant)) / (2.f * a), point);
+	apply_transform(point, sphere->transform.forward, 1, point);
+	vec3_copy(point, local_normal);
+	vec3_normalize(local_normal, local_normal);
+
+	return (true);
 }
 
 t_obj	*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter)

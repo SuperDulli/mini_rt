@@ -6,13 +6,11 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/05 16:42:56 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:16:46 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
-
-float	hit_sphere(struct s_ray *ray, t_obj *sphere);
 
 t_scene	*build_scene(void);
 
