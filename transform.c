@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:28:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 11:37:47 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 12:27:22 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	set_transform(
 	mat4_rotate_z(rotation[2], rotation_z_matrix);
 	mat4_scale(scale[0], scale[1], scale[2], scale_matrix);
 
-	mat4_mult(transl_matrix, scale_matrix, transform->forward);
-	mat4_mult(transform->forward, rotation_x_matrix, transform->forward);
+	mat4_mult(transl_matrix, rotation_x_matrix, transform->forward);
 	mat4_mult(transform->forward, rotation_y_matrix, transform->forward);
 	mat4_mult(transform->forward, rotation_z_matrix, transform->forward);
+	mat4_mult(transform->forward, scale_matrix, transform->forward);
 
 	mat4_inverse(transform->forward, transform->backward);
 }
