@@ -12,8 +12,6 @@
 
 #include "mini_rt.h"
 
-float	hit_sphere(struct s_ray *ray, t_obj *sphere);
-
 static int	close_window(t_data *data)
 {
 	#ifdef __linux__
@@ -26,8 +24,6 @@ static int	close_window(t_data *data)
 	free(data->mlx);
 	#endif
 	exit(0);
-	// data->img = 0;
-	return (0);
 }
 
 int	key_hook(int keycode, t_data *vars)
@@ -129,7 +125,6 @@ void	*fill_img(void *img, t_scene *scene)
 	px_coord.y = 0;
 	while (px_coord.y < HEIGHT)
 	{
-		// printf("line %d of %d\n", px_coord.y, HEIGHT);
 		px_coord.x = 0;
 		while (px_coord.x < WIDTH)
 		{
