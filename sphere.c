@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 18:45:19 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:48:13 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float l
 
 	ray_at(&ray, (-b - sqrtf(discriminant)) / (2.f * a), point);
 	apply_transform(point, sphere->transform.forward, 1, point);
-	vec3_copy(point, local_normal);
+	vec3_sub(point, sphere->pos, local_normal);
 	vec3_normalize(local_normal, local_normal);
 
 	return (true);
