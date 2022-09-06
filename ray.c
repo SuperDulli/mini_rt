@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:03:18 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 16:18:11 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:46:42 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections)
 		obj = get_obj_from_scene(scene, i);
 		if (obj->type == CYLINDER)
 		{
-			if (hit_cylinder(ray, obj, point, normal))
+			if (hit_cylinder(*ray, obj, point, normal))
 			{
 				if (!add_hit_record(intersections, new_hit_record(point, normal, obj->color)))
 				{
@@ -51,7 +51,7 @@ bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections)
 		}
 		else if (obj->type == SPHERE)
 		{
-			if (hit_sphere(ray, obj, point, normal))
+			if (hit_sphere(*ray, obj, point, normal))
 			{
 				if (!add_hit_record(intersections, new_hit_record(point, normal, obj->color)))
 				{
