@@ -129,7 +129,7 @@ void	*fill_img(void *img, t_scene *scene)
 	px_coord.y = 0;
 	while (px_coord.y < HEIGHT)
 	{
-		printf("line %d of %d\n", px_coord.y, HEIGHT);
+		// printf("line %d of %d\n", px_coord.y, HEIGHT);
 		px_coord.x = 0;
 		while (px_coord.x < WIDTH)
 		{
