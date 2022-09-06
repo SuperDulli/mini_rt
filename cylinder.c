@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 12:14:44 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:39:47 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	close_enough(float a, float b)
 	return (fabsf(a - b) < __FLT_EPSILON__);
 }
 
-bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]) //, float local_color[VEC3_SIZE])
+bool	hit_cylinder(struct s_ray ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]) //, float local_color[VEC3_SIZE])
 {
 	float	a;
 	float	b;
@@ -46,12 +46,12 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 
 	radius = 1.f;
 
-	apply_transform(ray->direction, cylinder->transform.backward, 0, ray->direction);
-	apply_transform(ray->origin, cylinder->transform.backward, 1, ray->origin);
-	// vec3_normalize(ray->direction, ray->direction);
-	a = ray->direction[0] * ray->direction[0] + ray->direction[1] * ray->direction[1];
-	b = 2.f * (ray->origin[0] * ray->direction[0] + ray->origin[1] * ray->direction[1]);
-	c = ray->origin[0] * ray->origin[0] + ray->origin[1] * ray->origin[1] - radius * radius;
+	apply_transform(ray.direction, cylinder->transform.backward, 0, ray.direction);
+	apply_transform(ray.origin, cylinder->transform.backward, 1, ray.origin);
+	// vec3_normalize(ray.direction, ray.direction);
+	a = ray.direction[0] * ray.direction[0] + ray.direction[1] * ray.direction[1];
+	b = 2.f * (ray.origin[0] * ray.direction[0] + ray.origin[1] * ray.direction[1]);
+	c = ray.origin[0] * ray.origin[0] + ray.origin[1] * ray.origin[1] - radius * radius;
 
 	discriminant = b * b - 4 * a * c;
 	// printf("discriminant=%f, a=%f, b=%f, c=%f\n", discriminant, a, b, c);
@@ -61,7 +61,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		t = (-b - sqrtf(discriminant)) / (2.f * a);
 		t2 = (-b + sqrtf(discriminant)) / (2.f * a);
 
-		ray_at(ray, t, intersection);
+		ray_at(&ray, t, intersection);
 		if (t > 0.f && fabsf(intersection[2]) < 1.0f) // clinder wall
 		{
 			t1_valid = true;
@@ -71,7 +71,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 			t1_valid = false;
 			t = INFINITY;
 		}
-		ray_at(ray, t2, intersection);
+		ray_at(&ray, t2, intersection);
 		if (t2 > 0.f && fabsf(intersection[2]) < 1.0f) // clinder wall
 		{
 			t2_valid = true;
@@ -91,7 +91,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 	}
 
 	// caps
-	if (close_enough(ray->direction[2], 0.f))
+	if (close_enough(ray.direction[2], 0.f))
 	{
 		t3_valid = false;
 		t4_valid = false;
@@ -101,12 +101,12 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 	else
 	{
 		//t3 = (z_min - z_origin) / z_dir
-		t3 = (-1.f - ray->origin[2]) / ray->direction[2];
-		t4 = (+1.f - ray->origin[2]) / ray->direction[2];
+		t3 = (-1.f - ray.origin[2]) / ray.direction[2];
+		t4 = (+1.f - ray.origin[2]) / ray.direction[2];
 		// printf("t: %f, %f\n", t3, t4);
 
 
-		ray_at(ray, t3, intersection2);
+		ray_at(&ray, t3, intersection2);
 		if (t3 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= radius)
 		{
 			t3_valid = true;
@@ -116,7 +116,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 			t3_valid = false;
 			t3 = INFINITY;
 		}
-		ray_at(ray, t4, intersection2);
+		ray_at(&ray, t4, intersection2);
 		if (t4 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= radius)
 		{
 			t4_valid = true;
@@ -154,7 +154,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		i++;
 	}
 
-	ray_at(ray, min_value, intersection);
+	ray_at(&ray, min_value, intersection);
 	vec3_copy(intersection, point);
 	// local_color = color_vec_from_int(cylinder->colourcode, local_color);
 	// wall or caps?
@@ -164,7 +164,7 @@ bool	hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], fl
 		// local_color[2] = 1.f;
 		return (true);
 	}
-	else if (!close_enough(ray->direction[2], 0.f) && sqrtf(intersection[0] * intersection[0] + intersection[1] * intersection[1]) <= radius)
+	else if (!close_enough(ray.direction[2], 0.f) && sqrtf(intersection[0] * intersection[0] + intersection[1] * intersection[1]) <= radius)
 	{
 		// printf("cap normal (xyz): (%f, %f, %f) min_index=%d\n", intersection[0], intersection[1], intersection[2], min_index);
 		normal_cap(cylinder, intersection, local_normal);

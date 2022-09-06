@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 16:15:49 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:48:13 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,27 @@
  * @param sphere
  * @return float the closest hit point, or -1 if it missed the sphere
  */
-bool	hit_sphere(struct s_ray *ray, t_obj *sphere, float point[VEC3_SIZE], float local_normal[VEC3_SIZE])
+bool	hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float local_normal[VEC3_SIZE])
 {
 	float	a;
 	float	b;
 	float	c;
 	float	discriminant;
-	float	radius;
 
-	radius = 1.f;
-
-	apply_transform(ray->direction, sphere->transform.backward, 0, ray->direction);
-	apply_transform(ray->origin, sphere->transform.backward, 1, ray->origin);
-	a = vec3_length_squared(ray->direction);
-	b = 2.f * vec3_dot(ray->origin, ray->direction);
-	c = vec3_length_squared(ray->origin) - radius * radius;
+	apply_transform(ray.direction, sphere->transform.backward, 0, ray.direction);
+	apply_transform(ray.origin, sphere->transform.backward, 1, ray.origin);
+	a = vec3_length_squared(ray.direction);
+	b = 2.f * vec3_dot(ray.origin, ray.direction);
+	c = vec3_length_squared(ray.origin) - 1; // radius * radius = 1
 
 	discriminant = b * b - 4 * a * c;
 	// printf("discriminant=%f, a=%f, b=%f, c=%f\n", discriminant, a, b, c);
 	if (discriminant < 0)
 		return (false);
-	ray_at(ray, (-b - sqrtf(discriminant)) / (2.f * a), point);
+
+	ray_at(&ray, (-b - sqrtf(discriminant)) / (2.f * a), point);
 	apply_transform(point, sphere->transform.forward, 1, point);
-	vec3_copy(point, local_normal);
+	vec3_sub(point, sphere->pos, local_normal);
 	vec3_normalize(local_normal, local_normal);
 
 	return (true);
@@ -73,7 +71,7 @@ t_obj	*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter)
 
 	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
 	vec3(0, 0, 0, rot);
-	vec3(1.f, 1.f, 1.f, scale);
+	vec_fill(diameter / 2.f, 3, scale);
 	set_transform(transl, rot, scale, &obj->transform);
 
 	return (obj);
