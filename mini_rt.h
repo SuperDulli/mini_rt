@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/05 15:56:44 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 11:38:01 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void	set_transform(
 	t_tform *transform
 );
 float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], bool is_point, float *result);
+float	*rot_vec_from_orientation(float *orientation, float *result);
 
 // intersection
 

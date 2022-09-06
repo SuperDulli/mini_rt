@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 17:12:00 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/06 11:39:03 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,8 +238,7 @@ t_obj	*new_cylinder(
 	vec3(orientation[0], orientation[1], orientation[2], cylinder->ovector);
 
 	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
-	// vec3(M_PI_2 / 2, M_PI_2 / 2, 0, rot); // TODO calc rot from orientation
-	vec3(-M_PI_2 / 2, M_PI_2 / 2, 0, rot); // TODO calc rot from orientation
+	rot_vec_from_orientation(orientation, rot);
 	vec3(1.f, 1.f, 1.f, scale);
 	set_transform(transl, rot, scale, &obj->transform);
 
