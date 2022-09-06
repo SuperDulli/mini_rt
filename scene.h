@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 11:28:53 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/01 11:41:53 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/05 15:02:37 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "vector.h"
 # include "matrix.h"
 # include "libft.h"
+# include "ray.h"
 
 enum e_obj_type
 {
@@ -118,5 +119,6 @@ t_obj		*new_cylinder(
 				float diameter,
 				float height
 				);
+bool		hit_cylinder(struct s_ray *ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
 
 #endif

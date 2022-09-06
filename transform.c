@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:28:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/08/09 10:51:11 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/06 12:27:22 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	set_transform(
 	mat4_rotate_z(rotation[2], rotation_z_matrix);
 	mat4_scale(scale[0], scale[1], scale[2], scale_matrix);
 
-	mat4_mult(transl_matrix, scale_matrix, transform->forward);
-	mat4_mult(transform->forward, rotation_x_matrix, transform->forward);
+	mat4_mult(transl_matrix, rotation_x_matrix, transform->forward);
 	mat4_mult(transform->forward, rotation_y_matrix, transform->forward);
 	mat4_mult(transform->forward, rotation_z_matrix, transform->forward);
+	mat4_mult(transform->forward, scale_matrix, transform->forward);
 
 	mat4_inverse(transform->forward, transform->backward);
 }
@@ -55,6 +55,20 @@ float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], bool is_po
 	// convert vec4 -> vec3
 	vec3(tmp[0], tmp[1], tmp[2], result);
 
+	return (result);
+}
+
+float	*rot_vec_from_orientation(float *orientation, float *result)
+{
+	float		tmp[VEC3_SIZE];
+	float		x_rot;
+	float		y_rot;
+	float		z_rot;
+
+	x_rot = acosf(vec3_dot(orientation, vec3(1,0,0, tmp)));
+	y_rot = acosf(vec3_dot(orientation, vec3(0,1,0, tmp)));
+	z_rot = acosf(vec3_dot(orientation, vec3(0,0,1, tmp)));
+	vec3(x_rot, y_rot, z_rot, result);
 	return (result);
 }
 

@@ -42,7 +42,8 @@ SRCS	= main.c \
 			cylinder.c \
 			plane.c \
 			scene.c \
-			transform.c
+			transform.c \
+			intersection.c
 # SRCS	= color.c # test only one file with included main check_elements.c check_utils.c check_info.c
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
