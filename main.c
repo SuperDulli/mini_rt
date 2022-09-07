@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/07 12:46:50 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/07 16:41:58 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
 	}
 }
 
+float	distance(float start_point[VEC3_SIZE], float end_point[VEC3_SIZE])
+{
+	float	dis_vector[VEC3_SIZE];
+
+	vec3_sub(end_point, start_point, dis_vector);
+	return (vec3_length(dis_vector));
+}
+
 void	apply_shading(t_scene *scene, float	point[VEC3_SIZE], float	normal[VEC3_SIZE], float color_v[VEC3_SIZE])
 {
 	float	ambient_color_v[VEC3_SIZE];
@@ -71,6 +79,7 @@ void	apply_shading(t_scene *scene, float	point[VEC3_SIZE], float	normal[VEC3_SIZ
 	// light intensity - inverse square law? to
 	vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
 	light = (t_light *) scene->light->specifics;
+	// vec3_scalar_mult(light_color_v, 1/(distance(scene->light->pos, point)*distance(scene->light->pos, point)), light_color_v);
 	vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
 
 	// apply shading

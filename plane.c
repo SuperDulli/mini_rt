@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:40:03 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/04 16:40:06 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/07 14:44:26 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,21 @@ bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], float loc
 
 	normal = ((t_plane *) plane->specifics)->ovector;
 
-	// apply_transform(ray->direction, plane->transform.backward, 0, ray->direction);
-	// apply_transform(ray->origin, plane->transform.backward, 1, ray->origin);
+	// apply_transform(ray.direction, plane->transform.backward, 0, ray.direction);
+	// apply_transform(ray.origin, plane->transform.backward, 1, ray.origin);
 	denominator = vec3_dot(ray.direction, normal);
 	if (denominator == 0.f)
 		return (false); // ray is parallel to plane
 	numerator = vec3_dot(vec3_sub(plane->pos, ray.origin, tmp), normal);
+	if (numerator / denominator < 0)
+		return (false);
 	ray_at(&ray, numerator / denominator, point);
+	// apply_transform(point, plane->transform.forward, 1, point);
 	vec3_normalize(ray.direction, ray.direction);
 	if (0 <= vec3_dot(normal, ray.direction) && vec3_dot(normal, ray.direction) <= 1)
-		vec3_copy(normal, local_normal);
-	else
 		vec3_scalar_mult(normal, -1, local_normal);
+	else
+		vec3_copy(normal, local_normal);
 	return (true);
 }
 
