@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 11:38:01 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:24:15 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,6 @@ float	*rot_vec_from_orientation(float *orientation, float *result);
 t_hit_record	*new_hit_record(float *pos, float *normal, float *color);
 bool			add_hit_record(t_list **records, t_hit_record *hit);
 t_hit_record	*get_hit_record(t_list *records, int index);
+t_hit_record	*get_closest_hit(t_list *hits, float pos[VEC3_SIZE]);
 
 #endif

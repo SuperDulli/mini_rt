@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 14:15:00 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/05 15:05:13 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:37:32 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,30 @@ t_hit_record	*get_hit_record(t_list *records, int index)
 	}
 	hit = (t_hit_record *) tmp->content;
 	return (hit);
+}
+
+t_hit_record	*get_closest_hit(t_list *hits, float pos[VEC3_SIZE])
+{
+	t_hit_record	*closest_hit;
+	t_hit_record	*hit;
+	t_list			*tmp;
+	float			dis_vec[VEC3_SIZE];
+	float			distance;
+	float			min;
+
+	closest_hit = (t_hit_record *) hits->content;
+	min = INFINITY;
+	tmp = hits;
+	while (tmp)
+	{
+		hit = (t_hit_record *) tmp->content;
+		distance = vec3_length(vec3_sub(hit->pos, pos, dis_vec));
+		if (distance < min)
+		{
+			min = distance;
+			closest_hit = hit;
+		}
+		tmp = tmp->next;
+	}
+	return (closest_hit);
 }
