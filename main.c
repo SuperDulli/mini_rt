@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 16:16:46 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:46:50 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		return (BLACK);
 	}
 
-	// TODO: find closest hit point in list
-
-	hit = get_hit_record(ray_intersections, 0);
+	hit = get_closest_hit(ray_intersections, scene->camera->pos);
 	vec3_copy(hit->color, color_v);
 	apply_shading(scene, hit->pos, hit->normal, color_v);
 	ft_lstclear(&ray_intersections, free);
@@ -125,6 +123,7 @@ void	*fill_img(void *img, t_scene *scene)
 	px_coord.y = 0;
 	while (px_coord.y < HEIGHT)
 	{
+		printf("line %d of %d\n", px_coord.y, HEIGHT);
 		px_coord.x = 0;
 		while (px_coord.x < WIDTH)
 		{
