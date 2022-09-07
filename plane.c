@@ -21,7 +21,8 @@
  * @param plane
  * @return float the closest hit point, or -1 if it missed the plane
  */
-float	hit_plane(struct s_ray *ray, t_obj *plane)
+
+bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], float local_normal[VEC3_SIZE])
 {
 	float	numerator;
 	float	denominator;
@@ -32,12 +33,17 @@ float	hit_plane(struct s_ray *ray, t_obj *plane)
 
 	// apply_transform(ray->direction, plane->transform.backward, 0, ray->direction);
 	// apply_transform(ray->origin, plane->transform.backward, 1, ray->origin);
-	denominator = vec3_dot(ray->direction, normal);
+	denominator = vec3_dot(ray.direction, normal);
 	if (denominator == 0.f)
-		return (0.f); // ray is parallel to plane
-	numerator = vec3_dot(vec3_sub(plane->pos, ray->origin, tmp), normal);
-
-	return (numerator / denominator);
+		return (false); // ray is parallel to plane
+	numerator = vec3_dot(vec3_sub(plane->pos, ray.origin, tmp), normal);
+	ray_at(&ray, numerator / denominator, point);
+	vec3_normalize(ray.direction, ray.direction);
+	if (0 <= vec3_dot(normal, ray.direction) && vec3_dot(normal, ray.direction) <= 1)
+		vec3_copy(normal, local_normal);
+	else
+		vec3_scalar_mult(normal, -1, local_normal);
+	return (true);
 }
 
 /**

@@ -110,6 +110,7 @@ bool		hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float 
 // plane
 
 t_obj		*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], float dir[VEC3_SIZE]);
+bool		hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
 
 // cylinder
 

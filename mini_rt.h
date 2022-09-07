@@ -122,18 +122,14 @@ int save_light(char *line, t_scene *scene);
 int	save_sphere(char *line, t_scene *scene);
 int save_plane(char *line, t_scene *scene);
 
-//store_utils.c
-
-// int	str_to_color(char *info);
-
 // util
 
 void	exit_fatal(void);
 void	*new(size_t size);
 
 // ray
-
 bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections);
+bool	hit_object(t_obj *obj, struct s_ray *ray, t_list **intersections);
 
 // color
 
