@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:03:18 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 18:46:42 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:06:36 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ float	*ray_at(struct s_ray *ray, float t, float *point)
 	return (point);
 }
 
-void	ray_cast(float *origin, float *point, struct s_ray *ray)
+void	ray_cast(t_camera *camera, float *point, struct s_ray *ray)
 {
+	float	origin[VEC3_SIZE];
+
+	apply_transform(camera->pos, camera->transform.backward, 1, origin);
+	apply_transform(point, camera->transform.backward, 1, point);
 	vec3_copy(origin, ray->origin);
 	vec3_sub(point, origin, ray->direction);
 }
