@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 18:39:47 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:01:25 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ t_obj	*new_cylinder(
 	cylinder = (t_cylinder *) obj->specifics;
 	cylinder->diameter = diameter;
 	cylinder->height = height;
+	vec3_normalize(orientation, orientation);
 	vec3(orientation[0], orientation[1], orientation[2], cylinder->ovector);
 
 	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
