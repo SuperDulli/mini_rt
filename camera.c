@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 12:21:19 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/22 10:56:42 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:04:40 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,12 @@ t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 	camera->fov = fov;
 
 	vec3(0,1,0, v_up);
-	// init v, n, u
 	vec3_copy(ovector, normal);
+	// cross product of parrallel vectors is not helpfull
+	if (normal[1] == 1.f || normal[1] == -1.f)
+		vec3(1,0,0, v_up);
+
+	// init v, n, u
 	vec3_cross(v_up, normal, u);
 	vec3_cross(normal, u, v);
 
