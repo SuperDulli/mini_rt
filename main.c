@@ -126,6 +126,9 @@ void	*fill_img(void *img, t_scene *scene)
 	struct s_2d_coord	px_coord;
 	int					pixel_addr;
 	int					color;
+	float				aspectratio;
+
+	aspectratio = (float)WIDTH / (float)HEIGHT;
 
 	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
 			&img_info.line_size, &img_info.endian);
@@ -139,8 +142,8 @@ void	*fill_img(void *img, t_scene *scene)
 			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
 			color = choose_color(
 				scene,
-				(px_coord.x / (float)WIDTH) * 2.f - 1.f,
-				((px_coord.y / (float)HEIGHT) * 2.f - 1.f) * -1.f);
+				((px_coord.x / (float)WIDTH) * 2.f - 1.f) * aspectratio * tan(scene->camera->fov / 2 * M_PI / 180),
+				(((px_coord.y / (float)HEIGHT) * 2.f - 1.f) * -1.f) * tan(scene->camera->fov / 2 * M_PI / 180));
 			write_pixel(buffer, pixel_addr, color, img_info.endian);
 			px_coord.x++;
 		}
