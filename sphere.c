@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/22 13:12:00 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 15:44:12 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ bool	hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float l
 	{
 		return (false);
 	}
-	if (t[0] >= 0 && t[0] < t[1])
-		ray_at(&ray, t[0], point);
-	else if (t[1] >= 0 && t[1] < t[0])
+	if (t[0] < 0)
 		ray_at(&ray, t[1], point);
+	else if (t[1] < 0)
+		ray_at(&ray, t[0], point);
+	else
+		ray_at(&ray, fminf(t[0], t[1]), point);
 	apply_transform(point, sphere->transform.forward, 1, point);
 	vec3_sub(point, sphere->pos, local_normal);
 	vec3_normalize(local_normal, local_normal);
