@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/08 14:45:23 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 14:56:16 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	*new(size_t size);
 
 // ray
 bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections);
-void	ray_cast(t_camera *camera, float *point, struct s_ray *ray);
+void	ray_camera(t_camera *camera, float *point, struct s_ray *ray);
 bool	hit_object(t_obj *obj, struct s_ray *ray, t_list **intersections);
 
 // color

@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/21 16:20:07 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 14:54:23 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	float			color_v[VEC3_SIZE];
 	t_hit_record	*hit;
 
-	ray_cast(scene->camera, vec3(u, v, - 1, point), &ray); // TODO: camera rotation
+	ray_camera(scene->camera, vec3(u, v, - 1, point), &ray);
 	ray_intersections = NULL;
 	if (!ray_intersect(&ray, scene, &ray_intersections))
 	{

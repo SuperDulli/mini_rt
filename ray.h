@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:00:09 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/08 14:45:13 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 14:55:44 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ struct s_ray
 };
 
 float	*ray_at(struct s_ray *ray, float t, float *point);
+void	ray_cast(float *origin, float *point, struct s_ray *ray);
 
 #endif
