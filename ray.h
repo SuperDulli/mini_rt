@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:00:09 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/05 15:01:32 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 14:55:44 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define RAY_H
 
 # include "vector.h"
+# include "scene.h"
 
 struct s_ray
 {

@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:03:18 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 18:46:42 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 14:53:57 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ void	ray_cast(float *origin, float *point, struct s_ray *ray)
 {
 	vec3_copy(origin, ray->origin);
 	vec3_sub(point, origin, ray->direction);
+}
+
+void	ray_camera(t_camera *camera, float *point, struct s_ray *ray)
+{
+	vec_fill(0.f, 3, ray->origin);
+	apply_transform(ray->origin, camera->transform.forward, 1, ray->origin);
+	apply_transform(point, camera->transform.forward, 1, point);
+	vec3_sub(point, ray->origin, ray->direction);
 }
 
 bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections)

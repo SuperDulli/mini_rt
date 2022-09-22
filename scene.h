@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 11:28:53 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 18:39:07 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:25:27 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ enum e_obj_type
 	LIGHT
 };
 
+struct s_transform
+{
+	float	forward[MAT4_SIZE];
+	float	backward[MAT4_SIZE];
+};
+typedef struct s_transform	t_tform;
+
 typedef struct s_amlight {
 	float	ratio;
 	float	color[VEC3_SIZE];
@@ -36,6 +43,7 @@ typedef struct s_camera {
 	float	pos[3];
 	float	ovector[3];
 	float	fov;
+	t_tform	transform;
 }	t_camera;
 
 typedef struct s_light {
@@ -55,13 +63,6 @@ typedef struct s_cylinder {
 	float	diameter;
 	float	height;
 }	t_cylinder;
-
-struct s_transform
-{
-	float	forward[MAT4_SIZE];
-	float	backward[MAT4_SIZE];
-};
-typedef struct s_transform	t_tform;
 
 typedef struct s_obj {
 	float	pos[VEC3_SIZE];
