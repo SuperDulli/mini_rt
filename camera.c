@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 12:21:19 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/22 11:04:40 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:22:06 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 {
 	t_camera	*camera;
-	float		transl_matrix[MAT4_SIZE];
 	struct		s_mat4 transf;
 	float		v_up[VEC3_SIZE]; // where is up in the world
 	float		v[VEC3_SIZE]; // camera vertical
@@ -54,16 +53,14 @@ t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 	transf.m23 = -normal[1];
 	transf.m33 = -normal[2];
 
-	transf.m14 = 0;
-	transf.m24 = 0;
-	transf.m34 = 0;
+	transf.m14 = pos[0];
+	transf.m24 = pos[1];
+	transf.m34 = pos[2];
 	transf.m44 = 1;
 	transf.m41 = 0;
 	transf.m42 = 0;
 	transf.m43 = 0;
 
-	mat4_translate(pos[0], pos[1], pos[2], transl_matrix);
-	mat4_mult(transf.v, transl_matrix, transf.v);
 	mat_copy(transf.v, MAT4_SIZE, camera->transform.forward);
 	mat4_inverse(camera->transform.forward, camera->transform.backward);
 
