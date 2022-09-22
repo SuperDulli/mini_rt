@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 18:48:13 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 13:12:00 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@
  * @brief tests where the ray hits the sphere
  *
  * ABC formula to solve quadratic equation like t^2 * a + t * b + c = 0
- * t = (-b - sqrt(b^2 - 4ac)) / 2a
+ * t1 = (-b - sqrt(b^2 - 4ac)) / 2a
+ * t2 = (-b + sqrt(b^2 - 4ac)) / 2a
+ * only care about positives values for t and the closest to the ray origin.
  *
  * @param ray
  * @param sphere
- * @return float the closest hit point, or -1 if it missed the sphere
+ * @param point will be filled with the intersection coords
+ * @param local_normal will be filled with the surface normal at the point
+ * @return true if the ray hits the sphere
  */
 bool	hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float local_normal[VEC3_SIZE])
 {
@@ -28,6 +32,7 @@ bool	hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float l
 	float	b;
 	float	c;
 	float	discriminant;
+	float	t[2];
 
 	apply_transform(ray.direction, sphere->transform.backward, 0, ray.direction);
 	apply_transform(ray.origin, sphere->transform.backward, 1, ray.origin);
@@ -40,7 +45,16 @@ bool	hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float l
 	if (discriminant < 0)
 		return (false);
 
-	ray_at(&ray, (-b - sqrtf(discriminant)) / (2.f * a), point);
+	t[0] = (-b - sqrtf(discriminant)) / (2.f * a);
+	t[1] = (-b + sqrtf(discriminant)) / (2.f * a);
+	if (t[0] < 0 && t[1] < 0)
+	{
+		return (false);
+	}
+	if (t[0] >= 0 && t[0] < t[1])
+		ray_at(&ray, t[0], point);
+	else if (t[1] >= 0 && t[1] < t[0])
+		ray_at(&ray, t[1], point);
 	apply_transform(point, sphere->transform.forward, 1, point);
 	vec3_sub(point, sphere->pos, local_normal);
 	vec3_normalize(local_normal, local_normal);
