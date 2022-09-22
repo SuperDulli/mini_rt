@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 12:21:19 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/21 15:54:17 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:56:42 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 {
 	t_camera	*camera;
-	float		transl[VEC3_SIZE];
-	float		rot[VEC3_SIZE];
-	float		scale[VEC3_SIZE];
+	float		transl_matrix[MAT4_SIZE];
+	struct		s_mat4 transf;
+	float		v_up[VEC3_SIZE]; // where is up in the world
+	float		v[VEC3_SIZE]; // camera vertical
+	float		normal[VEC3_SIZE]; // view plane normal, i. e. camera orientation
+	float		u[VEC3_SIZE]; // right
 
 	camera = new(sizeof(t_camera));
 	if (!camera)
@@ -31,12 +34,34 @@ t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 	camera->ovector[2] = ovector[2];
 	camera->fov = fov;
 
-	vec3_copy(pos, transl);
-	rot_vec_from_orientation(ovector, rot);
-	// vec3_copy(ovector, rot);
-	// vec3(0, 0, M_PI, rot); // why does  it work with pi?
-	vec_fill(1.f, 3, scale);
-	set_transform(transl, rot, scale, &camera->transform);
+	vec3(0,1,0, v_up);
+	// init v, n, u
+	vec3_copy(ovector, normal);
+	vec3_cross(v_up, normal, u);
+	vec3_cross(normal, u, v);
+
+	transf.m11 = u[0];
+	transf.m21 = u[1];
+	transf.m31 = u[2];
+	transf.m12 = v[0];
+	transf.m22 = v[1];
+	transf.m32 = v[2];
+	transf.m13 = -normal[0];
+	transf.m23 = -normal[1];
+	transf.m33 = -normal[2];
+
+	transf.m14 = 0;
+	transf.m24 = 0;
+	transf.m34 = 0;
+	transf.m44 = 1;
+	transf.m41 = 0;
+	transf.m42 = 0;
+	transf.m43 = 0;
+
+	mat4_translate(pos[0], pos[1], pos[2], transl_matrix);
+	mat4_mult(transf.v, transl_matrix, transf.v);
+	mat_copy(transf.v, MAT4_SIZE, camera->transform.forward);
+	mat4_inverse(camera->transform.forward, camera->transform.backward);
 
 	return (camera);
 }
