@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 12:21:19 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/22 14:51:21 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:24:50 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	create_camera_matrix(t_camera *camera, float pos[VEC3_SIZE], float normal[V
 	float		v[VEC3_SIZE]; // camera vertical
 	float		u[VEC3_SIZE]; // right
 
-	vec3_cross(v_up, normal, u);
-	vec3_cross(normal, u, v);
+	vec3_cross(normal, v_up, u);
+	vec3_cross(u, normal, v);
 	transf.m11 = u[0];
 	transf.m21 = u[1];
 	transf.m31 = u[2];
