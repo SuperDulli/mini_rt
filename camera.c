@@ -35,10 +35,10 @@ t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 	camera->ovector[1] = ovector[1];
 	camera->ovector[2] = ovector[2];
 	camera->fov = fov;
-
+	vec3(0, 1, 0, v_up);
 	if (ovector[1] == 1.f || ovector[1] == -1.f)
 		vec3(1, 0, 0, v_up);
-	create_camera_matrix(camera, pos, ovector, vec3(0, 1, 0, v_up));
+	create_camera_matrix(camera, pos, ovector, v_up);
 
 	return (camera);
 }
