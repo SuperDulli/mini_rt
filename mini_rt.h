@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/22 14:56:16 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:36:51 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@
 
 # define MAX_FLOAT 2000
 # define MAX_PRECISION 4
+
+# define SHADOW_BIAS 1e-1f
 
 struct					s_data
 {
@@ -130,7 +132,7 @@ void	*new(size_t size);
 // ray
 bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections);
 void	ray_camera(t_camera *camera, float *point, struct s_ray *ray);
-bool	hit_object(t_obj *obj, struct s_ray *ray, t_list **intersections);
+bool	hit_object(t_obj *obj, struct s_ray *ray, t_hit_record *hit);
 
 // color
 
