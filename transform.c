@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:28:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/06 12:27:22 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:18:29 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,29 @@ float	*rot_vec_from_orientation(float *orientation, float *result)
 	float		y_rot;
 	float		z_rot;
 
+
 	x_rot = acosf(vec3_dot(orientation, vec3(1,0,0, tmp)));
 	y_rot = acosf(vec3_dot(orientation, vec3(0,1,0, tmp)));
 	z_rot = acosf(vec3_dot(orientation, vec3(0,0,1, tmp)));
+	// z_rot = 0;
+	// if (orientation[0] == 0)
+	// {
+	// 	x_rot = z_rot;
+	// 	y_rot = 0;
+	// 	z_rot = 0;
+	// }
+	// if (orientation[1] == 0)
+	// {
+	// 	y_rot = x_rot;
+	// 	x_rot = 0;
+	// 	z_rot = 0;
+	// }
+	// if (orientation[2] == 0)
+	// {
+	// 	z_rot = y_rot;
+	// 	x_rot = 0;
+	// 	// y_rot = 0;
+	// }
 	vec3(x_rot, y_rot, z_rot, result);
 	return (result);
 }

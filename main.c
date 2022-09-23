@@ -6,11 +6,13 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/07 16:41:58 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:13:30 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
+bool	intersection_with_light_ray(t_scene *scene, float point[VEC3_SIZE], float dis_to_light);
 
 static int	close_window(t_data *data)
 {
@@ -74,21 +76,61 @@ void	apply_shading(t_scene *scene, float	point[VEC3_SIZE], float	normal[VEC3_SIZ
 
 	// colors as vectors
 	vec3_copy(scene->ambient_light->color, ambient_color_v);
-	vec3_copy(scene->light->color, light_color_v); // TODO: cast ray towards light to check if its blocked
+
+	vec3_copy(scene->light->color, light_color_v);
 
 	// light intensity - inverse square law? to
 	vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
 	light = (t_light *) scene->light->specifics;
 	// vec3_scalar_mult(light_color_v, 1/(distance(scene->light->pos, point)*distance(scene->light->pos, point)), light_color_v);
-	vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
 
 	// apply shading
 	vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], ambient_color_v);
 
 	pixel_color = 0;
-	pixel_color += fmaxf(vec3_dot(normal, light_dir), 0.f); // * color(obj) * color(light) // = * 1, because light is white
+	pixel_color += vec3_dot(normal, light_dir); // * color(obj) * color(light) // = * 1, because light is white
+	if (pixel_color < 0)
+	{
+		pixel_color = 0;
+	}
+	else
+	{
+		if (intersection_with_light_ray(
+			scene,
+			vec3_add(point, vec3_scalar_mult(normal, SHADOW_BIAS, normal), point),
+			distance(point, scene->light->pos)))
+		{
+			pixel_color = 0;
+		}
+	}
 	vec3_scalar_mult(color_v, pixel_color, light_color_v);
+	vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
 	vec3_add(ambient_color_v, light_color_v, color_v);
+}
+
+bool	intersection_with_light_ray(t_scene *scene, float point[VEC3_SIZE], float dis_to_light)
+{
+	struct s_ray	light_ray;
+	float	dis_to_intersect;
+	t_obj	*obj;
+	int		i;
+	t_hit_record	hit;
+
+	ray_cast(point, scene->light->pos, &light_ray);
+
+	i = 0;
+	while (i < scene->obj_count)
+	{
+		obj = get_obj_from_scene(scene, i);
+		if (hit_object(obj, &light_ray, &hit))
+		{
+			dis_to_intersect = distance(light_ray.origin, hit.pos);
+			if (dis_to_intersect < dis_to_light)
+				return (true);
+		}
+		i++;
+	}
+	return (false);
 }
 
 unsigned int	choose_color(t_scene *scene, float u, float v)
@@ -99,7 +141,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	float			color_v[VEC3_SIZE];
 	t_hit_record	*hit;
 
-	ray_cast(scene->camera->pos, vec3(u, v, scene->camera->pos[2] - 1, point), &ray); // TODO: camera rotation
+	ray_camera(scene->camera, vec3(u, v, - 1, point), &ray);
 	ray_intersections = NULL;
 	if (!ray_intersect(&ray, scene, &ray_intersections))
 	{
@@ -137,9 +179,9 @@ void	*fill_img(void *img, t_scene *scene)
 	{
 		printf("line %d of %d\n", px_coord.y, HEIGHT);
 		px_coord.x = 0;
-		while (px_coord.x < WIDTH)
+		while (px_coord.x < WIDTH) // Raster space
 		{
-			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
+			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4); // raster space (2D) -> 1D
 			color = choose_color(
 				scene,
 				((px_coord.x / (float)WIDTH) * 2.f - 1.f) * aspectratio * tan(scene->camera->fov / 2 * M_PI / 180),
