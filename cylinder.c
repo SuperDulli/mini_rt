@@ -6,171 +6,77 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/24 13:27:26 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/24 16:25:54 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
+struct s_cyl_intersect
+{
+	float			t_values[4];
+	float			intersection[VEC3_SIZE];
+	bool			valid[4];
+	int				min_index;
+	struct s_ray	*ray;
+};
+
 // in this file:
 
-static void	normal_curved(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SIZE]);
+static void	normal_wall(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SIZE]);
 static void	normal_cap(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SIZE]);
-
+static void	wall_intersect(float a, float b, float c, struct s_cyl_intersect *data);
+static void	cap_intersect(struct s_cyl_intersect *data);
+static int	find_closest_intersect(struct s_cyl_intersect *data, float point[VEC3_SIZE]);
+static bool	intersect_to_world(t_obj *cyl, struct s_cyl_intersect *data, float normal[VEC3_SIZE], float point[VEC3_SIZE]);
 
 bool	close_enough(float a, float b)
 {
 	return (fabsf(a - b) < __FLT_EPSILON__);
 }
 
-bool	hit_cylinder(struct s_ray ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]) //, float local_color[VEC3_SIZE])
+bool	hit_cylinder(struct s_ray ray, t_obj *cylinder,
+					float point[VEC3_SIZE], float local_normal[VEC3_SIZE])
 {
-	float	a;
-	float	b;
-	float	c;
-	float	discriminant;
-	float	radius;
+	float					a;
+	float					b;
+	float					c;
+	struct s_cyl_intersect	data;
 
-	float	t;
-	float	t2;
-	float	t3;
-	float	t4;
-	float	intersection[VEC3_SIZE];
-	float	intersection2[VEC3_SIZE];
-	bool	t1_valid;
-	bool	t2_valid;
-	bool	t3_valid;
-	bool	t4_valid;
-	float	t_values[4];
-
-
-	radius = 1.f;
-
-	apply_transform(ray.direction, cylinder->transform.backward, 0, ray.direction);
+	vec3_normalize(ray.direction, ray.direction);
+	data.ray = &ray;
+	apply_transform(ray.direction, cylinder->transform.backward, 0,
+		ray.direction);
 	apply_transform(ray.origin, cylinder->transform.backward, 1, ray.origin);
-	// vec3_normalize(ray.direction, ray.direction);
-	a = ray.direction[0] * ray.direction[0] + ray.direction[1] * ray.direction[1];
-	b = 2.f * (ray.origin[0] * ray.direction[0] + ray.origin[1] * ray.direction[1]);
-	c = ray.origin[0] * ray.origin[0] + ray.origin[1] * ray.origin[1] - radius * radius;
+	a = ray.direction[0] * ray.direction[0]
+		+ ray.direction[1] * ray.direction[1];
+	b = 2.f * (ray.origin[0] * ray.direction[0]
+			+ ray.origin[1] * ray.direction[1]);
+	c = ray.origin[0] * ray.origin[0] + ray.origin[1] * ray.origin[1] - 1.f;
+	wall_intersect(a, b, c, &data);
+	cap_intersect(&data);
 
-	discriminant = b * b - 4 * a * c;
-	// printf("discriminant=%f, a=%f, b=%f, c=%f\n", discriminant, a, b, c);
-	if (discriminant >= 0)
-	{
-		// walls
-		t = (-b - sqrtf(discriminant)) / (2.f * a);
-		t2 = (-b + sqrtf(discriminant)) / (2.f * a);
-
-		ray_at(&ray, t, intersection);
-		if (t > 0.f && fabsf(intersection[2]) < 1.0f) // clinder wall
-		{
-			t1_valid = true;
-		}
-		else
-		{
-			t1_valid = false;
-			t = INFINITY;
-		}
-		ray_at(&ray, t2, intersection);
-		if (t2 > 0.f && fabsf(intersection[2]) < 1.0f) // clinder wall
-		{
-			t2_valid = true;
-		}
-		else
-		{
-			t2_valid = false;
-			t2 = INFINITY;
-		}
-	}
-	else
-	{
-		t1_valid = false;
-		t2_valid = false;
-		t = INFINITY;
-		t2 = INFINITY;
-	}
-
-	// caps
-	if (close_enough(ray.direction[2], 0.f))
-	{
-		t3_valid = false;
-		t4_valid = false;
-		t3 = INFINITY;
-		t4 = INFINITY;
-	}
-	else
-	{
-		//t3 = (z_min - z_origin) / z_dir
-		t3 = (-1.f - ray.origin[2]) / ray.direction[2];
-		t4 = (+1.f - ray.origin[2]) / ray.direction[2];
-		// printf("t: %f, %f\n", t3, t4);
-
-
-		ray_at(&ray, t3, intersection2);
-		if (t3 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= radius)
-		{
-			t3_valid = true;
-		}
-		else
-		{
-			t3_valid = false;
-			t3 = INFINITY;
-		}
-		ray_at(&ray, t4, intersection2);
-		if (t4 > 0.f && sqrtf(intersection2[0] * intersection2[0] + intersection2[1] * intersection2[1]) <= radius)
-		{
-			t4_valid = true;
-		}
-		else
-		{
-			t4_valid = false;
-			t4 = INFINITY;
-		}
-	}
-
-
-	if ((!t1_valid) && (!t2_valid) && (!t3_valid) && (!t4_valid))
+	if ((!data.valid[0]) && (!data.valid[1])
+		&& (!data.valid[2]) && (!data.valid[3]))
 		return (false);
+	data.min_index = find_closest_intersect(&data, point);
+	return (intersect_to_world(cylinder, &data, local_normal, point));
+}
 
-	// find closest hit point
-	t_values[0] = t;
-	t_values[1] = t2;
-	t_values[2] = t3;
-	t_values[3] = t4;
-	int	min_index;
-	float	min_value;
-	int i;
-
-	min_index = 0;
-	min_value = INFINITY;
-	i = 0;
-	while (i < 4)
+static
+bool	intersect_to_world(t_obj *cyl, struct s_cyl_intersect *data,
+							float normal[VEC3_SIZE], float point[VEC3_SIZE])
+{
+	if (data->min_index < 2)
 	{
-		if (t_values[i] < min_value)
-		{
-			min_value = t_values[i];
-			min_index = i;
-		}
-		i++;
-	}
-
-	ray_at(&ray, min_value, intersection);
-	vec3_copy(intersection, point);
-	// local_color = color_vec_from_int(cylinder->colourcode, local_color);
-	// wall or caps?
-	if (min_index < 2)
-	{
-		normal_curved(cylinder, intersection, local_normal);
-		vec3_copy(intersection, point);
-		// local_color[2] = 1.f;
+		normal_wall(cyl, point, normal);
 		return (true);
 	}
-	else if (!close_enough(ray.direction[2], 0.f) && sqrtf(intersection[0] * intersection[0] + intersection[1] * intersection[1]) <= radius)
+	else if (!close_enough(data->ray->direction[2], 0.f)
+		&& sqrtf(point[0] * point[0]
+			+ point[1] * point[1]) <= 1.f)
 	{
-		// printf("cap normal (xyz): (%f, %f, %f) min_index=%d\n", intersection[0], intersection[1], intersection[2], min_index);
-		normal_cap(cylinder, intersection, local_normal);
-		vec3_copy(intersection, point);
-		// printf("cap\n"); // this should be hit but its not??!?!
+		normal_cap(cyl, point, normal);
 		return (true);
 	}
 
@@ -178,32 +84,102 @@ bool	hit_cylinder(struct s_ray ray, t_obj *cylinder, float point[VEC3_SIZE], flo
 }
 
 static
-void	normal_curved(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SIZE])
+int	find_closest_intersect(struct s_cyl_intersect *data, float point[VEC3_SIZE])
+{
+	int		min_index;
+	float	min_value;
+	int		i;
+
+	min_index = 0;
+	min_value = INFINITY;
+	i = 0;
+	while (i < 4)
+	{
+		if (data->valid[i] && data->t_values[i] < min_value)
+		{
+			min_value = data->t_values[i];
+			min_index = i;
+		}
+		i++;
+	}
+	ray_at(data->ray, min_value, point);
+	return (min_index);
+}
+
+static
+void	wall_intersect(float a, float b, float c, struct s_cyl_intersect *data)
+{
+	float	discriminant;
+
+	discriminant = b * b - 4 * a * c;
+	data->valid[0] = false;
+	data->valid[1] = false;
+	data->t_values[0] = INFINITY;
+	data->t_values[1] = INFINITY;
+	if (discriminant >= 0)
+	{
+		data->t_values[0] = (-b - sqrtf(discriminant)) / (2.f * a);
+		data->t_values[1] = (-b + sqrtf(discriminant)) / (2.f * a);
+
+		ray_at(data->ray, data->t_values[0], data->intersection);
+		if (data->t_values[0] > 0.f && fabsf(data->intersection[2]) < 1.f)
+			data->valid[0] = true;
+
+		ray_at(data->ray, data->t_values[1], data->intersection);
+		if (data->t_values[1] > 0.f && fabsf(data->intersection[2]) < 1.f)
+			data->valid[1] = true;
+	}
+}
+
+static
+void	cap_intersect(struct s_cyl_intersect *data)
+{
+	data->valid[2] = false;
+	data->valid[3] = false;
+	data->t_values[2] = INFINITY;
+	data->t_values[3] = INFINITY;
+	if (close_enough(data->ray->direction[2], 0.f))
+		return ;
+	data->t_values[2] = (-1.f - data->ray->origin[2]) / data->ray->direction[2];
+	data->t_values[3] = (+1.f - data->ray->origin[2]) / data->ray->direction[2];
+	ray_at(data->ray, data->t_values[2], data->intersection);
+	if (data->t_values[2] > 0.f
+		&& sqrtf(data->intersection[0] * data->intersection[0]
+			+ data->intersection[1] * data->intersection[1]) <= 1.f)
+		data->valid[2] = true;
+	ray_at(data->ray, data->t_values[3], data->intersection);
+	if (data->t_values[3] > 0.f
+		&& sqrtf(data->intersection[0] * data->intersection[0]
+			+ data->intersection[1] * data->intersection[1]) <= 1.f)
+		data->valid[3] = true;
+}
+
+static
+void	normal_wall(t_obj *cyl, float point[VEC3_SIZE], float normal[VEC3_SIZE])
 {
 	float	tmp_normal[VEC3_SIZE];
 	float	origin[VEC3_SIZE];
 
 	vec3(point[0], point[1], 0.f, tmp_normal);
-	apply_transform(point, cylinder->transform.forward, 1, point);
+	apply_transform(point, cyl->transform.forward, 1, point);
 	vec_fill(0.f, 3, origin);
-	apply_transform(origin, cylinder->transform.forward, 1, origin);
-	apply_transform(tmp_normal, cylinder->transform.forward, 1, tmp_normal);
+	apply_transform(origin, cyl->transform.forward, 1, origin);
+	apply_transform(tmp_normal, cyl->transform.forward, 1, tmp_normal);
 	vec3_sub(tmp_normal, origin, tmp_normal);
 	vec3_normalize(tmp_normal, tmp_normal);
 	vec3_copy(tmp_normal, normal);
 }
 
 static
-void	normal_cap(t_obj *cylinder, float point[VEC3_SIZE], float normal[VEC3_SIZE])
+void	normal_cap(t_obj *cyl, float point[VEC3_SIZE], float normal[VEC3_SIZE])
 {
 	float	tmp_normal[VEC3_SIZE];
 	float	origin[VEC3_SIZE];
 
-	// apply_transform(point, cylinder->transform.forward, 1, tmp_normal);
 	vec3(0.f, 0.f, point[2], tmp_normal);
 	vec_fill(0.f, 3, origin);
-	apply_transform(origin, cylinder->transform.forward, 1, origin);
-	apply_transform(tmp_normal, cylinder->transform.forward, 1, tmp_normal);
+	apply_transform(origin, cyl->transform.forward, 1, origin);
+	apply_transform(tmp_normal, cyl->transform.forward, 1, tmp_normal);
 	vec3_sub(tmp_normal, origin, tmp_normal);
 	vec3_normalize(tmp_normal, tmp_normal);
 	vec3_copy(tmp_normal, normal);
@@ -220,7 +196,6 @@ t_obj	*new_cylinder(
 {
 	t_obj		*obj;
 	t_cylinder	*cylinder;
-	float		transl[VEC3_SIZE];
 	float		rot[VEC3_SIZE];
 	float		scale[VEC3_SIZE];
 
@@ -239,11 +214,8 @@ t_obj	*new_cylinder(
 	cylinder->height = height;
 	vec3_normalize(orientation, orientation);
 	vec3(orientation[0], orientation[1], orientation[2], cylinder->ovector);
-
-	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
 	rot_vec_from_orientation(orientation, rot);
 	vec3(diameter / 2.f, diameter / 2.f, height / 2.f, scale);
-	set_transform(transl, rot, scale, &obj->transform);
-
+	set_transform(pos, rot, scale, &obj->transform);
 	return (obj);
 }
