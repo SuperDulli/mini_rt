@@ -19,9 +19,10 @@
  *
  * @param ray
  * @param plane
- * @return float the closest hit point, or -1 if it missed the plane
+ * @param point will be filled with the intersection coords
+ * @param local_normal will be filled with the surface normal at the point
+ * @return true if the ray hits the plane
  */
-
 bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], \
 		float local_normal[VEC3_SIZE])
 {
@@ -52,7 +53,7 @@ bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], \
  *
  * @param pos
  * @param color
- * @param orientation normalized (len == 1)
+ * @param orientation
  * @return t_obj*
  */
 
