@@ -20,7 +20,8 @@ int	save_amlight(char *line, t_scene *scene)
 	arg = ft_split(line, ' ');
 	if (arg && !str_to_vec(arg[2], color))
 	{
-		scene->ambient_light = new_ambient_light(ft_atof(arg[1]), color_vec(color, color));
+		scene->ambient_light = new_ambient_light(ft_atof(arg[1]), \
+								color_vec(color, color));
 		arr_free(arg);
 		if (scene->ambient_light)
 			return (0);
@@ -54,7 +55,7 @@ int	save_light(char *line, t_scene *scene)
 	arg = ft_split(line, ' ');
 	if (arg && !str_to_vec(arg[1], pos) && !str_to_vec(arg[3], color))
 	{
-		scene->light = new_light(pos, color_vec(color, color), ft_atof(arg[2])); //always white?? -> edit checking!
+		scene->light = new_light(pos, color_vec(color, color), ft_atof(arg[2]));
 		arr_free(arg);
 		if (scene->light)
 			return (0);

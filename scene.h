@@ -67,7 +67,7 @@ typedef struct s_cylinder {
 typedef struct s_obj {
 	float	pos[VEC3_SIZE];
 	t_tform	transform;
-	float 	color[VEC3_SIZE];
+	float	color[VEC3_SIZE];
 	int		type;
 	void	*specifics;
 }	t_obj;
@@ -78,7 +78,7 @@ struct s_scene
 	t_obj		*light;
 	t_camera	*camera;
 	int			obj_count;
-	t_list		*objects; // list of pointer to objects to render
+	t_list		*objects;
 };
 typedef struct s_scene		t_scene;
 
@@ -101,27 +101,28 @@ t_camera	*new_camera(float pos[VEC3_SIZE], float dir[VEC3_SIZE], float fov);
 // light
 
 t_amlight	*new_ambient_light(float ratio, float color[VEC3_SIZE]);
-t_obj		*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], float brightness);
+t_obj		*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
+			float brightness);
 
 // sphere
 
-t_obj		*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], float diameter);
-bool		hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
+t_obj		*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
+			float diameter);
+bool		hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], \
+			float local_normal[VEC3_SIZE]);
 
 // plane
 
-t_obj		*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], float dir[VEC3_SIZE]);
-bool		hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
+t_obj		*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
+			float dir[VEC3_SIZE]);
+bool		hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], \
+			float local_normal[VEC3_SIZE]);
 
 // cylinder
 
-t_obj		*new_cylinder(
-				float pos[VEC3_SIZE],
-				float color[VEC3_SIZE],
-				float orientation[VEC3_SIZE],
-				float diameter,
-				float height
-				);
-bool		hit_cylinder(struct s_ray ray, t_obj *cylinder, float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
+t_obj		*new_cylinder(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
+			float orientation[VEC3_SIZE], float diameter, float height);
+bool		hit_cylinder(struct s_ray ray, t_obj *cylinder, \
+			float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
 
 #endif

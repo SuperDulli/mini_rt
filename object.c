@@ -31,7 +31,6 @@ t_obj	*new_object(float pos[VEC3_SIZE], float color[VEC3_SIZE])
 	obj->pos[2] = pos[2];
 	mat4_zero(obj->transform.forward);
 	mat4_zero(obj->transform.backward);
-
 	return (obj);
 }
 
@@ -49,6 +48,5 @@ void	destroy_object(t_obj *obj)
 		free((t_plane *) obj->specifics);
 	else
 		ft_error(1, "destroy_object: unkown object type.");
-
 	free(obj);
 }

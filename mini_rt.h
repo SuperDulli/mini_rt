@@ -53,7 +53,7 @@
 
 # define SHADOW_BIAS 1e-1f
 
-struct					s_data
+struct s_data
 {
 	void				*mlx;
 	void				*win;

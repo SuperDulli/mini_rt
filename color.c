@@ -39,42 +39,20 @@ unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
 	return (color);
 }
 
-
-// alpha can be ignored - not used in the project
-// [0, 255] -> [0.f, 1.f]
 float	*color_vec(float color[VEC3_SIZE], float *result)
 {
-	const float divisor = 255.f; // 255 -> exact 1.0 at 255; 254 -> exact -> 0.5 at 127
+	const float	divisor = 255.f;
 
-	if (0 > color[0] || color[0] > 255 || 0 > color[1] || color[1] > 255 || 0 > color[2] || color[2] > 255)
+	if (0 > color[0] || color[0] > 255 || 0 > color[1] || color[1] > 255 || \
+		0 > color[2] || color[2] > 255)
 	{
 		ft_error(1, "colors not in 0 to 255 range.");
 	}
-
-	result = vec3(
-		color[0] / divisor,
-		color[1] / divisor,
-		color[2] / divisor,
-		result);
+	result = vec3(color[0] / divisor, color[1] / divisor, color[2] / divisor, \
+				result);
 	return (result);
 }
 
-// 0xAARRGGBB -> vec3(r, g, b) where 0.f <= r,g,b <= 1.f
-// float	*color_vec_from_int(int argb, float *result)
-// {
-// 	int	red;
-// 	int	green;
-// 	int	blue;
-
-// 	// alpha = arbg >> 24;
-// 	red = (argb >> 16) & 0xFF;
-// 	green = (argb >> 8) & 0xFF;
-// 	blue = argb & 0xFF;
-
-// 	return (color_vec(red, green, blue, result));
-// }
-
-// [0.f, 1.f] -> [0, 255]
 int	convert_to_argb(float rgb[VEC3_SIZE])
 {
 	int	color;
@@ -83,57 +61,15 @@ int	convert_to_argb(float rgb[VEC3_SIZE])
 	int	blue;
 
 	vec3_clamp(rgb, 0.0f, 1.0f, rgb);
-
-	if (0.f > rgb[0] || rgb[0] > 1.f || 0.f > rgb[1] || rgb[1] > 1.f || 0.f > rgb[2] || rgb[2] > 1.f)
+	if (0.f > rgb[0] || rgb[0] > 1.f || 0.f > rgb[1] || rgb[1] > 1.f || \
+		0.f > rgb[2] || rgb[2] > 1.f)
 	{
-		// should be dead code because of clamp()
 		printf("rgb(%f,%f,%f)\n", rgb[0], rgb[1], rgb[2]);
 		ft_error(1, "colors not in 0.0 to 1.0 range.");
 	}
-
 	red = rgb[0] * 255;
 	green = rgb[1] * 255;
 	blue = rgb[2] * 255;
-
-	// printf("red=%X, green=%X, blue=%X\n", red, green, blue);
 	color = (0 << 24) | (red << 16) | (green << 8) | blue;
 	return (color);
 }
-
-// int main()
-// {
-// 	float	color[VEC3_SIZE];
-// 	int		color_code;
-
-// 	color_code = BLUE;
-// 	color_vec(0, 0, 255, color);
-// 	convert_to_argb(color);
-// 	printf("color=(%f,%f,%f), color_code=%X, convert_to_argb=%X\n", color[0], color[1], color[2], color_code, convert_to_argb(color));
-// 	color_vec_from_int(color_code, color);
-// 	printf("color_vec_from_int=(%f,%f,%f)\n", color[0], color[1], color[2]);
-// 	printf("\n");
-
-// 	color_code = (((GREEN >> 8) / 2) << 8) | (BLUE / 2);
-// 	color_vec(0, 127, 127, color);
-// 	convert_to_argb(color);
-// 	printf("color=(%f,%f,%f), color_code=%X, convert_to_argb=%X\n", color[0], color[1], color[2], color_code, convert_to_argb(color));
-// 	color_vec_from_int(color_code, color);
-// 	printf("color_vec_from_int=(%f,%f,%f)\n", color[0], color[1], color[2]);
-// 	printf("\n");
-
-// 	color_code = (((GREEN >> 8) / 2) << 8) | (BLUE / 2);
-// 	color_vec(0, 128, 128, color);
-// 	convert_to_argb(color);
-// 	printf("color=(%f,%f,%f), color_code=%X, convert_to_argb=%X\n", color[0], color[1], color[2], color_code, convert_to_argb(color));
-// 	color_vec_from_int(color_code, color);
-// 	printf("color_vec_from_int=(%f,%f,%f)\n", color[0], color[1], color[2]);
-// 	printf("\n");
-
-// 	vec3(0, 0.5f, 0.f, color);
-// 	color_code = convert_to_argb(color);
-// 	printf("color=(%f,%f,%f), color_code=%X, convert_to_argb=%X\n", color[0], color[1], color[2], color_code, convert_to_argb(color));
-// 	color_vec_from_int(color_code, color);
-// 	printf("color_vec_from_int=(%f,%f,%f)\n", color[0], color[1], color[2]);
-// 	printf("\n");
-// 	return 0;
-// }

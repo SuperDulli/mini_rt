@@ -22,7 +22,8 @@
  * @return float the closest hit point, or -1 if it missed the plane
  */
 
-bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], float local_normal[VEC3_SIZE])
+bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], \
+		float local_normal[VEC3_SIZE])
 {
 	float	numerator;
 	float	denominator;
@@ -30,19 +31,16 @@ bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], float loc
 	float	tmp[VEC3_SIZE];
 
 	normal = ((t_plane *) plane->specifics)->ovector;
-
-	// apply_transform(ray.direction, plane->transform.backward, 0, ray.direction);
-	// apply_transform(ray.origin, plane->transform.backward, 1, ray.origin);
 	denominator = vec3_dot(ray.direction, normal);
 	if (denominator == 0.f)
-		return (false); // ray is parallel to plane
+		return (false);
 	numerator = vec3_dot(vec3_sub(plane->pos, ray.origin, tmp), normal);
 	if (numerator / denominator < 0)
 		return (false);
 	ray_at(&ray, numerator / denominator, point);
-	// apply_transform(point, plane->transform.forward, 1, point);
 	vec3_normalize(ray.direction, ray.direction);
-	if (0 <= vec3_dot(normal, ray.direction) && vec3_dot(normal, ray.direction) <= 1)
+	if (0 <= vec3_dot(normal, ray.direction) && vec3_dot(normal, ray.direction) \
+		<= 1)
 		vec3_scalar_mult(normal, -1, local_normal);
 	else
 		vec3_copy(normal, local_normal);
@@ -57,7 +55,9 @@ bool	hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], float loc
  * @param orientation normalized (len == 1)
  * @return t_obj*
  */
-t_obj	*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], float orientation[VEC3_SIZE])
+
+t_obj	*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
+		float orientation[VEC3_SIZE])
 {
 	t_obj	*obj;
 	t_plane	*plane;
@@ -77,12 +77,10 @@ t_obj	*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], float orientation
 	obj->type = PLANE;
 	plane = (t_plane *) obj->specifics;
 	vec3_copy(orientation, plane->ovector);
-
-	vec3(pos[0], pos[1], pos[2], transl); // just use pos!
+	vec3(pos[0], pos[1], pos[2], transl);
 	vec3(0, 0, 0, rot);
 	vec3(1.f, 1.f, 1.f, scale);
 	set_transform(transl, rot, scale, &obj->transform);
-
 	return (obj);
 }
 

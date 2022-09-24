@@ -37,8 +37,8 @@ void	ray_camera(t_camera *camera, float *point, struct s_ray *ray)
 
 bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections)
 {
-	int		i;
-	t_obj	*obj;
+	int				i;
+	t_obj			*obj;
 	t_hit_record	hit;
 
 	i = 0;
@@ -47,7 +47,8 @@ bool	ray_intersect(struct s_ray *ray, t_scene *scene, t_list **intersections)
 		obj = get_obj_from_scene(scene, i);
 		if (hit_object(obj, ray, &hit))
 		{
-			if (!add_hit_record(intersections, new_hit_record(hit.pos, hit.normal, hit.color)))
+			if (!add_hit_record(intersections, new_hit_record(hit.pos, \
+				hit.normal, hit.color)))
 			{
 				ft_error(1, "ray_intersect: cannot add intersection to list.");
 				return (false);

@@ -26,7 +26,8 @@ t_amlight	*new_ambient_light(float ratio, float color[VEC3_SIZE])
 	return (ambient);
 }
 
-t_obj	*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], float brightness)
+t_obj	*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
+		float brightness)
 {
 	t_obj	*obj;
 	t_light	*light;

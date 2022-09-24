@@ -12,17 +12,14 @@
 
 #include "mini_rt.h"
 
-static
-void	create_camera_matrix(
-			t_camera *camera,
-			float pos[VEC3_SIZE],
-			float normal[VEC3_SIZE],
-			float v_up[VEC3_SIZE]);
+static	void	create_camera_matrix(t_camera *camera, float pos[VEC3_SIZE], \
+				float normal[VEC3_SIZE], float v_up[VEC3_SIZE]);
 
-t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
+t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], \
+			float fov)
 {
 	t_camera	*camera;
-	float 		v_up[VEC3_SIZE]; // where is up in the world?
+	float		v_up[VEC3_SIZE];
 
 	camera = new(sizeof(t_camera));
 	if (!camera)
@@ -39,16 +36,15 @@ t_camera	*new_camera(float pos[VEC3_SIZE], float ovector[VEC3_SIZE], float fov)
 	if (ovector[1] == 1.f || ovector[1] == -1.f)
 		vec3(1, 0, 0, v_up);
 	create_camera_matrix(camera, pos, ovector, v_up);
-
 	return (camera);
 }
 
-static
-void	create_camera_matrix(t_camera *camera, float pos[VEC3_SIZE], float normal[VEC3_SIZE], float v_up[VEC3_SIZE])
+static	void	create_camera_matrix(t_camera *camera, float pos[VEC3_SIZE], \
+				float normal[VEC3_SIZE], float v_up[VEC3_SIZE])
 {
-	struct		s_mat4 transf;
-	float		v[VEC3_SIZE]; // camera vertical
-	float		u[VEC3_SIZE]; // right
+	struct s_mat4	transf;
+	float			v[VEC3_SIZE];
+	float			u[VEC3_SIZE];
 
 	vec3_cross(normal, v_up, u);
 	vec3_cross(u, normal, v);

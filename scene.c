@@ -68,7 +68,7 @@ bool	add_obj_to_scene(t_scene *scene, t_obj *obj)
 	return (true);
 }
 
-t_obj	*get_obj_from_scene(t_scene * scene, int index)
+t_obj	*get_obj_from_scene(t_scene *scene, int index)
 {
 	t_obj	*obj;
 	t_list	*tmp;

@@ -49,8 +49,8 @@ bool	add_hit_record(t_list **records, t_hit_record *hit)
 t_hit_record	*get_hit_record(t_list *records, int index)
 {
 	t_hit_record	*hit;
-	t_list	*tmp;
-	int		i;
+	t_list			*tmp;
+	int				i;
 
 	if (index < 0 || index > ft_lstsize(records))
 	{

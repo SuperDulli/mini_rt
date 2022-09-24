@@ -23,20 +23,5 @@ int	str_to_vec(char *info, float *vec)
 		return (-1);
 	vec3(ft_atof(pos[0]), ft_atof(pos[1]), ft_atof(pos[2]), vec);
 	arr_free(pos);
-	return(0);
+	return (0);
 }
-
-// int	str_to_color(char *info)
-// {
-// 	char	**rgb;
-// 	int		res;
-
-// 	res = -1;
-// 	rgb = ft_split(info);
-// 	if (rgb)
-// 	{
-// 		res = get_color(0, rgb[0], rgb[1], rgb[2]);
-// 		arr_free(rgb);
-// 	}
-// 	return (res);
-// }

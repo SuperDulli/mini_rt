@@ -18,7 +18,6 @@
 void	exit_fatal(void)
 {
 	printf("Fatal error.\n");
-	// clean up(data);
 	exit(1);
 }
 

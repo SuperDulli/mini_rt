@@ -12,12 +12,8 @@
 
 #include "mini_rt.h"
 
-void	set_transform(
-	float transl[VEC3_SIZE],
-	float rotation[VEC3_SIZE],
-	float scale[VEC3_SIZE],
-	t_tform *transform
-)
+void	set_transform(float transl[VEC3_SIZE], float rotation[VEC3_SIZE], \
+		float scale[VEC3_SIZE], t_tform *transform)
 {
 	float	transl_matrix[MAT4_SIZE];
 	float	rotation_x_matrix[MAT4_SIZE];
@@ -30,31 +26,24 @@ void	set_transform(
 	mat4_rotate_y(rotation[1], rotation_y_matrix);
 	mat4_rotate_z(rotation[2], rotation_z_matrix);
 	mat4_scale(scale[0], scale[1], scale[2], scale_matrix);
-
 	mat4_mult(transl_matrix, rotation_x_matrix, transform->forward);
 	mat4_mult(transform->forward, rotation_y_matrix, transform->forward);
 	mat4_mult(transform->forward, rotation_z_matrix, transform->forward);
 	mat4_mult(transform->forward, scale_matrix, transform->forward);
-
 	mat4_inverse(transform->forward, transform->backward);
 }
 
-float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], bool is_point, float *result)
+float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], \
+		bool is_point, float *result)
 {
 	float	tmp[VEC4_SIZE];
 
-	// convert vec3 -> vec4
 	if (is_point)
 		vec4(tuple4(vec[0], vec[1], vec[2], 1.f), tmp);
 	else
 		vec4(tuple4(vec[0], vec[1], vec[2], 0.f), tmp);
-
-	// tmp = m * vec
 	mat4_mult_vec4(transf, tmp, tmp);
-
-	// convert vec4 -> vec3
 	vec3(tmp[0], tmp[1], tmp[2], result);
-
 	return (result);
 }
 
@@ -65,46 +54,9 @@ float	*rot_vec_from_orientation(float *orientation, float *result)
 	float		y_rot;
 	float		z_rot;
 
-
-	x_rot = acosf(vec3_dot(orientation, vec3(1,0,0, tmp)));
-	y_rot = acosf(vec3_dot(orientation, vec3(0,1,0, tmp)));
-	z_rot = acosf(vec3_dot(orientation, vec3(0,0,1, tmp)));
-	// z_rot = 0;
-	// if (orientation[0] == 0)
-	// {
-	// 	x_rot = z_rot;
-	// 	y_rot = 0;
-	// 	z_rot = 0;
-	// }
-	// if (orientation[1] == 0)
-	// {
-	// 	y_rot = x_rot;
-	// 	x_rot = 0;
-	// 	z_rot = 0;
-	// }
-	// if (orientation[2] == 0)
-	// {
-	// 	z_rot = y_rot;
-	// 	x_rot = 0;
-	// 	// y_rot = 0;
-	// }
+	x_rot = acosf(vec3_dot(orientation, vec3(1, 0, 0, tmp)));
+	y_rot = acosf(vec3_dot(orientation, vec3(0, 1, 0, tmp)));
+	z_rot = acosf(vec3_dot(orientation, vec3(0, 0, 1, tmp)));
 	vec3(x_rot, y_rot, z_rot, result);
 	return (result);
 }
-
-// int main()
-// {
-// 	float transl[VEC3_SIZE];
-// 	float scale[VEC3_SIZE];
-// 	float rot[VEC3_SIZE];
-// 	t_tform transform;
-
-// 	vec3(5,5,5, transl);
-// 	vec3(1, 1, 1, scale);
-// 	vec3(45, 90, 0, rot);
-// 	mat4_zero(transform.forward);
-// 	mat4_zero(transform.backward);
-
-// 	set_transform(transl, rot, scale, &transform);
-// 	return 0;
-// }
