@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/22 16:01:25 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/24 13:27:26 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ bool	hit_cylinder(struct s_ray ray, t_obj *cylinder, float point[VEC3_SIZE], flo
 	if (min_index < 2)
 	{
 		normal_curved(cylinder, intersection, local_normal);
+		vec3_copy(intersection, point);
 		// local_color[2] = 1.f;
 		return (true);
 	}
@@ -168,6 +169,7 @@ bool	hit_cylinder(struct s_ray ray, t_obj *cylinder, float point[VEC3_SIZE], flo
 	{
 		// printf("cap normal (xyz): (%f, %f, %f) min_index=%d\n", intersection[0], intersection[1], intersection[2], min_index);
 		normal_cap(cylinder, intersection, local_normal);
+		vec3_copy(intersection, point);
 		// printf("cap\n"); // this should be hit but its not??!?!
 		return (true);
 	}
