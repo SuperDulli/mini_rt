@@ -65,6 +65,7 @@ t_obj	*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
 	float	rot[VEC3_SIZE];
 	float	scale[VEC3_SIZE];
 
+	vec3_normalize(orientation, orientation);
 	obj = new_object(pos, color);
 	if (!obj)
 		return (NULL);

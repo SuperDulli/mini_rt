@@ -82,9 +82,8 @@ int	check_cylinder(char *line)
 	if (arr_size(arg) == 6)
 	{
 		if (!check_vector(arg[1]) && !check_vector_range(arg[2], -1, 1) && \
-			(!check_float(arg[3]) || !check_int(arg[3])) && \
-			(!check_float(arg[4]) || !check_int(arg[4])) && \
-			!check_color(arg[5]))
+			(!check_string_range(arg[3], 0, 0) && \
+			!check_string_range(arg[4], 0, 0)) && !check_color(arg[5], 0))
 		{
 			arr_free(arg);
 			return (0);

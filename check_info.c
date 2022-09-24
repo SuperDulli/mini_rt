@@ -12,7 +12,7 @@
 
 #include "mini_rt.h"
 
-int	check_color(char *color)
+int	check_color(char *color, int islight)
 {
 	char	**arr;
 	int		i;
@@ -26,7 +26,9 @@ int	check_color(char *color)
 		while (arr[i] && !check_int(arr[i]))
 		{
 			res = ft_atoi(arr[i]);
-			if (res >= MIN_COLOR_VALUE && res <= MAX_COLOR_VALUE)
+			if (!islight && res >= MIN_COLOR_VALUE && res <= MAX_COLOR_VALUE)
+				i++;
+			else if (islight && res == 255)
 				i++;
 			else
 				break ;

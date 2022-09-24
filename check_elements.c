@@ -19,7 +19,7 @@ int	check_amlight(char *line, char *duplicate)
 	arg = ft_split(line, ' ');
 	if (arr_size(arg) == 3)
 	{
-		if (!check_string_range(arg[1], 0, 1) && !check_color(arg[2]))
+		if (!check_string_range(arg[1], 0, 1) && !check_color(arg[2], 0))
 		{
 			arr_free(arg);
 			*duplicate |= 1;
@@ -57,7 +57,7 @@ int	check_light(char *line, char *duplicate)
 	if (arr_size(arg) == 4)
 	{
 		if (!check_vector(arg[1]) && !check_string_range(arg[2], 0, 1) && \
-			!check_color(arg[3]))
+			!check_color(arg[3], 1))
 		{
 			arr_free(arg);
 			*duplicate |= 1 << 2;
@@ -75,8 +75,8 @@ int	check_sphere(char *line)
 	arg = ft_split(line, ' ');
 	if (arr_size(arg) == 4)
 	{
-		if (!check_vector(arg[1]) && !check_color(arg[3]) && \
-			(!check_float(arg[2]) || !check_int(arg[2])))
+		if (!check_vector(arg[1]) && !check_color(arg[3], 0) && \
+			(!check_string_range(arg[2], 0, 0)))
 		{
 			arr_free(arg);
 			return (0);
@@ -94,7 +94,7 @@ int	check_plane(char *line)
 	if (arr_size(arg) == 4)
 	{
 		if (!check_vector(arg[1]) && !check_vector_range(arg[2], -1, 1) && \
-			!check_color(arg[3]))
+			!check_color(arg[3], 0))
 		{
 			arr_free(arg);
 			return (0);

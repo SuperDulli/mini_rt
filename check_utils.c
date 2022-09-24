@@ -85,7 +85,12 @@ int	check_string_range(char *str, int min, int max)
 			res = ft_atof(str);
 		else
 			res = ft_atoi(str);
-		if (min <= res && res <= max)
+		if (!max)
+		{
+			if (res >= 0)
+				return (0);
+		}
+		else if (min <= res && res <= max)
 			return (0);
 	}
 	return (-1);
