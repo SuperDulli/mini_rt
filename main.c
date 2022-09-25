@@ -12,8 +12,6 @@
 
 #include "mini_rt.h"
 
-bool	intersection_with_light_ray(t_scene *scene, float point[VEC3_SIZE], float dis_to_light);
-
 int	close_window(t_data *data);
 
 int	key_hook(int keycode, t_data *vars)
@@ -49,100 +47,6 @@ void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
 	}
 }
 
-float	distance(float start_point[VEC3_SIZE], float end_point[VEC3_SIZE])
-{
-	float	dis_vector[VEC3_SIZE];
-
-	vec3_sub(end_point, start_point, dis_vector);
-	return (vec3_length(dis_vector));
-}
-
-void	apply_shading(t_scene *scene, float	point[VEC3_SIZE], float	normal[VEC3_SIZE], float color_v[VEC3_SIZE])
-{
-	float	ambient_color_v[VEC3_SIZE];
-	t_light	*light;
-	float	light_color_v[VEC3_SIZE];
-	float	light_dir[VEC3_SIZE];
-	float	pixel_color;
-
-	vec3_sub(scene->light->pos, point, light_dir);
-	vec3_normalize(light_dir, light_dir);
-	vec3_copy(scene->ambient_light->color, ambient_color_v);
-	vec3_copy(scene->light->color, light_color_v);
-	vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
-	light = (t_light *) scene->light->specifics;
-	vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], ambient_color_v);
-	pixel_color = 0;
-	pixel_color += vec3_dot(normal, light_dir);
-	if (pixel_color < 0)
-		pixel_color = 0;
-	else
-	{
-		if (intersection_with_light_ray(
-			scene,
-			vec3_add(point, vec3_scalar_mult(normal, SHADOW_BIAS, normal), point),
-			distance(point, scene->light->pos)))
-			pixel_color = 0;
-	}
-	vec3_scalar_mult(color_v, pixel_color, light_color_v);
-	vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
-	vec3_add(ambient_color_v, light_color_v, color_v);
-}
-
-bool	intersection_with_light_ray(t_scene *scene,
-			float point[VEC3_SIZE], float dis_to_light)
-{
-	struct s_ray	light_ray;
-	float			dis_to_intersect;
-	t_obj			*obj;
-	int				i;
-	t_hit_record	hit;
-
-	ray_cast(point, scene->light->pos, &light_ray);
-
-	i = 0;
-	while (i < scene->obj_count)
-	{
-		obj = get_obj_from_scene(scene, i);
-		if (hit_object(obj, &light_ray, &hit))
-		{
-			dis_to_intersect = distance(light_ray.origin, hit.pos);
-			if (dis_to_intersect < dis_to_light)
-				return (true);
-		}
-		i++;
-	}
-	return (false);
-}
-
-unsigned int	choose_color(t_scene *scene, float u, float v)
-{
-	struct s_ray	ray;
-	t_list			*ray_intersections;
-	float			point[VEC3_SIZE];
-	float			color_v[VEC3_SIZE];
-	t_hit_record	*hit;
-
-	ray_camera(scene->camera, vec3(u, v, -1, point), &ray);
-	ray_intersections = NULL;
-	if (!ray_intersect(&ray, scene, &ray_intersections))
-	{
-		ft_lstclear(&ray_intersections, free);
-		exit_fatal();
-	}
-	if (ft_lstsize(ray_intersections) == 0)
-	{
-		return (BLACK);
-	}
-
-	hit = get_closest_hit(ray_intersections, scene->camera->pos);
-	vec3_copy(hit->color, color_v);
-	apply_shading(scene, hit->pos, hit->normal, color_v);
-	ft_lstclear(&ray_intersections, free);
-
-	return (convert_to_argb(color_v));
-}
-
 void	*fill_img(void *img, t_scene *scene)
 {
 	struct s_img_info	img_info;
@@ -153,7 +57,6 @@ void	*fill_img(void *img, t_scene *scene)
 	float				aspectratio;
 
 	aspectratio = (float)WIDTH / (float)HEIGHT;
-
 	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
 			&img_info.line_size, &img_info.endian);
 	px_coord.y = 0;
@@ -161,9 +64,9 @@ void	*fill_img(void *img, t_scene *scene)
 	{
 		printf("line %d of %d\n", px_coord.y, HEIGHT);
 		px_coord.x = 0;
-		while (px_coord.x < WIDTH) // Raster space
+		while (px_coord.x < WIDTH)
 		{
-			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4); // raster space (2D) -> 1D
+			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
 			color = choose_color(
 				scene,
 				((px_coord.x / (float)WIDTH) * 2.f - 1.f) * aspectratio * tan(scene->camera->fov / 2 * M_PI / 180),

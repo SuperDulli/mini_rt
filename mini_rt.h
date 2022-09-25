@@ -127,21 +127,26 @@ int				save_plane(char *line, t_scene *scene);
 //	util.c
 void			exit_fatal(void);
 void			*new(size_t size);
+bool			intersection_with_light_ray(t_scene *scene, \
+				float point[VEC3_SIZE], float dis_to_light);
+float			distance(float start_point[VEC3_SIZE], \
+				float end_point[VEC3_SIZE]);
 
 //	ray.c
+float			*ray_at(struct s_ray *ray, float t, float *point);
+void			ray_cast(float *origin, float *point, struct s_ray *ray);
+void			ray_camera(t_camera *camera, float *point, struct s_ray *ray);
 bool			ray_intersect(struct s_ray *ray, t_scene *scene, \
 				t_list **intersections);
-void			ray_camera(t_camera *camera, float *point, struct s_ray *ray);
 bool			hit_object(t_obj *obj, struct s_ray *ray, t_hit_record *hit);
 
 //	color.c
-int				get_red(int color);
-int				get_green(int color);
-int				get_blue(int color);
 unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b);
 float			*color_vec(float color[VEC3_SIZE], float *result);
-float			*color_vec_from_int(int argb, float *result);
 int				convert_to_argb(float rgb[VEC3_SIZE]);
+unsigned int	choose_color(t_scene *scene, float u, float v);
+void			apply_shading(t_scene *scene, float point[VEC3_SIZE], \
+				float normal[VEC3_SIZE], float color_v[VEC3_SIZE]);
 
 //	transform.c
 void			set_transform(float transl[VEC3_SIZE], float rotation \
