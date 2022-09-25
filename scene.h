@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 11:28:53 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/08 14:25:27 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 21:28:36 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,29 @@ typedef struct s_cylinder {
 	float	height;
 }	t_cylinder;
 
+// (cylinder) helper structs to only use four parameters and five variables
+
+struct s_dimension {
+	float	diameter;
+	float	height;
+};
+
+typedef struct s_cylinder_info {
+	float				pos[VEC3_SIZE];
+	float				color[VEC3_SIZE];
+	float				orientation[VEC3_SIZE];
+	struct s_dimension	dimension;
+}							t_cylinder_info;
+
+struct s_cyl_intersect
+{
+	float			t_values[4];
+	float			intersection[VEC3_SIZE];
+	bool			valid[4];
+	int				min_index;
+	struct s_ray	*ray;
+};
+
 typedef struct s_obj {
 	float	pos[VEC3_SIZE];
 	t_tform	transform;
@@ -114,8 +137,21 @@ bool		hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], \
 
 //	cylinder.c
 t_obj		*new_cylinder(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
-			float orientation[VEC3_SIZE], float diameter, float height);
+			float orientation[VEC3_SIZE], struct s_dimension dim);
 bool		hit_cylinder(struct s_ray ray, t_obj *cylinder, \
 			float point[VEC3_SIZE], float local_normal[VEC3_SIZE]);
+bool		close_enough(float a, float b);
+
+//	cylinder_intersection.c
+
+int			find_closest_intersect(struct s_cyl_intersect *data,
+				float point[VEC3_SIZE]);
+void		wall_intersect(float a, float b, float c,
+				struct s_cyl_intersect *data);
+void		cap_intersect(struct s_cyl_intersect *data);
+void		normal_wall(t_obj *cyl, float point[VEC3_SIZE],
+				float normal[VEC3_SIZE]);
+void		normal_cap(t_obj *cyl, float point[VEC3_SIZE],
+				float normal[VEC3_SIZE]);
 
 #endif

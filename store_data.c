@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   store_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcordeir <pcordeir@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 19:59:30 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/09/04 16:53:36 by pcordeir         ###   ########.fr       */
+/*   Updated: 2022/09/25 21:00:15 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,19 @@ int	str_to_vec(char *info, float *vec)
 
 int	save_cylinder(char *line, t_scene *scene)
 {
-	t_obj	*cylinder;
-	char	**arg;
-	float	color[VEC3_SIZE];
-	float	pos[VEC3_SIZE];
-	float	vec[VEC3_SIZE];
+	t_obj			*cylinder;
+	char			**arg;
+	t_cylinder_info	info;
 
 	arg = ft_split(line, ' ');
-	if (arg && !str_to_vec(arg[1], pos) && !str_to_vec(arg[2], vec) && \
-		!str_to_vec(arg[5], color))
+	if (arg && !str_to_vec(arg[1], info.pos) && \
+		!str_to_vec(arg[2], info.orientation) && \
+		!str_to_vec(arg[5], info.color))
 	{
-		cylinder = new_cylinder(pos, color_vec(color, color), vec, \
-					ft_atof(arg[3]), ft_atof(arg[4]));
+		info.dimension.diameter = ft_atof(arg[3]);
+		info.dimension.height = ft_atof(arg[4]);
+		cylinder = new_cylinder(info.pos, color_vec(info.color, info.color), \
+							info.orientation, info.dimension);
 		arr_free(arg);
 		if (add_obj_to_scene(scene, cylinder))
 			return (0);

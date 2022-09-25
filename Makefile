@@ -32,6 +32,7 @@ SRCS	= 	camera.c \
 			check_utils.c \
 			color.c \
 			cylinder.c \
+			cylinder_intersection.c \
 			intersection.c \
 			light.c \
 			main.c \
