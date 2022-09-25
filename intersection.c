@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 14:15:00 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/07 12:37:32 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:14:09 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ t_hit_record	*get_hit_record(t_list *records, int index)
 t_hit_record	*get_closest_hit(t_list *hits, float pos[VEC3_SIZE])
 {
 	t_hit_record	*closest_hit;
-	t_hit_record	*hit;
 	t_list			*tmp;
 	float			dis_vec[VEC3_SIZE];
 	float			distance;
@@ -82,12 +81,12 @@ t_hit_record	*get_closest_hit(t_list *hits, float pos[VEC3_SIZE])
 	tmp = hits;
 	while (tmp)
 	{
-		hit = (t_hit_record *) tmp->content;
-		distance = vec3_length(vec3_sub(hit->pos, pos, dis_vec));
+		distance = vec3_length(
+				vec3_sub(((t_hit_record *) tmp->content)->pos, pos, dis_vec));
 		if (distance < min)
 		{
 			min = distance;
-			closest_hit = hit;
+			closest_hit = (t_hit_record *) tmp->content;
 		}
 		tmp = tmp->next;
 	}
