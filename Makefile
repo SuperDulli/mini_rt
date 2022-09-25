@@ -38,6 +38,7 @@ SRCS	= 	camera.c \
 			object.c \
 			plane.c \
 			ray.c \
+			render.c \
 			scene.c \
 			sphere.c \
 			store_data.c \

@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 17:59:12 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:23:33 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,13 +143,13 @@ bool			ray_intersect(struct s_ray *ray, t_scene *scene, \
 				t_list **intersections);
 bool			hit_object(t_obj *obj, struct s_ray *ray, t_hit_record *hit);
 
+//	render.c
+unsigned int	choose_color(t_scene *scene, float u, float v);
+
 //	color.c
 unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b);
 float			*color_vec(float color[VEC3_SIZE], float *result);
 int				convert_to_argb(float rgb[VEC3_SIZE]);
-unsigned int	choose_color(t_scene *scene, float u, float v);
-void			apply_shading(t_scene *scene, float point[VEC3_SIZE], \
-				float normal[VEC3_SIZE], float color_v[VEC3_SIZE]);
 
 //	transform.c
 void			set_transform(float transl[VEC3_SIZE], float rotation \
