@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:28:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/21 19:18:29 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:58:28 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,31 @@ float	*apply_transform(float vec[VEC3_SIZE], float transf[MAT4_SIZE], \
 	return (result);
 }
 
-float	*rot_vec_from_orientation(float *orientation, float *result)
+void	translate_rotate(float pos[VEC3_SIZE], float normal[VEC3_SIZE],
+	float v_up[VEC3_SIZE], t_tform *transform)
 {
-	float		tmp[VEC3_SIZE];
-	float		x_rot;
-	float		y_rot;
-	float		z_rot;
+	struct s_mat4	transf;
+	float			v[VEC3_SIZE];
+	float			u[VEC3_SIZE];
 
-	x_rot = acosf(vec3_dot(orientation, vec3(1, 0, 0, tmp)));
-	y_rot = acosf(vec3_dot(orientation, vec3(0, 1, 0, tmp)));
-	z_rot = acosf(vec3_dot(orientation, vec3(0, 0, 1, tmp)));
-	vec3(x_rot, y_rot, z_rot, result);
-	return (result);
+	vec3_cross(normal, v_up, u);
+	vec3_cross(u, normal, v);
+	transf.m11 = u[0];
+	transf.m21 = u[1];
+	transf.m31 = u[2];
+	transf.m12 = v[0];
+	transf.m22 = v[1];
+	transf.m32 = v[2];
+	transf.m13 = -normal[0];
+	transf.m23 = -normal[1];
+	transf.m33 = -normal[2];
+	transf.m14 = pos[0];
+	transf.m24 = pos[1];
+	transf.m34 = pos[2];
+	transf.m44 = 1;
+	transf.m41 = 0;
+	transf.m42 = 0;
+	transf.m43 = 0;
+	mat_copy(transf.v, MAT4_SIZE, transform->forward);
+	mat4_inverse(transform->forward, transform->backward);
 }

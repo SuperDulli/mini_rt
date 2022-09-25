@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 16:37:36 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:59:12 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,8 @@ void			set_transform(float transl[VEC3_SIZE], float rotation \
 				[VEC3_SIZE], float scale[VEC3_SIZE], t_tform *transform);
 float			*apply_transform(float vec[VEC3_SIZE], \
 				float transf[MAT4_SIZE], bool is_point, float *result);
-float			*rot_vec_from_orientation(float *orientation, float *result);
+void			translate_rotate(float pos[VEC3_SIZE], float normal[VEC3_SIZE],
+					float v_up[VEC3_SIZE], t_tform *transform);
 
 //	intersection.c
 void			fill_hit_record(float *pos, float *normal, float *color,

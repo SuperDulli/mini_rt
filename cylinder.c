@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/24 16:25:54 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 18:02:16 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,8 +191,9 @@ t_obj	*new_cylinder(
 {
 	t_obj		*obj;
 	t_cylinder	*cylinder;
-	float		rot[VEC3_SIZE];
+	float		v_up[VEC3_SIZE];
 	float		scale[VEC3_SIZE];
+	float		scale_matrix[MAT4_SIZE];
 
 	obj = new_object(pos, color);
 	if (!obj)
@@ -209,8 +210,14 @@ t_obj	*new_cylinder(
 	cylinder->height = height;
 	vec3_normalize(orientation, orientation);
 	vec3(orientation[0], orientation[1], orientation[2], cylinder->ovector);
-	rot_vec_from_orientation(orientation, rot);
 	vec3(diameter / 2.f, diameter / 2.f, height / 2.f, scale);
-	set_transform(pos, rot, scale, &obj->transform);
+
+	vec3(0, 1, 0, v_up);
+	if (orientation[1] == 1 || orientation[1] == -1)
+		vec3(1, 1, 0, v_up);
+	translate_rotate(pos, orientation, v_up, &obj->transform);
+	mat4_scale(scale[0], scale[1], scale[2], scale_matrix);
+	mat4_mult(obj->transform.forward, scale_matrix, obj->transform.forward);
+	mat4_inverse(obj->transform.forward, obj->transform.backward);
 	return (obj);
 }
