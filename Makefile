@@ -44,7 +44,13 @@ SRCS	= 	camera.c \
 			store_elements.c \
 			transform.c \
 			utils.c
-# SRCS	= color.c # test only one file with included main check_elements.c check_utils.c check_info.c
+ifeq ($(UNAME), Linux)
+	SRCS := $(SRCS) close_window_linux.c
+endif
+ifeq ($(UNAME), Darwin)
+	SRCS := $(SRCS) close_window_mac.c
+endif
+
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 OBJS_NO_MAIN = $(filter-out obj/main.o, $(OBJS)) # useful for building tests
@@ -99,8 +105,8 @@ $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME):
 $(LIBFT_DIR)/$(LIBFT_NAME):
 	make -C $(LIBFT_DIR) --quiet
 
-leaks: $(NAME) test.rt
-	$(LEAKS) ./$(NAME) test.rt
+leaks: $(NAME) scenes/test.rt
+	$(LEAKS) ./$(NAME) scenes/test.rt
 
 test: $(TEST)/bin $(TESTBINS)
 	@for test in $(TESTBINS) ; do ./$$test --verbose; done

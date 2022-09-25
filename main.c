@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 12:23:28 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/23 15:13:30 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:04:17 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,7 @@
 
 bool	intersection_with_light_ray(t_scene *scene, float point[VEC3_SIZE], float dis_to_light);
 
-static int	close_window(t_data *data)
-{
-	#ifdef __linux__
-	mlx_loop_end(data->mlx);
-	#endif
-	mlx_destroy_image(data->mlx, data->img);
-	mlx_destroy_window(data->mlx, data->win);
-	#ifdef __linux__
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	#endif
-	exit(0);
-}
+int	close_window(t_data *data);
 
 int	key_hook(int keycode, t_data *vars)
 {
@@ -35,16 +23,24 @@ int	key_hook(int keycode, t_data *vars)
 	return (0);
 }
 
+/**
+ * @brief writes the color value to the right pos in the img buffer.
+ *
+ * @param buffer 1D array that hold all the pixel values
+ * @param pixel_addr pixel to change
+ * @param color 0xAARRGGBB
+ * @param endian which byte comes first (0/1->most/least significant byte)
+ */
 void	write_pixel(char *buffer, int pixel_addr, int color, int endian)
 {
-	if (endian == 1) // Most significant (Alpha) byte first
+	if (endian == 1)
 	{
 		buffer[pixel_addr + 0] = (color >> 24);
 		buffer[pixel_addr + 1] = (color >> 16) & 0xFF;
 		buffer[pixel_addr + 2] = (color >> 8) & 0xFF;
 		buffer[pixel_addr + 3] = color & 0xFF;
 	}
-	else if (endian == 0) // Least significant (Blue) byte first
+	else if (endian == 0)
 	{
 		buffer[pixel_addr + 0] = color & 0xFF;
 		buffer[pixel_addr + 1] = (color >> 8) & 0xFF;
@@ -69,51 +65,37 @@ void	apply_shading(t_scene *scene, float	point[VEC3_SIZE], float	normal[VEC3_SIZ
 	float	light_dir[VEC3_SIZE];
 	float	pixel_color;
 
-	// get light direction
-	vec3_sub(scene->light->pos, point, light_dir); // dir from hitpoint to light (-lightdir)
-	// vec3(1, 1, 1, light_dir); // parallel light
+	vec3_sub(scene->light->pos, point, light_dir);
 	vec3_normalize(light_dir, light_dir);
-
-	// colors as vectors
 	vec3_copy(scene->ambient_light->color, ambient_color_v);
-
 	vec3_copy(scene->light->color, light_color_v);
-
-	// light intensity - inverse square law? to
 	vec3_scalar_mult(ambient_color_v, scene->ambient_light->ratio, ambient_color_v);
 	light = (t_light *) scene->light->specifics;
-	// vec3_scalar_mult(light_color_v, 1/(distance(scene->light->pos, point)*distance(scene->light->pos, point)), light_color_v);
-
-	// apply shading
 	vec3(color_v[0] * ambient_color_v[0], color_v[1] * ambient_color_v[1], color_v[2] * ambient_color_v[2], ambient_color_v);
-
 	pixel_color = 0;
-	pixel_color += vec3_dot(normal, light_dir); // * color(obj) * color(light) // = * 1, because light is white
+	pixel_color += vec3_dot(normal, light_dir);
 	if (pixel_color < 0)
-	{
 		pixel_color = 0;
-	}
 	else
 	{
 		if (intersection_with_light_ray(
 			scene,
 			vec3_add(point, vec3_scalar_mult(normal, SHADOW_BIAS, normal), point),
 			distance(point, scene->light->pos)))
-		{
 			pixel_color = 0;
-		}
 	}
 	vec3_scalar_mult(color_v, pixel_color, light_color_v);
 	vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
 	vec3_add(ambient_color_v, light_color_v, color_v);
 }
 
-bool	intersection_with_light_ray(t_scene *scene, float point[VEC3_SIZE], float dis_to_light)
+bool	intersection_with_light_ray(t_scene *scene,
+			float point[VEC3_SIZE], float dis_to_light)
 {
 	struct s_ray	light_ray;
-	float	dis_to_intersect;
-	t_obj	*obj;
-	int		i;
+	float			dis_to_intersect;
+	t_obj			*obj;
+	int				i;
 	t_hit_record	hit;
 
 	ray_cast(point, scene->light->pos, &light_ray);
@@ -141,7 +123,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 	float			color_v[VEC3_SIZE];
 	t_hit_record	*hit;
 
-	ray_camera(scene->camera, vec3(u, v, - 1, point), &ray);
+	ray_camera(scene->camera, vec3(u, v, -1, point), &ray);
 	ray_intersections = NULL;
 	if (!ray_intersect(&ray, scene, &ray_intersections))
 	{
@@ -204,12 +186,12 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 	{
 		if (checkfile(argv[1]) == -1)
-			return (0);
+			return (1);
 		scene = new_scene();
 		if (store_data(argv[1], scene) == -1)
 		{
 			destroy_scene(scene);
-			return (0);
+			return (1);
 		}
 		else
 		{
