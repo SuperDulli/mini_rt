@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 11:03:18 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/23 14:43:35 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:47:14 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,36 +63,25 @@ bool	hit_object(t_obj *obj, struct s_ray *ray, t_hit_record *hit)
 {
 	float	point[VEC3_SIZE];
 	float	normal[VEC3_SIZE];
+	bool	result;
 
+	result = false;
 	if (obj->type == SPHERE)
 	{
 		if (hit_sphere(*ray, obj, point, normal))
-		{
-			vec3_copy(point, hit->pos);
-			vec3_copy(normal, hit->normal);
-			vec3_copy(obj->color, hit->color);
-			return (true);
-		}
+			result = true;
 	}
 	else if (obj->type == PLANE)
 	{
 		if (hit_plane(*ray, obj, point, normal))
-		{
-			vec3_copy(point, hit->pos);
-			vec3_copy(normal, hit->normal);
-			vec3_copy(obj->color, hit->color);
-			return (true);
-		}
+			result = true;
 	}
 	else if (obj->type == CYLINDER)
 	{
 		if (hit_cylinder(*ray, obj, point, normal))
-		{
-			vec3_copy(point, hit->pos);
-			vec3_copy(normal, hit->normal);
-			vec3_copy(obj->color, hit->color);
-			return (true);
-		}
+			result = true;
 	}
-	return (false);
+	if (result)
+		fill_hit_record(point, normal, obj->color, hit);
+	return (result);
 }

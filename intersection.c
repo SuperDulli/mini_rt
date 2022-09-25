@@ -6,11 +6,19 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 14:15:00 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 16:14:09 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:22:57 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
+void	fill_hit_record(float *pos, float *normal, float *color,
+						t_hit_record *hit)
+{
+	vec3_copy(pos, hit->pos);
+	vec3_copy(normal, hit->normal);
+	vec3_copy(color, hit->color);
+}
 
 t_hit_record	*new_hit_record(float *pos, float *normal, float *color)
 {
@@ -21,9 +29,7 @@ t_hit_record	*new_hit_record(float *pos, float *normal, float *color)
 	{
 		return (NULL);
 	}
-	vec3_copy(pos, hit_record->pos);
-	vec3_copy(normal, hit_record->normal);
-	vec3_copy(color, hit_record->color);
+	fill_hit_record(pos, normal, color, hit_record);
 	return (hit_record);
 }
 

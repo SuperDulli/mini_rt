@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/23 14:36:51 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:37:36 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,8 @@ float			*apply_transform(float vec[VEC3_SIZE], \
 float			*rot_vec_from_orientation(float *orientation, float *result);
 
 //	intersection.c
+void			fill_hit_record(float *pos, float *normal, float *color,
+					t_hit_record *hit);
 t_hit_record	*new_hit_record(float *pos, float *normal, float *color);
 bool			add_hit_record(t_list **records, t_hit_record *hit);
 t_hit_record	*get_hit_record(t_list *records, int index);
