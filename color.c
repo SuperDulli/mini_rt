@@ -12,21 +12,6 @@
 
 #include "mini_rt.h"
 
-int	get_red(int color)
-{
-	return ((color >> 16) & 0xFF);
-}
-
-int	get_green(int color)
-{
-	return ((color >> 8) & 0xFF);
-}
-
-int	get_blue(int color)
-{
-	return (color & 0xFF);
-}
-
 unsigned int	get_color(unsigned alpha, unsigned r, unsigned g, unsigned b)
 {
 	unsigned int	color;
