@@ -82,44 +82,37 @@ struct s_scene
 };
 typedef struct s_scene		t_scene;
 
-// scene
-
+//	scene.c
 t_scene		*new_scene(void);
 void		destroy_scene(t_scene *scene);
 bool		add_obj_to_scene(t_scene *scene, t_obj *obj);
 t_obj		*get_obj_from_scene(t_scene *scene, int index);
 
-// object
-
+//	object.c
 t_obj		*new_object(float pos[VEC3_SIZE], float color[VEC3_SIZE]);
 void		destroy_object(t_obj *obj);
 
-// camera
-
+//	camera.c
 t_camera	*new_camera(float pos[VEC3_SIZE], float dir[VEC3_SIZE], float fov);
 
-// light
-
+//	light.c
 t_amlight	*new_ambient_light(float ratio, float color[VEC3_SIZE]);
 t_obj		*new_light(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
 			float brightness);
 
-// sphere
-
+//	sphere.c
 t_obj		*new_sphere(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
 			float diameter);
 bool		hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], \
 			float local_normal[VEC3_SIZE]);
 
-// plane
-
+//	plane.c
 t_obj		*new_plane(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
 			float dir[VEC3_SIZE]);
 bool		hit_plane(struct s_ray ray, t_obj *plane, float point[VEC3_SIZE], \
 			float local_normal[VEC3_SIZE]);
 
-// cylinder
-
+//	cylinder.c
 t_obj		*new_cylinder(float pos[VEC3_SIZE], float color[VEC3_SIZE], \
 			float orientation[VEC3_SIZE], float diameter, float height);
 bool		hit_cylinder(struct s_ray ray, t_obj *cylinder, \

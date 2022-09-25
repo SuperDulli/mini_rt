@@ -27,8 +27,8 @@
 # include <stdbool.h>
 # include <fcntl.h>
 
-# define HEIGHT 800
-# define WIDTH 800
+# define HEIGHT 900 //960
+# define WIDTH 1440 //1280
 
 # define RED 0x00FF0000
 # define GREEN 0x0000FF00

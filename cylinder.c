@@ -55,7 +55,6 @@ bool	hit_cylinder(struct s_ray ray, t_obj *cylinder,
 	c = ray.origin[0] * ray.origin[0] + ray.origin[1] * ray.origin[1] - 1.f;
 	wall_intersect(a, b, c, &data);
 	cap_intersect(&data);
-
 	if ((!data.valid[0]) && (!data.valid[1])
 		&& (!data.valid[2]) && (!data.valid[3]))
 		return (false);
@@ -79,7 +78,6 @@ bool	intersect_to_world(t_obj *cyl, struct s_cyl_intersect *data,
 		normal_cap(cyl, point, normal);
 		return (true);
 	}
-
 	return (false);
 }
 
@@ -120,11 +118,9 @@ void	wall_intersect(float a, float b, float c, struct s_cyl_intersect *data)
 	{
 		data->t_values[0] = (-b - sqrtf(discriminant)) / (2.f * a);
 		data->t_values[1] = (-b + sqrtf(discriminant)) / (2.f * a);
-
 		ray_at(data->ray, data->t_values[0], data->intersection);
 		if (data->t_values[0] > 0.f && fabsf(data->intersection[2]) < 1.f)
 			data->valid[0] = true;
-
 		ray_at(data->ray, data->t_values[1], data->intersection);
 		if (data->t_values[1] > 0.f && fabsf(data->intersection[2]) < 1.f)
 			data->valid[1] = true;
@@ -184,7 +180,6 @@ void	normal_cap(t_obj *cyl, float point[VEC3_SIZE], float normal[VEC3_SIZE])
 	vec3_normalize(tmp_normal, tmp_normal);
 	vec3_copy(tmp_normal, normal);
 }
-
 
 t_obj	*new_cylinder(
 	float pos[VEC3_SIZE],
