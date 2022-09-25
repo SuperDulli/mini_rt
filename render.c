@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 20:05:34 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 20:28:48 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 22:08:01 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ unsigned int	choose_color(t_scene *scene, float u, float v);
 
 static void		apply_shading(t_scene *scene, t_hit_record *hit,
 					float color_v[VEC3_SIZE]);
-static void		get_light_color(t_scene *scene, t_hit_record *hit,
+static float	get_light_color(t_scene *scene, t_hit_record *hit,
 					float light_dir[VEC3_SIZE], float light_color_v[VEC3_SIZE]);
 
 unsigned int	choose_color(t_scene *scene, float u, float v)
@@ -45,26 +45,27 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 }
 
 static
-void	get_light_color(t_scene *scene, t_hit_record *hit,
+float	get_light_color(t_scene *scene, t_hit_record *hit,
 					float light_dir[VEC3_SIZE], float light_color_v[VEC3_SIZE])
 {
 	float	pixel_color;
 	float	point[VEC3_SIZE];
 	float	tmp[VEC3_SIZE];
 
-	pixel_color = 0;
-	pixel_color += vec3_dot(hit->normal, light_dir);
+	pixel_color = vec3_dot(hit->normal, light_dir);
 	if (pixel_color < 0)
 		pixel_color = 0;
 	else
 	{
 		vec3_scalar_mult(hit->normal, SHADOW_BIAS, tmp);
+		vec3_add(hit->pos, tmp, point);
 		if (intersection_with_light_ray(scene,
-				vec3_add(hit->pos, tmp, point),
+				point,
 				distance(point, scene->light->pos)))
 			pixel_color = 0;
 	}
-	vec3_scalar_mult(hit->color, pixel_color, light_color_v);
+	vec3_copy(scene->light->color, light_color_v);
+	return (pixel_color);
 }
 
 static
@@ -72,9 +73,10 @@ void	apply_shading(t_scene *scene, t_hit_record *hit,
 	float color_v[VEC3_SIZE])
 {
 	float	ambient_color_v[VEC3_SIZE];
-	t_light	*light;
+	float	light_coef;
 	float	light_color_v[VEC3_SIZE];
 	float	light_dir[VEC3_SIZE];
+	t_light	*light;
 
 	vec3_copy(scene->ambient_light->color, ambient_color_v);
 	vec3(hit->color[0] * ambient_color_v[0],
@@ -84,7 +86,8 @@ void	apply_shading(t_scene *scene, t_hit_record *hit,
 		ambient_color_v);
 	vec3_sub(scene->light->pos, hit->pos, light_dir);
 	vec3_normalize(light_dir, light_dir);
-	get_light_color(scene, hit, light_dir, light_color_v);
+	light_coef = get_light_color(scene, hit, light_dir, light_color_v);
+	vec3_scalar_mult(hit->color, light_coef, light_color_v);
 	light = (t_light *) scene->light->specifics;
 	vec3_scalar_mult(light_color_v, light->brightness, light_color_v);
 	vec3_add(ambient_color_v, light_color_v, color_v);
