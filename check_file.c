@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 11:24:17 by pcordeir          #+#    #+#             */
-/*   Updated: 2022/08/30 13:27:46 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:32:29 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	checkfile(char *path)
 	{
 		if (ft_strncmp(path + suffix - 3, ".rt", 3))
 		{
-			ft_putendl_fd("Invalid file extension", 1);
+			ft_error(1, "Invalid file extension");
 			return (-1);
 		}
 	}
@@ -43,7 +43,7 @@ int	readfile(int fd)
 	line = get_next_line(fd);
 	if (!line)
 	{
-		ft_putendl_fd("File empty!", 1);
+		ft_error(2, "File empty!");
 		return (-1);
 	}
 	err = 0;
@@ -51,7 +51,7 @@ int	readfile(int fd)
 	close(fd);
 	if (!err)
 		return (0);
-	ft_putendl_fd("Invalid file!", 1);
+	ft_error(3, "Invalid file!");
 	return (-1);
 }
 
@@ -112,15 +112,3 @@ void	readfile_helper(char *line, int fd, int *err)
 		line = get_next_line(fd);
 	}
 }
-
-// t_obj	**obj;
-// obj = malloc(sizeof(t_obj *) * 5);
-// obj[0] = malloc(sizeof(t_obj));
-// obj[0]->specifics = malloc(sizeof(t_sphere));
-// obj[1]->speficis = malloc(sizeof(t_cylinder));
-
-// // t_sphere  *temp;
-// // temp = (t_sphere *) obj->specifics;
-// // temp->diameter = 2.5f;
-// ((t_sphere *) obj[0]->specifics)->diamater = 2.5f;
-// ((t_cylinder *) obj[1]->specifics)->hight = 10.8f;
