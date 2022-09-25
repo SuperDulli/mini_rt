@@ -25,25 +25,25 @@ LIBFT_NAME = libft.a
 LIBS = $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME) $(LIBFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME)
 INCLUDES = -I$(MLX_DIR) -I$(LIN_ALGEBRA_DIR) -I$(LIBFT_DIR)
 
-SRCS	= main.c \
-			utils.c \
-			ray.c \
-			color.c \
-			check_file.c \
+SRCS	= 	camera.c \
 			check_elements.c \
+			check_file.c \
 			check_info.c \
 			check_utils.c \
+			color.c \
+			cylinder.c \
+			intersection.c \
+			light.c \
+			main.c \
+			object.c \
+			plane.c \
+			ray.c \
+			scene.c \
+			sphere.c \
 			store_data.c \
 			store_elements.c \
-			object.c \
-			camera.c \
-			light.c \
-			sphere.c \
-			cylinder.c \
-			plane.c \
-			scene.c \
 			transform.c \
-			intersection.c
+			utils.c
 # SRCS	= color.c # test only one file with included main check_elements.c check_utils.c check_info.c
 OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
