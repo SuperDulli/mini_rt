@@ -1,3 +1,0 @@
-[submodule "lin_algebra"]
-	path = lin_algebra
-	url = git@github.com:SuperDulli/c-lin-algebra-lib.git
