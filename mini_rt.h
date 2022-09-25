@@ -66,6 +66,7 @@ struct					s_img_info
 	int					bits_per_pixel;
 	int					line_size;
 	int					endian;
+	float				aspectratio;
 };
 
 struct					s_2d_coord
@@ -124,13 +125,15 @@ int				save_light(char *line, t_scene *scene);
 int				save_sphere(char *line, t_scene *scene);
 int				save_plane(char *line, t_scene *scene);
 
-//	util.c
+//	utils.c
 void			exit_fatal(void);
 void			*new(size_t size);
 bool			intersection_with_light_ray(t_scene *scene, \
 				float point[VEC3_SIZE], float dis_to_light);
 float			distance(float start_point[VEC3_SIZE], \
 				float end_point[VEC3_SIZE]);
+float			ufo(int pixel, struct s_img_info img_info, t_scene *scene, \
+				int coordinate);
 
 //	ray.c
 float			*ray_at(struct s_ray *ray, float t, float *point);

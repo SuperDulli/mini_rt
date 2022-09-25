@@ -54,23 +54,19 @@ void	*fill_img(void *img, t_scene *scene)
 	struct s_2d_coord	px_coord;
 	int					pixel_addr;
 	int					color;
-	float				aspectratio;
 
-	aspectratio = (float)WIDTH / (float)HEIGHT;
+	img_info.aspectratio = (float)WIDTH / (float)HEIGHT;
 	buffer = mlx_get_data_addr(img, &img_info.bits_per_pixel,
 			&img_info.line_size, &img_info.endian);
 	px_coord.y = 0;
 	while (px_coord.y < HEIGHT)
 	{
-		printf("line %d of %d\n", px_coord.y, HEIGHT);
 		px_coord.x = 0;
 		while (px_coord.x < WIDTH)
 		{
 			pixel_addr = (px_coord.y * img_info.line_size) + (px_coord.x * 4);
-			color = choose_color(
-				scene,
-				((px_coord.x / (float)WIDTH) * 2.f - 1.f) * aspectratio * tan(scene->camera->fov / 2 * M_PI / 180),
-				(((px_coord.y / (float)HEIGHT) * 2.f - 1.f) * -1.f) * tan(scene->camera->fov / 2 * M_PI / 180));
+			color = choose_color(scene, ufo(px_coord.x, img_info, scene, 1), \
+					ufo(px_coord.y, img_info, scene, 0));
 			write_pixel(buffer, pixel_addr, color, img_info.endian);
 			px_coord.x++;
 		}
@@ -79,11 +75,23 @@ void	*fill_img(void *img, t_scene *scene)
 	return (img);
 }
 
+void	start_rendering(t_scene *scene)
+{
+	t_data	data;
+
+	data.mlx = mlx_init();
+	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "miniRT");
+	data.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
+	mlx_put_image_to_window(data.mlx, data.win, \
+							fill_img(data.img, scene), 0, 0);
+	destroy_scene(scene);
+	mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
+	mlx_key_hook(data.win, &key_hook, &data);
+	mlx_loop(data.mlx);
+}
+
 int	main(int argc, char **argv)
 {
-	int		window_height;
-	int		window_width;
-	t_data	data;
 	t_scene	*scene;
 
 	if (argc == 2)
@@ -97,18 +105,7 @@ int	main(int argc, char **argv)
 			return (1);
 		}
 		else
-		{
-			window_height = HEIGHT;
-			window_width = WIDTH;
-			data.mlx = mlx_init();
-			data.win = mlx_new_window(data.mlx, window_width, window_height, "miniRT");
-			data.img = mlx_new_image(data.mlx, window_width, window_height);
-			mlx_put_image_to_window(data.mlx, data.win, fill_img(data.img, scene), 0, 0);
-			destroy_scene(scene);
-			mlx_hook(data.win, 17, (1L << 17), &close_window, &data);
-			mlx_key_hook(data.win, &key_hook, &data);
-			mlx_loop(data.mlx);
-		}
+			start_rendering(scene);
 	}
 	else
 		ft_putendl_fd("Invalid arguments!", 1);

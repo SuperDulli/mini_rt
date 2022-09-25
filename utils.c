@@ -63,3 +63,14 @@ float	distance(float start_point[VEC3_SIZE], float end_point[VEC3_SIZE])
 	vec3_sub(end_point, start_point, dis_vector);
 	return (vec3_length(dis_vector));
 }
+
+float	ufo(int pixel, struct s_img_info img_info, t_scene *scene, \
+		int coordinate)
+{
+	if (coordinate)
+		return (((pixel / (float)WIDTH) * 2.f - 1.f) * img_info.aspectratio * \
+				tan(scene->camera->fov / 2 * M_PI / 180));
+	else
+		return ((((pixel / (float)HEIGHT) * 2.f - 1.f) * -1.f) * \
+				tan(scene->camera->fov / 2 * M_PI / 180));
+}
