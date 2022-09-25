@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 18:02:16 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:19:39 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ bool	intersect_to_world(t_obj *cyl, struct s_cyl_intersect *data,
 			+ point[1] * point[1]) <= 1.f)
 	{
 		normal_cap(cyl, point, normal);
+		apply_transform(point, cyl->transform.forward, 1, point);
 		return (true);
 	}
 	return (false);
