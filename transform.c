@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:28:36 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 17:58:28 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:38:12 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ void	translate_rotate(float pos[VEC3_SIZE], float normal[VEC3_SIZE],
 	float			u[VEC3_SIZE];
 
 	vec3_cross(normal, v_up, u);
+	vec3_normalize(u, u);
 	vec3_cross(u, normal, v);
+	vec3_normalize(v, v);
+	mat4_identity(transf.v);
 	transf.m11 = u[0];
 	transf.m21 = u[1];
 	transf.m31 = u[2];
@@ -68,10 +71,6 @@ void	translate_rotate(float pos[VEC3_SIZE], float normal[VEC3_SIZE],
 	transf.m14 = pos[0];
 	transf.m24 = pos[1];
 	transf.m34 = pos[2];
-	transf.m44 = 1;
-	transf.m41 = 0;
-	transf.m42 = 0;
-	transf.m43 = 0;
 	mat_copy(transf.v, MAT4_SIZE, transform->forward);
 	mat4_inverse(transform->forward, transform->backward);
 }

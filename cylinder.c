@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 21:28:56 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:23:09 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	hit_cylinder(struct s_ray ray, t_obj *cylinder,
 	float					c;
 	struct s_cyl_intersect	data;
 
-	vec3_normalize(ray.direction, ray.direction);
+	// vec3_normalize(ray.direction, ray.direction);
 	data.ray = &ray;
 	apply_transform(ray.direction, cylinder->transform.backward, 0,
 		ray.direction);
@@ -118,7 +118,7 @@ void	create_cylinder_matrix(t_obj *obj, float pos[VEC3_SIZE],
 	vec3(dim.diameter / 2.f, dim.diameter / 2.f, dim.height / 2.f, scale);
 	vec3(0, 1, 0, v_up);
 	if (orientation[1] == 1 || orientation[1] == -1)
-		vec3(1, 1, 0, v_up);
+		vec3(1, 0, 0, v_up);
 	translate_rotate(pos, orientation, v_up, &obj->transform);
 	mat4_scale(scale[0], scale[1], scale[2], scale_matrix);
 	mat4_mult(obj->transform.forward, scale_matrix, obj->transform.forward);
