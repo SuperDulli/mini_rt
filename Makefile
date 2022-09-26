@@ -1,7 +1,7 @@
 NAME = miniRT
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra
 
 UNAME = $(shell uname -s)
 ifeq ($(UNAME), Linux)
@@ -57,11 +57,6 @@ OBJDIR	= obj
 OBJS	= $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 OBJS_NO_MAIN = $(filter-out obj/main.o, $(OBJS)) # useful for building tests
 
-TEST = tests
-TESTS = $(wildcard $(TEST)/*.c)
-TESTBINS = $(patsubst $(TEST)/%.c,$(TEST)/bin/%,$(TESTS))
-# CRITERION_VERBOSITY_LEVEL = 1
-
 VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 ifeq ($(UNAME), Linux)
 	LEAKS = valgrind $(VALGRIND_FLAGS)
@@ -92,12 +87,6 @@ $(NAME): $(OBJS) $(LIBS)
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 
-$(TEST)/bin/%: $(OBJS_NO_MAIN) $(TEST)/%.c  $(LIBS)
-	$(CC) $(CFLAGS) $(INCLUDES) $^ -lcriterion $(LFLAGS) -o $@
-
-$(TEST)/bin:
-	mkdir $@
-
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
@@ -107,10 +96,7 @@ $(LIN_ALGEBRA_DIR)/$(LIN_ALGEBRA_NAME):
 $(LIBFT_DIR)/$(LIBFT_NAME):
 	make -C $(LIBFT_DIR) --quiet
 
-leaks: $(NAME) scenes/test.rt
-	$(LEAKS) ./$(NAME) scenes/test.rt
+leaks: $(NAME) scenes/playground.rt
+	$(LEAKS) ./$(NAME) scenes/playground.rt
 
-test: $(TEST)/bin $(TESTBINS)
-	@for test in $(TESTBINS) ; do ./$$test --verbose; done
-
-.PHONY: all clean fclean re leaks test
+.PHONY: all clean fclean re leaks
