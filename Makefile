@@ -75,7 +75,6 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) -r $(TEST)/bin
 	make fclean -C $(LIN_ALGEBRA_DIR) --quiet
 	make fclean -C $(LIBFT_DIR) --quiet
 
