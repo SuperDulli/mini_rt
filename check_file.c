@@ -111,4 +111,6 @@ void	readfile_helper(char *line, int fd, int *err)
 		free(line);
 		line = get_next_line(fd);
 	}
+	if (duplicate != 7)
+		*err = -1;
 }
