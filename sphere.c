@@ -6,11 +6,22 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 12:38:23 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/22 15:44:12 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/26 10:23:19 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
+static
+void	find_closest_point(struct s_ray *ray, float t[2], float *point)
+{
+	if (t[0] < 0)
+		ray_at(ray, t[1], point);
+	else if (t[1] < 0)
+		ray_at(ray, t[0], point);
+	else
+		ray_at(ray, fminf(t[0], t[1]), point);
+}
 
 /**
  * @brief tests where the ray hits the sphere
@@ -48,12 +59,7 @@ bool	hit_sphere(struct s_ray ray, t_obj *sphere, float point[VEC3_SIZE], \
 	t[1] = (-b + sqrtf(discriminant)) / (2.f * a);
 	if (t[0] < 0 && t[1] < 0)
 		return (false);
-	if (t[0] < 0)
-		ray_at(&ray, t[1], point);
-	else if (t[1] < 0)
-		ray_at(&ray, t[0], point);
-	else
-		ray_at(&ray, fminf(t[0], t[1]), point);
+	find_closest_point(&ray, t, point);
 	apply_transform(point, sphere->transform.forward, 1, point);
 	vec3_sub(point, sphere->pos, local_normal);
 	vec3_normalize(local_normal, local_normal);
