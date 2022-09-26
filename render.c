@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 20:05:34 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 22:08:01 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:51:50 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ unsigned int	choose_color(t_scene *scene, float u, float v)
 		return (BLACK);
 	}
 	hit = get_closest_hit(ray_intersections, scene->camera->pos);
+	if (vec3_dot(hit->normal, ray.direction) > 0)
+	{
+		vec3_scalar_mult(hit->normal, -1.f, hit->normal);
+	}
 	apply_shading(scene, hit, color_v);
 	ft_lstclear(&ray_intersections, free);
 	return (convert_to_argb(color_v));
