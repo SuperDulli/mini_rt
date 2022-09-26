@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 16:09:40 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/26 14:23:09 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:45:20 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ bool	hit_cylinder(struct s_ray ray, t_obj *cylinder,
 	float					c;
 	struct s_cyl_intersect	data;
 
-	// vec3_normalize(ray.direction, ray.direction);
 	data.ray = &ray;
 	apply_transform(ray.direction, cylinder->transform.backward, 0,
 		ray.direction);
