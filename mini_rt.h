@@ -6,7 +6,7 @@
 /*   By: chelmerd <chelmerd@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 15:12:46 by chelmerd          #+#    #+#             */
-/*   Updated: 2022/09/25 20:58:41 by chelmerd         ###   ########.fr       */
+/*   Updated: 2022/09/27 10:49:47 by chelmerd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <stdbool.h>
 # include <fcntl.h>
 
-# define HEIGHT 900 //960
-# define WIDTH 1440 //1280
+# define HEIGHT 440 //960
+# define WIDTH 440 //1280
 
 # define RED 0x00FF0000
 # define GREEN 0x0000FF00
